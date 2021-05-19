@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.PokemonSearchFragment">
+
+    <View
+        android:id="@+id/outer_pokemon_search_bar_background"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/tint_primary"
+        app:layout_constraintTop_toTopOf="parent" />
+    
+    <View
+        android:id="@+id/inner_pokemon_search_bar_background"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:foregroundGravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/search_bar_background"
+        app:layout_constraintTop_toTopOf="parent"/>
+    
+    <ImageView
+        android:id="@+id/search_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_search"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintStart_toStartOf="@id/inner_pokemon_search_bar_background"
+        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background"
+        app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"/>
+
+
+    <EditText
+        android:id="@+id/search_pokemon_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/InputTextColdGrayLeft"
+        android:hint="@string/search_pokemons"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        app:layout_constraintStart_toStartOf="@id/inner_pokemon_search_bar_background"
+        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background"
+        app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"
+        android:background="@android:color/transparent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
