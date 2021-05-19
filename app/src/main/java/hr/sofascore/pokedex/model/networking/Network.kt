@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class Network {
     private val service: PokemonService
-    private val baseUrl = "https://pokeapi.co/api/v2"
+    private val baseUrl = "https://pokeapi.co/api/v2/"
 
     init {
         val httpClient = OkHttpClient.Builder()

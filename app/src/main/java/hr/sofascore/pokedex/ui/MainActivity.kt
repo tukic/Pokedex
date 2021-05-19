@@ -1,12 +1,10 @@
-package hr.sofascore.pokedex
+package hr.sofascore.pokedex.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
