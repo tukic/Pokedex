@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import coil.api.load
+import androidx.recyclerview.widget.LinearLayoutManager
 import hr.sofascore.pokedex.databinding.FragmentPokemonSearchBinding
+import hr.sofascore.pokedex.ui.adapter.PagedPokemonAdapter
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
-import java.util.*
 
 
 class PokemonSearchFragment : Fragment() {
 
-    val pokemonViewModel: PokemonViewModel by activityViewModels()
+    private val pokemonViewModel: PokemonViewModel by activityViewModels()
+    private val adapter = PagedPokemonAdapter()
 
     private var _binding: FragmentPokemonSearchBinding? = null
     private val binding get() = _binding!!
@@ -37,17 +37,15 @@ class PokemonSearchFragment : Fragment() {
             )
         }
 
-        pokemonViewModel.pokemon.observe(
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
+        pokemonViewModel.pokemonPagedList.observe(
             this as LifecycleOwner,
             {
-                binding.pokemonItem.pokemonImageView.load(pokemonImageURL(it.id))
-                binding.pokemonItem.pokemonNameTextView.text = it.name.capitalize(Locale.ROOT)
-                binding.pokemonItem.pokemonNumTextView.text = "%03d".format(it.id)
+                adapter.submitList(it)
             }
         )
 
         return view
     }
 }
-
-fun pokemonImageURL(id: Int) = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png"

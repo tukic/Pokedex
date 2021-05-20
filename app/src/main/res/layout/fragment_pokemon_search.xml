@@ -51,11 +51,12 @@
         app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"
         android:background="@android:color/transparent"/>
 
-    <hr.sofascore.pokedex.ui.views.PokemonItem
-        android:id="@+id/pokemon_item"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/outer_pokemon_search_bar_background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:paddingTop="16dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/outer_pokemon_search_bar_background"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
