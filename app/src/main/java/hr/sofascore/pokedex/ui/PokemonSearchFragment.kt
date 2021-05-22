@@ -9,14 +9,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import hr.sofascore.pokedex.databinding.FragmentPokemonSearchBinding
+import hr.sofascore.pokedex.model.shared.PokemonResponse
 import hr.sofascore.pokedex.ui.adapter.PagedPokemonAdapter
+import hr.sofascore.pokedex.ui.views.FavouritePokemonListener
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 
 
-class PokemonSearchFragment : Fragment() {
+class PokemonSearchFragment : Fragment(), FavouritePokemonListener {
 
     private val pokemonViewModel: PokemonViewModel by activityViewModels()
-    private val adapter = PagedPokemonAdapter()
+    private val adapter = PagedPokemonAdapter(arrayListOf(), this)
 
     private var _binding: FragmentPokemonSearchBinding? = null
     private val binding get() = _binding!!
@@ -46,6 +48,22 @@ class PokemonSearchFragment : Fragment() {
             }
         )
 
+        pokemonViewModel.favouritePokemon.observe(
+            this as LifecycleOwner,
+            {
+                adapter.updateFavouritePokemon(it as ArrayList<PokemonResponse>)
+            }
+        )
+        pokemonViewModel.getFavouritePokemon(requireContext())
+
         return view
+    }
+
+    override fun favouritePokemonAdded(pokemon: PokemonResponse) {
+        pokemonViewModel.insertFavouritePokemon(requireContext(), pokemon)
+    }
+
+    override fun favouritePokemonRemoved(pokemon: PokemonResponse) {
+        pokemonViewModel.deleteFavouritePokemon(requireContext(), pokemon)
     }
 }

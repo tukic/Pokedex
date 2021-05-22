@@ -1,21 +1,25 @@
 package hr.sofascore.pokedex.model.shared
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
 
-data class PokemonResponse (
+@Entity
+data class PokemonResponse(
+    @PrimaryKey
     val id: Int,
-    val name: String
-): Serializable
+    val name: String,
+) : Serializable
 
-data class PokemonList (
+data class PokemonList(
     val count: Int,
     val next: String,
     val previous: String,
     val results: List<Result>
-): Serializable
+) : Serializable
 
-data class Result (
+data class Result(
     val name: String,
     val url: String
-): Serializable
+) : Serializable
 

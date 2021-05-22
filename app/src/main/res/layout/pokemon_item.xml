@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@id/pokemon_name_text_view" />
 
     <ImageView
-        android:id="@+id/start_icon_image_view"
+        android:id="@+id/star_icon_image_view"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:backgroundTint="@color/design_default_color_primary"

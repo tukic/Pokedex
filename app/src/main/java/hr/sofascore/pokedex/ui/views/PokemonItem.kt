@@ -33,7 +33,7 @@ class PokemonItem(context: Context, attrs: AttributeSet) : FrameLayout(context, 
             pokemonNameTextView = binding.pokemonNameTextView
             pokemonNumTextView = binding.pokedexNumTextView
             pokemonImageView = binding.pokemonImageView
-            starIconImageView = binding.startIconImageView
+            starIconImageView = binding.starIconImageView
         }
     }
 }
