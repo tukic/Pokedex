@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/pokemon_search"
-        android:name="hr.sofascore.pokedex.ui.PokemonSearchFragment"
+        android:name="hr.sofascore.pokedex.ui.search.PokemonSearchFragment"
         android:label="@string/search"
         tools:layout="@layout/fragment_pokemon_search" />
 

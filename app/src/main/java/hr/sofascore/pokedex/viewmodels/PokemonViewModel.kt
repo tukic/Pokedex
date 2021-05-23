@@ -45,6 +45,7 @@ class PokemonViewModel : ViewModel() {
     fun insertFavouritePokemon(context: Context, pokemon: PokemonResponse) {
         viewModelScope.launch {
             PokemonDatabase.getDatabase(context)?.pokemonDao()?.insertPokemon(pokemon)
+            getFavouritePokemon(context)
         }
     }
 
@@ -58,6 +59,7 @@ class PokemonViewModel : ViewModel() {
     fun deleteFavouritePokemon(context: Context, pokemon: PokemonResponse) {
         viewModelScope.launch {
             PokemonDatabase.getDatabase(context)?.pokemonDao()?.deletePokemon(pokemon)
+            getFavouritePokemon(context)
         }
     }
 }

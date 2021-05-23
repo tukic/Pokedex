@@ -15,14 +15,16 @@ import java.util.*
 
 class PagedPokemonAdapter(
     var favouritePokemon: ArrayList<PokemonResponse>,
-    val favouritePokemonListener: FavouritePokemonListener
+    val favouritePokemonListener: FavouritePokemonListener,
+    val pokemonActivityListener: StartPokemonActivityListener
 ) :
-    PagedListAdapter<PokemonResponse, PagedPokemonAdapter.PokemonViewHolder>(PokemonDiff()) {
+    PagedListAdapter<PokemonResponse, PagedPokemonAdapter.PokemonViewHolder>(PokemonDiff()),
+FavouritePokemonListener{
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.pokemon_item, parent, false)
-        return PokemonViewHolder(view, favouritePokemon, favouritePokemonListener)
+        return PokemonViewHolder(view, this, pokemonActivityListener)
     }
 
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
@@ -33,12 +35,15 @@ class PagedPokemonAdapter(
 
     class PokemonViewHolder(
         view: View,
-        val favouritePokemon: ArrayList<PokemonResponse>,
-        val favouritePokemonListener: FavouritePokemonListener
+        val favouritePokemonListener: FavouritePokemonListener,
+        val pokemonActivityListener: StartPokemonActivityListener
     ) : RecyclerView.ViewHolder(view) {
         private val binding = PokemonItemBinding.bind(view)
 
         fun bindPokemon(pokemon: PokemonResponse) {
+
+            val favouritePokemon = favouritePokemonListener.updateFavouritePokemon()
+
             binding.pokemonNameTextView.text = pokemon.name.capitalize(Locale.ROOT)
             binding.pokemonImageView.load(pokemonImageURL(pokemon.id))
             binding.pokedexNumTextView.text = "%03d".format(pokemon.id)
@@ -49,14 +54,14 @@ class PagedPokemonAdapter(
                 binding.starIconImageView.load(R.drawable.ic_star_0)
             }
 
+            binding.root.setOnClickListener {
+                pokemonActivityListener.startActivity(pokemon)
+            }
+
             binding.starIconImageView.setOnClickListener {
                 if (favouritePokemon.any { it.id == pokemon.id }) {
-                    binding.starIconImageView.load(R.drawable.ic_star_0)
-                    favouritePokemon.remove(pokemon)
                     favouritePokemonListener.favouritePokemonRemoved(pokemon)
                 } else {
-                    binding.starIconImageView.load(R.drawable.ic_star_1)
-                    favouritePokemon.add(pokemon)
                     favouritePokemonListener.favouritePokemonAdded(pokemon)
                 }
             }
@@ -70,4 +75,14 @@ class PagedPokemonAdapter(
         favouritePokemon = pokemon
         notifyDataSetChanged()
     }
+
+    override fun favouritePokemonAdded(pokemon: PokemonResponse) {
+        favouritePokemonListener.favouritePokemonAdded(pokemon)
+    }
+
+    override fun favouritePokemonRemoved(pokemon: PokemonResponse) {
+        favouritePokemonListener.favouritePokemonRemoved(pokemon)
+    }
+
+    override fun updateFavouritePokemon() = favouritePokemon
 }

@@ -7,4 +7,6 @@ interface FavouritePokemonListener {
     fun favouritePokemonAdded(pokemon: PokemonResponse)
 
     fun favouritePokemonRemoved(pokemon: PokemonResponse)
+
+    fun updateFavouritePokemon(): List<PokemonResponse>
 }

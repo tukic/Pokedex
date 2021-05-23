@@ -40,4 +40,5 @@
     <color name="flat_neutral_background">#801c1f22</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="pokemon_status_bar_color">#0c000000</color>
 </resources>
