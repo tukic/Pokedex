@@ -63,5 +63,29 @@ data class PokemonTypeDescription (
         }
         return R.color.flat_pokemon_type_undefined
     }
+
+    fun getTypeTheme(): Int {
+        when(name) {
+            "bug" -> return R.style.Theme_PokemonBugType
+            "dark" -> return R.style.Theme_PokemonDarkType
+            "dragon" -> return R.style.Theme_PokemonDragonType
+            "electric" -> return R.style.Theme_PokemonElectricType
+            "fairy" -> return R.style.Theme_PokemonFairyType
+            "fighting" -> return R.style.Theme_PokemonFightingType
+            "fire" -> return R.style.Theme_PokemonFireType
+            "flying" -> return R.style.Theme_PokemonFlyingType
+            "ghost" -> return R.style.Theme_PokemonGhostType
+            "grass" -> return R.style.Theme_PokemonGrassType
+            "ground" -> return R.style.Theme_PokemonGroundType
+            "ice" -> return R.style.Theme_PokemonIceType
+            "normal" -> return R.style.Theme_PokemonNormalType
+            "poison" -> return R.style.Theme_PokemonPoisonType
+            "psychic" -> return R.style.Theme_PokemonPsychicType
+            "rock" -> return R.style.Theme_PokemonRockType
+            "steel" -> return R.style.Theme_PokemonSteelType
+            "water" -> return R.style.Theme_PokemonWaterType
+        }
+        return R.style.Theme_PokemonUndefinedType
+    }
 }
 

@@ -16,7 +16,7 @@
 
     <style name="Theme.PokemonActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/pokemon_status_bar_color</item>
+        <item name="colorPrimary">@color/tint_primary</item>
         <item name="colorPrimaryVariant">#0c000000</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -26,5 +26,90 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.PokemonTypeParent" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/tint_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/tint_primary</item>
+        <item name="colorSecondaryVariant">@color/tint_secondary</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="Theme.PokemonBugType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_bug</item>
+    </style>
+
+    <style name="Theme.PokemonDarkType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_dark</item>
+    </style>
+
+    <style name="Theme.PokemonDragonType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_dragon</item>
+    </style>
+
+    <style name="Theme.PokemonElectricType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_electric</item>
+    </style>
+
+    <style name="Theme.PokemonFairyType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_fairy</item>
+    </style>
+
+    <style name="Theme.PokemonFightingType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_fighting</item>
+    </style>
+
+    <style name="Theme.PokemonFireType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_fire</item>
+    </style>
+
+    <style name="Theme.PokemonFlyingType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_flying</item>
+    </style>
+
+    <style name="Theme.PokemonGhostType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_ghost</item>
+    </style>
+
+    <style name="Theme.PokemonGrassType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_grass</item>
+    </style>
+
+    <style name="Theme.PokemonGroundType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_ground</item>
+    </style>
+
+    <style name="Theme.PokemonIceType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_ice</item>
+    </style>
+
+    <style name="Theme.PokemonNormalType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_normal</item>
+    </style>
+
+    <style name="Theme.PokemonPoisonType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_poison</item>
+    </style>
+
+    <style name="Theme.PokemonPsychicType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_psychic</item>
+    </style>
+
+    <style name="Theme.PokemonRockType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_rock</item>
+    </style>
+
+    <style name="Theme.PokemonSteelType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_steel</item>
+    </style>
+
+    <style name="Theme.PokemonWaterType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_water</item>
+    </style>
+
+    <style name="Theme.PokemonUndefinedType" parent="Theme.PokemonTypeParent">
+        <item name="colorPrimaryVariant">@color/flat_pokemon_type_undefined</item>
     </style>
 </resources>

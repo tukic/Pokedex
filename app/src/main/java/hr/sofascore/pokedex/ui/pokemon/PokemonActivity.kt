@@ -75,7 +75,7 @@ class PokemonActivity : AppCompatActivity() {
             this as LifecycleOwner,
             {
                 binding.pokemonTypeAdapter.adapter =
-                    pokemon.types?.let { PokemonTypeAdapter(baseContext, it) }
+                    pokemon.types?.let { PokemonTypeAdapter(this, it) }
             }
         )
         pokemonViewModel.getPokemon(pokemon.id)
