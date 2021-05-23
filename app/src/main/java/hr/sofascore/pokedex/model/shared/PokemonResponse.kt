@@ -3,6 +3,7 @@ package hr.sofascore.pokedex.model.shared
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import hr.sofascore.pokedex.R
 import java.io.Serializable
 
 @Entity
@@ -38,5 +39,29 @@ data class PokemonType (
 data class PokemonTypeDescription (
     val name: String,
     val url: String
-): Serializable
+): Serializable {
+    fun getTypeColor(): Int {
+        when(name) {
+            "bug" -> return R.color.flat_pokemon_type_bug
+            "dark" -> return R.color.flat_pokemon_type_dark
+            "dragon" -> return R.color.flat_pokemon_type_dragon
+            "electric" -> return R.color.flat_pokemon_type_electric
+            "fairy" -> return R.color.flat_pokemon_type_fairy
+            "fighting" -> return R.color.flat_pokemon_type_fighting
+            "fire" -> return R.color.flat_pokemon_type_fire
+            "flying" -> return R.color.flat_pokemon_type_flying
+            "ghost" -> return R.color.flat_pokemon_type_ghost
+            "grass" -> return R.color.flat_pokemon_type_grass
+            "ground" -> return R.color.flat_pokemon_type_ground
+            "ice" -> return R.color.flat_pokemon_type_ice
+            "normal" -> return R.color.flat_pokemon_type_normal
+            "poison" -> return R.color.flat_pokemon_type_poison
+            "psychic" -> return R.color.flat_pokemon_type_psychic
+            "rock" -> return R.color.flat_pokemon_type_rock
+            "steel" -> return R.color.flat_pokemon_type_steel
+            "water" -> return R.color.flat_pokemon_type_water
+        }
+        return R.color.flat_pokemon_type_undefined
+    }
+}
 

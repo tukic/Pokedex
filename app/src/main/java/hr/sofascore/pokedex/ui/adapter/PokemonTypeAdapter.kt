@@ -31,6 +31,7 @@ class PokemonTypeAdapter (
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val type = types[position]
+        viewHolder.binding.root.backgroundTintList = context.getColorStateList(type.type.getTypeColor())
         viewHolder.binding.pokemonTypeTextView.text = type.type.name.capitalize(Locale.getDefault())
 
     }
