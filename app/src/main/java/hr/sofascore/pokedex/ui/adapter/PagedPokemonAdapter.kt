@@ -45,8 +45,8 @@ FavouritePokemonListener{
             val favouritePokemon = favouritePokemonListener.updateFavouritePokemon()
 
             binding.pokemonNameTextView.text = pokemon.name.capitalize(Locale.ROOT)
-            binding.pokemonImageView.load(pokemonImageURL(pokemon.id))
-            binding.pokedexNumTextView.text = "%03d".format(pokemon.id)
+            binding.pokemonImageView.load(pokemon.getImageURL())
+            binding.pokedexNumTextView.text = pokemon.getFormattedId()
 
             if (favouritePokemon.any { it.id == pokemon.id }) {
                 binding.starIconImageView.load(R.drawable.ic_star_1)
@@ -66,9 +66,6 @@ FavouritePokemonListener{
                 }
             }
         }
-
-        fun pokemonImageURL(id: Int) =
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png"
     }
 
     fun updateFavouritePokemon(pokemon: ArrayList<PokemonResponse>) {

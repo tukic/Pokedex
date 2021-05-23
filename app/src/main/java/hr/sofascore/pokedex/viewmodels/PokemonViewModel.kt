@@ -28,7 +28,7 @@ class PokemonViewModel : ViewModel() {
     }
 
     private fun initializePagedList(config: PagedList.Config): LivePagedListBuilder<String, PokemonResponse> {
-        val dataSource =  object: DataSource.Factory<String, PokemonResponse>() {
+        val dataSource = object : DataSource.Factory<String, PokemonResponse>() {
             override fun create(): DataSource<String, PokemonResponse> {
                 return PokemonDataSource(initialPokemonURL, viewModelScope)
             }
@@ -39,6 +39,12 @@ class PokemonViewModel : ViewModel() {
     fun getPokemon(name: String) {
         viewModelScope.launch {
             pokemon.value = Network().getService().getPokemonByName(name).body()
+        }
+    }
+
+    fun getPokemon(id: Int) {
+        viewModelScope.launch {
+            pokemon.value = Network().getService().getPokemonById(id).body()
         }
     }
 

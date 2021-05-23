@@ -4,4 +4,6 @@
     <string name="favorites">Favorites</string>
     <string name="settings">Settings</string>
     <string name="search_pokemons">Search Pokemons</string>
+    <string name="pokedex_num">pokedex num</string>
+    <string name="type">type</string>
 </resources>

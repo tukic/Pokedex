@@ -1,14 +1,16 @@
 package hr.sofascore.pokedex.ui.pokemon
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.ActivityPokemonBinding
 import hr.sofascore.pokedex.model.shared.PokemonResponse
+import hr.sofascore.pokedex.ui.adapter.PokemonTypeAdapter
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 import java.util.*
 
@@ -43,10 +45,13 @@ class PokemonActivity : AppCompatActivity() {
         binding.collapsingToolbarLayout.setExpandedTitleTextColor(getColorStateList(R.color.black))
         binding.collapsingToolbarLayout.setCollapsedTitleTextColor(getColorStateList(R.color.black))
 
+        binding.pokedexNumTextView.text = pokemon.getFormattedId()
+        binding.pokemonImageView.load(pokemon.getImageURL())
+
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,
             {
-                if(it.contains(pokemon)) {
+                if(it.any {it.id == pokemon.id }) {
                     binding.favouritePokemonStarIcon.load(R.drawable.ic_star_1)
                 } else {
                     binding.favouritePokemonStarIcon.load(R.drawable.ic_star_0)
@@ -57,13 +62,23 @@ class PokemonActivity : AppCompatActivity() {
 
         binding.favouritePokemonStarIcon.setOnClickListener {
             pokemonViewModel.favouritePokemon.value?.let {
-                if(it.contains(pokemon)) {
+                if(it.any {it.id == pokemon.id }) {
                     pokemonViewModel.deleteFavouritePokemon(baseContext, pokemon)
                 } else {
                     pokemonViewModel.insertFavouritePokemon(baseContext, pokemon)
                 }
             }
         }
+
+        binding.pokemonTypeAdapter.layoutManager = GridLayoutManager(this, 2)
+        pokemonViewModel.pokemon.observe(
+            this as LifecycleOwner,
+            {
+                binding.pokemonTypeAdapter.adapter =
+                    pokemon.types?.let { PokemonTypeAdapter(baseContext, it) }
+            }
+        )
+        pokemonViewModel.getPokemon(pokemon.id)
 
     }
 
