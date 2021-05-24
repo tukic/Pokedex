@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.ActivityPokemonBinding
-import hr.sofascore.pokedex.model.shared.PokemonResponse
+import hr.sofascore.pokedex.model.shared.*
 import hr.sofascore.pokedex.ui.adapter.PokemonTypeAdapter
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 import java.util.*
@@ -48,10 +48,15 @@ class PokemonActivity : AppCompatActivity() {
         binding.pokedexNumTextView.text = pokemon.getFormattedId()
         binding.pokemonImageView.load(pokemon.getImageURL())
 
+        binding.weightTextView.text = pokemon.getFormattedWeight()
+        binding.heightTextView.text = pokemon.getFormattedHeight()
+
+
+
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,
             {
-                if(it.any {it.id == pokemon.id }) {
+                if (it.any { it.id == pokemon.id }) {
                     binding.favouritePokemonStarIcon.load(R.drawable.ic_star_1)
                 } else {
                     binding.favouritePokemonStarIcon.load(R.drawable.ic_star_0)
@@ -62,7 +67,7 @@ class PokemonActivity : AppCompatActivity() {
 
         binding.favouritePokemonStarIcon.setOnClickListener {
             pokemonViewModel.favouritePokemon.value?.let {
-                if(it.any {it.id == pokemon.id }) {
+                if (it.any { it.id == pokemon.id }) {
                     pokemonViewModel.deleteFavouritePokemon(baseContext, pokemon)
                 } else {
                     pokemonViewModel.insertFavouritePokemon(baseContext, pokemon)

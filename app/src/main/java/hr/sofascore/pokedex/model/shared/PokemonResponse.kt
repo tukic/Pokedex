@@ -11,12 +11,30 @@ data class PokemonResponse @JvmOverloads constructor (
     @PrimaryKey
     val id: Int,
     val name: String,
+    val height: Int,
+    val weight: Int,
     @Ignore
     var types: List<PokemonType>? = arrayListOf()
 ) : Serializable {
 
     fun getFormattedId() = "%03d".format(id)
     fun getImageURL() = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png"
+
+    fun getFormattedHeight(): String {
+        val heightInMeters = ("%.1f").format((height/10).toFloat())
+        val heightInInches = height * 3.93701
+        val heightInFeet = (heightInInches / 12).toInt()
+        val inchesLeftover = ("%02d").format((heightInInches % 12).roundToInt())
+        return "$heightInFeet'$inchesLeftover\" (${heightInMeters} m)"
+    }
+
+    fun getFormattedWeight(): String {
+        val weightInKilograms = ("%.1f").format((weight/10).toFloat())
+        val weightInPounds = ("%.1f").format((weight/4.536).toFloat())
+        return "$weightInPounds lbs. (${weightInKilograms}kg)"
+    }
+
+
 }
 
 data class PokemonList(
