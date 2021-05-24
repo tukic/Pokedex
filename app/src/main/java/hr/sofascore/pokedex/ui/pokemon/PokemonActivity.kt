@@ -51,7 +51,18 @@ class PokemonActivity : AppCompatActivity() {
         binding.weightTextView.text = pokemon.getFormattedWeight()
         binding.heightTextView.text = pokemon.getFormattedHeight()
 
+        pokemon.abilities?.filter { !it.is_hidden }?.let {
+            if (it.isNotEmpty()) {
+                binding.abilityTextView.text = it[0].ability.name.capitalize(Locale.getDefault())
+            }
+        }
 
+        pokemon.abilities?.filter { it.is_hidden }?.let {
+            if (it.isNotEmpty()) {
+                binding.hiddenAbilityTextView.text =
+                    it[0].ability.name.capitalize(Locale.getDefault())
+            }
+        }
 
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,

@@ -6,4 +6,8 @@
     <string name="search_pokemons">Search Pokemons</string>
     <string name="pokedex_num">pokedex num</string>
     <string name="type">type</string>
+    <string name="height">height</string>
+    <string name="weight">weight</string>
+    <string name="hidden_ability">Hidden Ability</string>
+    <string name="abilities">Abilities</string>
 </resources>

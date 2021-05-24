@@ -201,6 +201,61 @@
                 app:layout_constraintEnd_toEndOf="@id/specs_container_background_view"
                 app:layout_constraintTop_toBottomOf="@id/weight_label_text_view" />
 
+            <View
+                android:id="@+id/abilities_container_background_view"
+                android:layout_width="344dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/specs_container_background"
+                app:layout_constraintEnd_toEndOf="@id/pokemon_activity_background_view"
+                app:layout_constraintStart_toStartOf="@id/pokemon_activity_background_view"
+                app:layout_constraintTop_toBottomOf="@id/specs_container_background_view" />
+
+            <TextView
+                android:id="@+id/abilities_title_text_view"
+                style="@style/Headline2DarkCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/abilities"
+                app:layout_constraintEnd_toEndOf="@id/abilities_container_background_view"
+                app:layout_constraintStart_toStartOf="@id/abilities_container_background_view"
+                app:layout_constraintTop_toTopOf="@id/abilities_container_background_view" />
+
+            <TextView
+                android:id="@+id/ability_text_view"
+                style="@style/InputTextDarkCenter"
+                android:layout_width="148dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/abilities_container_background_view"
+                app:layout_constraintStart_toStartOf="@id/abilities_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/abilities_title_text_view" />
+
+            <TextView
+                android:id="@+id/hidden_ability_text_view"
+                style="@style/InputTextDarkCenter"
+                android:layout_width="148dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_constraintEnd_toEndOf="@id/abilities_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/abilities_title_text_view" />
+
+            <TextView
+                android:id="@+id/hidden_ability_label_text_view"
+                style="@style/AssistiveColdGrayCenter"
+                android:layout_width="148dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/hidden_ability"
+                app:layout_constraintEnd_toEndOf="@id/abilities_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/hidden_ability_text_view" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

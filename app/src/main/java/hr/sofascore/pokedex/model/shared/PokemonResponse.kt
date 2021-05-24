@@ -5,6 +5,8 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import hr.sofascore.pokedex.R
 import java.io.Serializable
+import kotlin.math.roundToInt
+
 
 @Entity
 data class PokemonResponse @JvmOverloads constructor (
@@ -13,6 +15,8 @@ data class PokemonResponse @JvmOverloads constructor (
     val name: String,
     val height: Int,
     val weight: Int,
+    @Ignore
+    val abilities: List<Ability>? = arrayListOf(),
     @Ignore
     var types: List<PokemonType>? = arrayListOf()
 ) : Serializable {
@@ -33,7 +37,6 @@ data class PokemonResponse @JvmOverloads constructor (
         val weightInPounds = ("%.1f").format((weight/4.536).toFloat())
         return "$weightInPounds lbs. (${weightInKilograms}kg)"
     }
-
 
 }
 
@@ -106,4 +109,15 @@ data class PokemonTypeDescription (
         return R.style.Theme_PokemonUndefinedType
     }
 }
+
+data class Ability(
+    val ability: AbilityDescription,
+    val is_hidden: Boolean,
+    val slot: Int
+): Serializable
+
+data class AbilityDescription(
+    val name: String,
+    val url: String
+): Serializable
 
