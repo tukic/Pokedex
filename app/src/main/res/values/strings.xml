@@ -18,4 +18,7 @@
     <string name="sp_def">Sp. Def:</string>
     <string name="speed">Speed:</string>
     <string name="total">Total:</string>
+    <string name="evolution">Evolution</string>
+    <string name="unevolved">unevolved</string>
+    <string name="first_evolution">1st evolution</string>
 </resources>

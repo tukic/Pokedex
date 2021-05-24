@@ -1,7 +1,9 @@
 package hr.sofascore.pokedex.model.networking
 
+import hr.sofascore.pokedex.model.shared.EvolutionChain
 import hr.sofascore.pokedex.model.shared.PokemonList
 import hr.sofascore.pokedex.model.shared.PokemonResponse
+import hr.sofascore.pokedex.model.shared.PokemonSpecies
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,4 +22,10 @@ interface PokemonService {
 
     @GET
     suspend fun getPagedPokemon(@Url url: String): Response<PokemonList>
+
+    @GET("pokemon-species/{id}")
+    suspend fun getSpecies(@Path("id") id: Int): Response<PokemonSpecies>
+
+    @GET
+    suspend fun getEvolutionChain(@Url url: String): Response<EvolutionChain>
 }

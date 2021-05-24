@@ -6,11 +6,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.ActivityPokemonBinding
 import hr.sofascore.pokedex.model.shared.*
+import hr.sofascore.pokedex.ui.adapter.EvolutionAdapter
 import hr.sofascore.pokedex.ui.adapter.PokemonTypeAdapter
+import hr.sofascore.pokedex.viewmodels.EvolutionViewModel
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 import java.util.*
 
@@ -21,6 +24,7 @@ class PokemonActivity : AppCompatActivity() {
     lateinit var binding: ActivityPokemonBinding
 
     val pokemonViewModel: PokemonViewModel by viewModels<PokemonViewModel>()
+    val evolutionViewModel: EvolutionViewModel by viewModels<EvolutionViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,15 +116,25 @@ class PokemonActivity : AppCompatActivity() {
             }
         }
 
-        binding.pokemonTypeAdapter.layoutManager = GridLayoutManager(this, 2)
+        binding.pokemonTypeRecycler.layoutManager = GridLayoutManager(this, 2)
         pokemonViewModel.pokemon.observe(
             this as LifecycleOwner,
             {
-                binding.pokemonTypeAdapter.adapter =
-                    pokemon.types?.let { PokemonTypeAdapter(this, it) }
+                pokemon.types?.let {
+                    binding.pokemonTypeRecycler.adapter = PokemonTypeAdapter(this, it)
+                }
             }
         )
         pokemonViewModel.getPokemon(pokemon.id)
+
+        binding.evolutionRecyclerView.layoutManager = LinearLayoutManager(this)
+        evolutionViewModel.evolutions.observe(
+            this as LifecycleOwner,
+            {
+                binding.evolutionRecyclerView.adapter = EvolutionAdapter(this, pokemon, it)
+            }
+        )
+        evolutionViewModel.getEvolutions(this, pokemon.id)
 
     }
 

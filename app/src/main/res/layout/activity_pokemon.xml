@@ -15,7 +15,7 @@
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@color/surface_1"
             app:collapsedTitleGravity="center_vertical|start"
             app:collapsedTitleTextAppearance="@style/Headline2DarkLeft"
             app:expandedTitleGravity="top|start"
@@ -91,7 +91,7 @@
                 app:layout_constraintTop_toBottomOf="@id/pokedex_num_text_view" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/pokemon_type_adapter"
+                android:id="@+id/pokemon_type_recycler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -370,6 +370,30 @@
                 style="@style/Headline3ColdGrayRight"
                 app:layout_constraintTop_toBottomOf="@id/speed_base_stat"
                 app:layout_constraintStart_toEndOf="@id/total_stats_label_text_view" />
+
+            <View
+                android:id="@+id/evolution_title_background_view"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/surface_1"
+                app:layout_constraintTop_toBottomOf="@id/stats_container_background_view"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                style="@style/Headline2DarkCenter"
+                android:text="@string/evolution"
+                app:layout_constraintTop_toTopOf="@id/evolution_title_background_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/evolution_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/evolution_title_background_view"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
