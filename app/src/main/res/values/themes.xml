@@ -112,4 +112,10 @@
     <style name="Theme.PokemonUndefinedType" parent="Theme.PokemonTypeParent">
         <item name="colorPrimaryVariant">@color/flat_pokemon_type_undefined</item>
     </style>
+
+    <style name="StatsProgressBarHorizontal" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_bar</item>
+        <item name="android:minHeight">12dp</item>
+        <item name="android:maxHeight">12dp</item>
+    </style>
 </resources>

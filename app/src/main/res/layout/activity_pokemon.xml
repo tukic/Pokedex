@@ -256,7 +256,120 @@
                 app:layout_constraintEnd_toEndOf="@id/abilities_container_background_view"
                 app:layout_constraintTop_toBottomOf="@id/hidden_ability_text_view" />
 
+            <View
+                android:id="@+id/stats_container_background_view"
+                android:layout_width="344dp"
+                android:layout_height="228dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/specs_container_background"
+                app:layout_constraintEnd_toEndOf="@id/pokemon_activity_background_view"
+                app:layout_constraintStart_toStartOf="@id/pokemon_activity_background_view"
+                app:layout_constraintTop_toBottomOf="@id/abilities_container_background_view" />
 
+            <TextView
+                android:id="@+id/stats_title_text_view"
+                style="@style/Headline2DarkCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/stats"
+                app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
+                app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
+                app:layout_constraintTop_toTopOf="@id/stats_container_background_view" />
+
+            <hr.sofascore.pokedex.ui.views.BaseStatsItem
+                android:id="@+id/hp_base_stat"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                app:base_stats_label="@string/hp"
+                app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
+                app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/stats_title_text_view"
+                app:stats_bar_color="@color/flat_base_stats_01_hp" />
+
+            <hr.sofascore.pokedex.ui.views.BaseStatsItem
+                android:id="@+id/attack_base_stat"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                app:base_stats_label="@string/attack"
+                app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
+                app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/hp_base_stat"
+                app:stats_bar_color="@color/flat_base_stats_02_attack" />
+
+            <hr.sofascore.pokedex.ui.views.BaseStatsItem
+                android:id="@+id/defense_base_stat"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                app:base_stats_label="@string/defense"
+                app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
+                app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/attack_base_stat"
+                app:stats_bar_color="@color/flat_base_stats_03_defense" />
+
+            <hr.sofascore.pokedex.ui.views.BaseStatsItem
+                android:id="@+id/sp_attack_base_stat"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                app:base_stats_label="@string/sp_atk"
+                app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
+                app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/defense_base_stat"
+                app:stats_bar_color="@color/flat_base_stats_04_sp_atk" />
+
+            <hr.sofascore.pokedex.ui.views.BaseStatsItem
+                android:id="@+id/sp_defense_base_stat"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                app:base_stats_label="@string/sp_def"
+                app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
+                app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/sp_attack_base_stat"
+                app:stats_bar_color="@color/flat_base_stats_05_sp_def" />
+
+            <hr.sofascore.pokedex.ui.views.BaseStatsItem
+                android:id="@+id/speed_base_stat"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                app:base_stats_label="@string/speed"
+                app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
+                app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/sp_defense_base_stat"
+                app:stats_bar_color="@color/flat_base_stats_06_speed" />
+
+            <TextView
+                android:id="@+id/total_stats_label_text_view"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="@string/total"
+                style="@style/BodyColdGrayLeft"
+                app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/speed_base_stat" />
+
+            <TextView
+                android:id="@+id/total_stats_value_text_view"
+                android:layout_width="28dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                style="@style/Headline3ColdGrayRight"
+                app:layout_constraintTop_toBottomOf="@id/speed_base_stat"
+                app:layout_constraintStart_toEndOf="@id/total_stats_label_text_view" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

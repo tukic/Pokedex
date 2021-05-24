@@ -7,6 +7,12 @@ import hr.sofascore.pokedex.R
 import java.io.Serializable
 import kotlin.math.roundToInt
 
+const val HP_STAT = "hp"
+const val ATTACK_STAT = "attack"
+const val DEFENSE_STAT = "defense"
+const val SPECIAL_ATTACK_STAT = "special-attack"
+const val SPECIAL_DEFENSE_STAT = "special-defense"
+const val SPEED_STAT = "speed"
 
 @Entity
 data class PokemonResponse @JvmOverloads constructor (
@@ -15,6 +21,8 @@ data class PokemonResponse @JvmOverloads constructor (
     val name: String,
     val height: Int,
     val weight: Int,
+    @Ignore
+    val stats: List<Stats>? = arrayListOf(),
     @Ignore
     val abilities: List<Ability>? = arrayListOf(),
     @Ignore
@@ -38,6 +46,8 @@ data class PokemonResponse @JvmOverloads constructor (
         return "$weightInPounds lbs. (${weightInKilograms}kg)"
     }
 
+    fun getStat(name: String) = stats?.find { it.stat.name == name }
+    fun getTotalStats() = stats?.sumOf { it.base_stat }
 }
 
 data class PokemonList(
@@ -117,6 +127,17 @@ data class Ability(
 ): Serializable
 
 data class AbilityDescription(
+    val name: String,
+    val url: String
+): Serializable
+
+data class Stats(
+    val base_stat: Int,
+    val effort: Int,
+    val stat: StatsDescription
+): Serializable
+
+data class StatsDescription(
     val name: String,
     val url: String
 ): Serializable

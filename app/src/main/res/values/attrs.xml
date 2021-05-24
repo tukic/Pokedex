@@ -2,4 +2,9 @@
 <resources>
     <declare-styleable name="PokemonItem">
     </declare-styleable>
+
+    <declare-styleable name="BaseStatsItem">
+        <attr name="base_stats_label" format="string" />
+        <attr name="stats_bar_color" format="color" />
+    </declare-styleable>
 </resources>

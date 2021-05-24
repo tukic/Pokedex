@@ -64,6 +64,32 @@ class PokemonActivity : AppCompatActivity() {
             }
         }
 
+        pokemon.getStat(HP_STAT)?.let {
+            binding.hpBaseStat.baseStatsValueTextView.text = it.base_stat.toString()
+            binding.hpBaseStat.statsProgressBar.progress = it.base_stat
+        }
+        pokemon.getStat(ATTACK_STAT)?.let {
+            binding.attackBaseStat.baseStatsValueTextView.text = it.base_stat.toString()
+            binding.attackBaseStat.statsProgressBar.progress = it.base_stat
+        }
+        pokemon.getStat(DEFENSE_STAT)?.let {
+            binding.defenseBaseStat.baseStatsValueTextView.text = it.base_stat.toString()
+            binding.defenseBaseStat.statsProgressBar.progress = it.base_stat
+        }
+        pokemon.getStat(SPECIAL_ATTACK_STAT)?.let {
+            binding.spAttackBaseStat.baseStatsValueTextView.text = it.base_stat.toString()
+            binding.spAttackBaseStat.statsProgressBar.progress = it.base_stat
+        }
+        pokemon.getStat(SPECIAL_DEFENSE_STAT)?.let {
+            binding.spDefenseBaseStat.baseStatsValueTextView.text = it.base_stat.toString()
+            binding.spDefenseBaseStat.statsProgressBar.progress = it.base_stat
+        }
+        pokemon.getStat(SPEED_STAT)?.let {
+            binding.speedBaseStat.baseStatsValueTextView.text = it.base_stat.toString()
+            binding.speedBaseStat.statsProgressBar.progress = it.base_stat
+        }
+        binding.totalStatsValueTextView.text = pokemon.getTotalStats().toString()
+
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,
             {
