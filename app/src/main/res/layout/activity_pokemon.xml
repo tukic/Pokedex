@@ -51,7 +51,15 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/surface_0">
+
+            <View
+                android:id="@+id/pokemon_item_hero_background_view"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@color/surface_1"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/pokedex_num_label_text_view"
@@ -112,22 +120,14 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
-                android:id="@+id/pokemon_activity_background_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@color/surface_0"
-                app:layout_constraintTop_toBottomOf="@id/pokemon_image_view" />
-
-            <View
                 android:id="@+id/specs_container_background_view"
                 android:layout_width="344dp"
                 android:layout_height="96dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/specs_container_background"
-                app:layout_constraintEnd_toEndOf="@id/pokemon_activity_background_view"
-                app:layout_constraintStart_toStartOf="@id/pokemon_activity_background_view"
-                app:layout_constraintTop_toTopOf="@id/pokemon_activity_background_view" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pokemon_item_hero_background_view" />
 
             <ImageView
                 android:id="@+id/height_image_view"
@@ -207,8 +207,8 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/specs_container_background"
-                app:layout_constraintEnd_toEndOf="@id/pokemon_activity_background_view"
-                app:layout_constraintStart_toStartOf="@id/pokemon_activity_background_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/specs_container_background_view" />
 
             <TextView
@@ -262,8 +262,8 @@
                 android:layout_height="228dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/specs_container_background"
-                app:layout_constraintEnd_toEndOf="@id/pokemon_activity_background_view"
-                app:layout_constraintStart_toStartOf="@id/pokemon_activity_background_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/abilities_container_background_view" />
 
             <TextView
@@ -391,6 +391,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/evolution_recycler_view"
+                android:background="@color/surface_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/evolution_title_background_view"/>
