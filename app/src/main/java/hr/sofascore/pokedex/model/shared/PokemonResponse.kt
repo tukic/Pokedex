@@ -26,7 +26,7 @@ data class PokemonResponse @JvmOverloads constructor (
     @Ignore
     val abilities: List<Ability>? = arrayListOf(),
     @Ignore
-    var types: List<PokemonType>? = arrayListOf()
+    var types: List<PokemonTypeInfo>? = arrayListOf()
 ) : Serializable {
 
     fun getFormattedId() = "%03d".format(id)
@@ -62,7 +62,7 @@ data class Result(
     val url: String
 ) : Serializable
 
-data class PokemonType (
+data class PokemonTypeInfo (
     val slot: Int,
     val type: PokemonTypeDescription
 ): Serializable

@@ -5,8 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.type.TypeActivity">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pokemon_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="pokemons fragment" />
+        android:background="@color/surface_0"/>
 </FrameLayout>

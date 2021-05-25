@@ -1,9 +1,6 @@
 package hr.sofascore.pokedex.model.networking
 
-import hr.sofascore.pokedex.model.shared.EvolutionChain
-import hr.sofascore.pokedex.model.shared.PokemonList
-import hr.sofascore.pokedex.model.shared.PokemonResponse
-import hr.sofascore.pokedex.model.shared.PokemonSpecies
+import hr.sofascore.pokedex.model.shared.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -28,4 +25,7 @@ interface PokemonService {
 
     @GET
     suspend fun getEvolutionChain(@Url url: String): Response<EvolutionChain>
+
+    @GET
+    suspend fun getPokemonsFromType(@Url url: String): Response<PokemonType>
 }

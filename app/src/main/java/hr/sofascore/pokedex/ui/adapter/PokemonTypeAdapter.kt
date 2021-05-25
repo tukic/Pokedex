@@ -8,23 +8,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.PokemonTypeLayoutBinding
-import hr.sofascore.pokedex.model.shared.PokemonType
+import hr.sofascore.pokedex.model.shared.PokemonTypeInfo
 import hr.sofascore.pokedex.ui.type.POKEMON_TYPE_EXTRA
 import hr.sofascore.pokedex.ui.type.TypeActivity
 import java.util.*
 
 class PokemonTypeAdapter (
     val context: Context,
-    val types: List<PokemonType>
+    val types: List<PokemonTypeInfo>
 ) : RecyclerView.Adapter<PokemonTypeAdapter.ViewHolder>() {
 
     class ViewHolder(view: View, viewGroup: ViewGroup) : RecyclerView.ViewHolder(view) {
         val binding = PokemonTypeLayoutBinding.bind(view)
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(context)
             .inflate(R.layout.pokemon_type_layout, viewGroup, false)
 

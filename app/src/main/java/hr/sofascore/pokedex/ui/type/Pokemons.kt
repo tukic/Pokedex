@@ -5,10 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentMovesBinding
+import hr.sofascore.pokedex.databinding.FragmentPokemonsBinding
+import hr.sofascore.pokedex.ui.adapter.PokemonGridAdapter
+import hr.sofascore.pokedex.viewmodels.EvolutionViewModel
+import hr.sofascore.pokedex.viewmodels.TypeViewModel
 
-class Pokemons : Fragment() {
-    private var _binding: FragmentMovesBinding? = null
+class Pokemons(val pokemonTypeUrl: String) : Fragment() {
+
+    val typeViewModel by activityViewModels<TypeViewModel>()
+
+    private var _binding: FragmentPokemonsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -17,8 +29,21 @@ class Pokemons : Fragment() {
     ): View {
         super.onCreate(savedInstanceState)
 
-        _binding = FragmentMovesBinding.inflate(inflater, container, false)
+        _binding = FragmentPokemonsBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        binding.pokemonRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
+        typeViewModel.pokemons.observe(
+            this as LifecycleOwner,
+            {
+                binding.pokemonRecycler.adapter = PokemonGridAdapter(requireContext(), it)
+            }
+        )
+        typeViewModel.getPokemons(pokemonTypeUrl)
+        binding.pokemonRecycler.addItemDecoration(PokemonGridAdapter.Companion.MarginItemDecoration(
+            resources.getDimensionPixelSize(R.dimen.pokemon_grid_margin)
+        ))
+
         return view
     }
 }
