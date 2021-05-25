@@ -21,4 +21,8 @@
     <string name="evolution">Evolution</string>
     <string name="unevolved">unevolved</string>
     <string name="first_evolution">1st evolution</string>
+    <string name="title_activity_type">TypeActivity</string>
+    <string name="damage_overview">damage overview</string>
+    <string name="moves">moves</string>
+    <string name="pokemon">pokemon</string>
 </resources>

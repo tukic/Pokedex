@@ -10,7 +10,7 @@ import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.PokemonTypeLayoutBinding
 import hr.sofascore.pokedex.model.shared.PokemonType
 import hr.sofascore.pokedex.ui.type.POKEMON_TYPE_EXTRA
-import hr.sofascore.pokedex.ui.type.PokemonTypeActivity
+import hr.sofascore.pokedex.ui.type.TypeActivity
 import java.util.*
 
 class PokemonTypeAdapter (
@@ -38,7 +38,7 @@ class PokemonTypeAdapter (
         viewHolder.binding.pokemonTypeTextView.text = type.type.name.capitalize(Locale.getDefault())
 
         viewHolder.binding.root.setOnClickListener {
-            val intent = Intent(context, PokemonTypeActivity::class.java).apply {
+            val intent = Intent(context, TypeActivity::class.java).apply {
                 putExtra(POKEMON_TYPE_EXTRA, type)
             }
             context.startActivity(intent)

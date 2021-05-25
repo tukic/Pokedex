@@ -13,14 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pokedex">
-        <activity android:name=".ui.type.PokemonTypeActivity" />
+        <activity
+            android:name=".ui.type.TypeActivity"
+            android:label="@string/title_activity_type"
+            android:theme="@style/Theme.Pokedex.NoActionBar" />
         <activity
             android:name=".ui.pokemon.PokemonActivity"
             android:theme="@style/Theme.PokemonActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
