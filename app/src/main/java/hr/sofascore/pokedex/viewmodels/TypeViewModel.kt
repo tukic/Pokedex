@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.PokemonResponse
 import hr.sofascore.pokedex.model.shared.PokemonType
-import hr.sofascore.pokedex.model.shared.PokemonTypeDescription
 import hr.sofascore.pokedex.model.shared.PokemonTypeDetail
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class TypeViewModel : ViewModel() {
@@ -19,16 +19,12 @@ class TypeViewModel : ViewModel() {
 
     fun getPokemons(pokemonList: List<PokemonTypeDetail>) {
         viewModelScope.launch {
-            val tmp = arrayListOf<PokemonResponse>()
-            async {
-                pokemonList.forEach {
-                    Network().getService().getPokemonByURL(it.pokemon.url).body()?.let {
-                        tmp.add(it)
-                    }
+            val asyncTask = pokemonList.map {
+                async {
+                    Network().getService().getPokemonByURL(it.pokemon.url).body()
                 }
-            }.invokeOnCompletion {
-                pokemons.value = tmp
             }
+            pokemons.value = asyncTask.awaitAll().filterNotNull()
         }
     }
 
@@ -43,31 +39,19 @@ class TypeViewModel : ViewModel() {
 
     fun getPokemonTypes(pokemon: PokemonResponse) {
         viewModelScope.launch {
-            val tmp = arrayListOf<PokemonType>()
-            async {
-                pokemon.types?.forEach {
-                    Network().getService().getPokemonType(it.type.url).body()?.let {
-                        tmp.add(it)
-                    }
-                }
-            }.invokeOnCompletion {
-                pokemonTypes.value = tmp
-            }
+            pokemonTypes.value =
+                pokemon.types?.map {
+                    Network().getService().getPokemonType(it.type.url).body()
+                }?.toList()?.filterNotNull()
         }
     }
 
     fun getTypesByUrls(urls: List<String>) {
         viewModelScope.launch {
-            val tmp = arrayListOf<PokemonType>()
-            async {
-                urls.forEach {
-                    Network().getService().getPokemonType(it).body()?.let {
-                        tmp.add(it)
-                    }
-                }
-            }.invokeOnCompletion {
-                pokemonTypesByUrls.value = tmp
-            }
+            pokemonTypesByUrls.value =
+                urls.map {
+                    Network().getService().getPokemonType(it).body()
+                }.toList().filterNotNull()
         }
     }
 }

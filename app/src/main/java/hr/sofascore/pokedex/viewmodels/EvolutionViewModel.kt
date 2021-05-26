@@ -15,18 +15,11 @@ class EvolutionViewModel : ViewModel() {
 
     fun getEvolutions(context: Context, pokemonId: Int) {
         viewModelScope.launch {
-            val tmp: ArrayList<EvolutionDescription> = arrayListOf()
-            async {
+            evolutions.value =
                 Network().getService().getSpecies(pokemonId).body()?.let {
-                    Network().getService().getEvolutionChain(it.evolution_chain.url).body()?.let {
-                        it.chain.evolves_to.forEach {
-                            tmp.add(it)
-                        }
-                    }
+                    Network().getService().getEvolutionChain(it.evolution_chain.url)
+                        .body()?.chain?.evolves_to
                 }
-            }.invokeOnCompletion {
-                evolutions.value = tmp
-            }
         }
     }
 }
