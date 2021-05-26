@@ -5,8 +5,10 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.api.load
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.ActivityPokemonBinding
@@ -15,7 +17,9 @@ import hr.sofascore.pokedex.ui.adapter.EvolutionAdapter
 import hr.sofascore.pokedex.ui.adapter.PokemonTypeAdapter
 import hr.sofascore.pokedex.viewmodels.EvolutionViewModel
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
+import hr.sofascore.pokedex.viewmodels.TypeViewModel
 import java.util.*
+import java.util.stream.Collectors
 
 const val POKEMON_EXTRA = "POKEMON"
 
@@ -25,6 +29,7 @@ class PokemonActivity : AppCompatActivity() {
 
     val pokemonViewModel: PokemonViewModel by viewModels<PokemonViewModel>()
     val evolutionViewModel: EvolutionViewModel by viewModels<EvolutionViewModel>()
+    val typeViewModel: TypeViewModel by viewModels<TypeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,15 +121,31 @@ class PokemonActivity : AppCompatActivity() {
             }
         }
 
-        binding.pokemonTypeRecycler.layoutManager = GridLayoutManager(this, 2)
+        binding.pokemonTypeRecycler.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.pokemonTypeRecycler.itemAnimator = DefaultItemAnimator()
+
+        typeViewModel.pokemonTypes.observe(
+            this as LifecycleOwner,
+            {
+                binding.pokemonTypeRecycler.adapter = PokemonTypeAdapter(this, it)
+            }
+        )
+        typeViewModel.getPokemonTypes(pokemon)
+        /*
         pokemonViewModel.pokemon.observe(
             this as LifecycleOwner,
             {
                 pokemon.types?.let {
-                    binding.pokemonTypeRecycler.adapter = PokemonTypeAdapter(this, it)
+                    binding.pokemonTypeRecycler.adapter = PokemonTypeAdapter(
+                        this, it.stream().map {
+                            PokemonTypeDescription(it.type.name, it.type.url)
+                        }.collect(Collectors.toList())
+                    )
                 }
             }
         )
+         */
+
         pokemonViewModel.getPokemon(pokemon.id)
 
         binding.evolutionRecyclerView.layoutManager = LinearLayoutManager(this)

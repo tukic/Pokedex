@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentMovesBinding
 import hr.sofascore.pokedex.databinding.FragmentPokemonsBinding
+import hr.sofascore.pokedex.model.shared.PokemonType
 import hr.sofascore.pokedex.ui.adapter.PokemonGridAdapter
 import hr.sofascore.pokedex.viewmodels.EvolutionViewModel
 import hr.sofascore.pokedex.viewmodels.TypeViewModel
 
-class Pokemons(val pokemonTypeUrl: String) : Fragment() {
+class Pokemons(val type: PokemonType) : Fragment() {
 
     val typeViewModel by activityViewModels<TypeViewModel>()
 
@@ -39,7 +40,7 @@ class Pokemons(val pokemonTypeUrl: String) : Fragment() {
                 binding.pokemonRecycler.adapter = PokemonGridAdapter(requireContext(), it)
             }
         )
-        typeViewModel.getPokemons(pokemonTypeUrl)
+        typeViewModel.getPokemons(type.pokemon)
         binding.pokemonRecycler.addItemDecoration(PokemonGridAdapter.Companion.MarginItemDecoration(
             resources.getDimensionPixelSize(R.dimen.pokemon_grid_margin)
         ))

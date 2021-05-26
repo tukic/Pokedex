@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import hr.sofascore.pokedex.R
+import hr.sofascore.pokedex.model.shared.PokemonType
 import hr.sofascore.pokedex.model.shared.PokemonTypeInfo
 
 private val TAB_TITLES = arrayOf(
@@ -16,17 +17,17 @@ private val TAB_TITLES = arrayOf(
 class SectionsPagerAdapter(
     private val context: Context,
     fm: FragmentManager,
-    val pokemonTypeInfo: PokemonTypeInfo
+    val pokemonType: PokemonType
 ) :
     FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
         when (position) {
-            0 -> return DamageOverview()
+            0 -> return DamageOverview(pokemonType)
             1 -> return Moves()
-            2 -> return Pokemons(pokemonTypeInfo.type.url)
+            2 -> return Pokemons(pokemonType)
         }
-        return DamageOverview()
+        return DamageOverview(pokemonType)
     }
 
     override fun getPageTitle(position: Int): CharSequence {

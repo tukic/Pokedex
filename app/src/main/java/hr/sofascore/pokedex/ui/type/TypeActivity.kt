@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import hr.sofascore.pokedex.databinding.ActivityTypeBinding
+import hr.sofascore.pokedex.model.shared.PokemonType
+import hr.sofascore.pokedex.model.shared.PokemonTypeDescription
 import hr.sofascore.pokedex.model.shared.PokemonTypeInfo
 import java.util.*
 
@@ -15,15 +17,16 @@ class TypeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTypeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val pokemonType = intent.getSerializableExtra(POKEMON_TYPE_EXTRA) as PokemonTypeInfo
+        val pokemonType = intent.getSerializableExtra(POKEMON_TYPE_EXTRA) as PokemonType
+        setTheme(pokemonType.getTypeTheme())
         super.onCreate(savedInstanceState)
 
         binding = ActivityTypeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.title.text = pokemonType.type.name.capitalize(Locale.getDefault())
-        binding.appBar.backgroundTintList = getColorStateList(pokemonType.type.getTypeColor())
-        binding.tabs.backgroundTintList = getColorStateList(pokemonType.type.getTypeColor())
+        binding.title.text = pokemonType.name.capitalize(Locale.getDefault())
+        binding.appBar.backgroundTintList = getColorStateList(pokemonType.getTypeColor())
+        binding.tabs.backgroundTintList = getColorStateList(pokemonType.getTypeColor())
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, pokemonType)
         val viewPager: ViewPager = binding.viewPager
@@ -34,5 +37,6 @@ class TypeActivity : AppCompatActivity() {
         binding.backArrowView.setOnClickListener {
             onBackPressed()
         }
+
     }
 }
