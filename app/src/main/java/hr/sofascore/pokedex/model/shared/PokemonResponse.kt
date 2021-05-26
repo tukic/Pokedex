@@ -60,7 +60,17 @@ data class PokemonList(
 data class Result(
     val name: String,
     val url: String
-) : Serializable
+) : Serializable {
+
+    fun getDamageClassColor(): Int {
+        return when(name) {
+            "status" -> R.color.dark_alpha
+            "physical" -> R.color.error
+            "special" -> R.color.cold_gray
+            else -> R.color.surface_1
+        }
+    }
+}
 
 data class PokemonTypeInfo (
     val slot: Int,

@@ -7,13 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
+import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentMovesBinding
 import hr.sofascore.pokedex.model.shared.PokemonMove
 import hr.sofascore.pokedex.model.shared.PokemonType
 import hr.sofascore.pokedex.viewmodels.MoveViewModel
+import kotlin.math.roundToInt
 
 class Moves(val pokemonType: PokemonType) : Fragment() {
 
@@ -59,7 +62,7 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
             }
         }
         binding.moveCell.setOnClickListener {
-            if(moveAscending) {
+            if (moveAscending) {
                 moveViewModel.move.value?.sortedByDescending { it.name }?.let {
                     addRowsToTable(it)
                 }
@@ -72,7 +75,7 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
             }
         }
         binding.categoryCell.setOnClickListener {
-            if(categoryAscending) {
+            if (categoryAscending) {
                 moveViewModel.move.value?.sortedByDescending { it.damage_class?.name }?.let {
                     addRowsToTable(it)
                 }
@@ -85,7 +88,7 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
             }
         }
         binding.powerCell.setOnClickListener {
-            if(powerAscending) {
+            if (powerAscending) {
                 moveViewModel.move.value?.sortedByDescending { it.power }?.let {
                     addRowsToTable(it)
                 }
@@ -98,7 +101,7 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
             }
         }
         binding.ppCell.setOnClickListener {
-            if(ppAscending) {
+            if (ppAscending) {
                 moveViewModel.move.value?.sortedByDescending { it.pp }?.let {
                     addRowsToTable(it)
                 }
@@ -119,27 +122,46 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
         }
         pokemonMove.forEach {
             val row = TableRow(requireContext())
-            row.addView(TextView(context).apply {
+            row.addView(TextView(context, null, R.style.AssistiveDarkCenter).apply {
                 text = it.generation.getRomanNumberGen()
                 gravity = Gravity.CENTER
+                setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
+                background = context.getDrawable(it.generation.getColor())
+                background.alpha = (0.3 * 255).roundToInt()
             })
-            row.addView(TextView(context).apply {
+            row.addView(TextView(context, null, R.style.AssistiveDarkCenter).apply {
                 text = it.name
                 gravity = Gravity.CENTER
+                //setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
             })
-            it.damage_class?.let {
-                row.addView(TextView(context).apply {
-                    text = it.name
-                    gravity = Gravity.CENTER
-                })
-            }
-            row.addView(TextView(context).apply {
-                text = it.power.toString()
+
+            row.addView(TextView(context, null, R.style.AssistiveDarkCenter).apply {
+                text = it.damage_class?.name ?: "-"
                 gravity = Gravity.CENTER
+                setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
+                it.damage_class?.let{
+                    background = context.getDrawable(it.getDamageClassColor())
+                    background.alpha = (0.3 * 255).roundToInt()
+                }
             })
-            row.addView(TextView(context).apply {
-                text = it.pp.toString()
+
+            row.addView(TextView(context, null, R.style.AssistiveDarkCenter).apply {
+                text = it.power.let {
+                    if (it != 0) it.toString()
+                    else "-"
+                }
                 gravity = Gravity.CENTER
+                setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
+            })
+            row.addView(TextView(context, null, R.style.AssistiveDarkCenter).apply {
+                text = it.pp.let {
+                    if (it != 0) it.toString()
+                    else "-"
+                }
+                gravity = Gravity.CENTER
+                setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
+                //setBackgroundColor(context.getColor(R.color.cold_gray))
+                //background.alpha = (0.1 * 255).roundToInt()
             })
             binding.table.addView(row)
         }

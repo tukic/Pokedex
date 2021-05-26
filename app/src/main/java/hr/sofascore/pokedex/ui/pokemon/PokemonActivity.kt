@@ -32,6 +32,7 @@ class PokemonActivity : AppCompatActivity() {
     val typeViewModel: TypeViewModel by viewModels<TypeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_PokemonActivity)
         super.onCreate(savedInstanceState)
 
         binding = ActivityPokemonBinding.inflate(layoutInflater)
