@@ -28,4 +28,7 @@ interface PokemonService {
 
     @GET
     suspend fun getPokemonType(@Url url: String): Response<PokemonType>
+
+    @GET
+    suspend fun getPokemonMove(@Url url: String): Response<PokemonMove>
 }
