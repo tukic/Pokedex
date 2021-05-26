@@ -5,9 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.type.TypeActivity">
 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <TableLayout
             android:id="@+id/table"
             android:layout_width="match_parent"
@@ -22,7 +19,8 @@
                     android:paddingStart="4dp"
                     android:paddingLeft="4dp"
                     android:paddingEnd="4dp"
-                    android:paddingRight="4dp">
+                    android:paddingRight="4dp"
+                    android:layout_gravity="center">
 
                     <TextView
                         style="@style/DescriptionDarkLeft"
@@ -44,7 +42,8 @@
                     android:paddingStart="8dp"
                     android:paddingLeft="8dp"
                     android:paddingEnd="4dp"
-                    android:paddingRight="4dp">
+                    android:paddingRight="4dp"
+                    android:layout_gravity="center">
 
                     <TextView
                         style="@style/DescriptionDarkLeft"
@@ -66,7 +65,8 @@
                     android:paddingStart="3dp"
                     android:paddingLeft="3dp"
                     android:paddingEnd="4dp"
-                    android:paddingRight="4dp">
+                    android:paddingRight="4dp"
+                    android:layout_gravity="center">
 
                     <TextView
                         style="@style/DescriptionDarkLeft"
@@ -89,7 +89,8 @@
                     android:paddingStart="8dp"
                     android:paddingLeft="8dp"
                     android:paddingEnd="4dp"
-                    android:paddingRight="4dp">
+                    android:paddingRight="4dp"
+                    android:layout_gravity="center">
 
                     <TextView
                         style="@style/DescriptionDarkLeft"
@@ -112,7 +113,8 @@
                     android:paddingStart="8dp"
                     android:paddingLeft="8dp"
                     android:paddingEnd="4dp"
-                    android:paddingRight="4dp">
+                    android:paddingRight="4dp"
+                    android:layout_gravity="center">
 
                     <TextView
                         style="@style/DescriptionDarkLeft"
