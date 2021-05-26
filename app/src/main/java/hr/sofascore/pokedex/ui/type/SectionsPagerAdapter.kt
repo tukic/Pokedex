@@ -24,7 +24,7 @@ class SectionsPagerAdapter(
     override fun getItem(position: Int): Fragment {
         when (position) {
             0 -> return DamageOverview(pokemonType)
-            1 -> return Moves()
+            1 -> return Moves(pokemonType)
             2 -> return Pokemons(pokemonType)
         }
         return DamageOverview(pokemonType)

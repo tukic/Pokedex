@@ -6,7 +6,8 @@ import java.io.Serializable
 data class PokemonType (
     val pokemon: List<PokemonTypeDetail>,
     val damage_relations: DamageRelations,
-    val name: String
+    val name: String,
+    val moves: List<Result>
 ): Serializable {
     fun getTypeColor(): Int {
         when(name) {

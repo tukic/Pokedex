@@ -1,12 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.type.TypeActivity">
 
-    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="move fragment" />
-</FrameLayout>
+        android:layout_height="match_parent">
+
+        <TableLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+
+                <LinearLayout
+                    android:id="@+id/gen_cell"
+                    android:background="@color/surface_1"
+                    android:paddingVertical="16dp"
+                    android:paddingStart="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingRight="4dp">
+
+                    <TextView
+                        style="@style/DescriptionDarkLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="gen"
+                        android:textAllCaps="true" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@drawable/ic_sort" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/move_cell"
+                    android:background="@color/surface_1"
+                    android:paddingVertical="16dp"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingEnd="4dp"
+                    android:paddingRight="4dp">
+
+                    <TextView
+                        style="@style/DescriptionDarkLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="move"
+                        android:textAllCaps="true" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@drawable/ic_sort" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/category_cell"
+                    android:background="@color/surface_1"
+                    android:paddingVertical="16dp"
+                    android:paddingStart="3dp"
+                    android:paddingLeft="3dp"
+                    android:paddingEnd="4dp"
+                    android:paddingRight="4dp">
+
+                    <TextView
+                        style="@style/DescriptionDarkLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="category"
+                        android:textAllCaps="true" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@drawable/ic_sort" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/power_cell"
+                    android:background="@color/surface_1"
+                    android:paddingVertical="16dp"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingEnd="4dp"
+                    android:paddingRight="4dp">
+
+                    <TextView
+                        style="@style/DescriptionDarkLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="power"
+                        android:textAllCaps="true" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@drawable/ic_sort" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/pp_cell"
+                    android:background="@color/surface_1"
+                    android:paddingVertical="16dp"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingEnd="4dp"
+                    android:paddingRight="4dp">
+
+                    <TextView
+                        style="@style/DescriptionDarkLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="pp"
+                        android:textAllCaps="true" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@drawable/ic_sort" />
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+</ScrollView>
