@@ -31,4 +31,7 @@ interface PokemonService {
 
     @GET
     suspend fun getPokemonMove(@Url url: String): Response<PokemonMove>
+
+    @GET("language")
+    suspend fun getLanguages(): Response<Language>
 }
