@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/surface_1">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:collapsedTitleGravity="center_vertical|start"
+            app:collapsedTitleTextAppearance="@style/Headline2DarkLeft"
+            app:expandedTitleGravity="top|start"
+            app:expandedTitleMarginStart="16dp"
+            app:expandedTitleMarginTop="72dp"
+            app:expandedTitleTextAppearance="@style/Headline1DarkLeft"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="title">
+
+            <View
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/ic_arrow_back_black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/about_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                app:layout_collapseMode="pin" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_bar">
+
+        <TextView
+            android:id="@+id/title_about_text_view"
+            style="@style/Headline1DarkLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:text="@string/about"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/android_academy_text_view"
+            style="@style/Headline2DarkLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="48dp"
+            android:text="@string/sofascore_android_academy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_about_text_view" />
+
+        <TextView
+            android:id="@+id/class_text_view"
+            style="@style/InputTextDarkLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/class_2021"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/android_academy_text_view" />
+
+        <View
+            android:id="@+id/sofaScore_background"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/about_rectangle_background"
+            app:layout_constraintTop_toBottomOf="@id/class_text_view" />
+
+        <ImageView
+            android:id="@+id/sofaScore_logo_image_view"
+            android:layout_width="107dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="29dp"
+            android:layout_marginLeft="29dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_logo_sofascore_lettering"
+            app:layout_constraintBottom_toBottomOf="@id/sofaScore_background"
+            app:layout_constraintStart_toStartOf="@id/sofaScore_background"
+            app:layout_constraintTop_toTopOf="@id/sofaScore_background" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="86dp"
+            android:layout_marginLeft="86dp"
+            android:src="@drawable/ic_logo_android"
+            app:layout_constraintBottom_toBottomOf="@id/sofaScore_background"
+            app:layout_constraintStart_toEndOf="@id/sofaScore_logo_image_view"
+            app:layout_constraintTop_toTopOf="@id/sofaScore_background" />
+
+        <TextView
+            android:id="@+id/app_name_label_text_view"
+            style="@style/AssistiveColdGrayLeft"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/app_name_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sofaScore_background" />
+
+        <TextView
+            android:id="@+id/app_name_text_view"
+            style="@style/InputTextDarkLeft"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/app_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_name_label_text_view" />
+
+
+        <TextView
+            android:id="@+id/api_credit_label_text_view"
+            style="@style/AssistiveColdGrayLeft"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/api_credit_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_name_text_view" />
+
+        <TextView
+            android:id="@+id/api_credit_text_view"
+            style="@style/InputTextDarkLeft"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/api_credit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/api_credit_label_text_view" />
+
+        <TextView
+            android:id="@+id/developer_label_text_view"
+            style="@style/AssistiveColdGrayLeft"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/developer_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/api_credit_text_view" />
+
+        <TextView
+            style="@style/InputTextDarkLeft"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/developer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/developer_label_text_view" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

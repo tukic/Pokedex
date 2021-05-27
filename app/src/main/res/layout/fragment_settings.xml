@@ -103,15 +103,16 @@
         app:layout_constraintStart_toStartOf="@id/about_background_view"
         app:layout_constraintTop_toBottomOf="@id/about_title_text_view" />
 
-    <Button
-        android:id="@+id/more_info_button"
+    <TextView
+        android:id="@+id/more_info_text_view"
         style="@style/ButtonLabelTintSecondaryCenter"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:background="@color/transparent"
         android:text="@string/more_info"
+        android:textAllCaps="true"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@id/about_background_view"
         app:layout_constraintStart_toStartOf="@id/about_background_view"
         app:layout_constraintTop_toBottomOf="@id/about_content_text_view" />

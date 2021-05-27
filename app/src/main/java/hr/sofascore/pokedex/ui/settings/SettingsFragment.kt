@@ -1,5 +1,6 @@
 package hr.sofascore.pokedex.ui.settings
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentSettingsBinding
+import hr.sofascore.pokedex.ui.settings.about.AboutActivity
 import hr.sofascore.pokedex.viewmodels.LanguageViewModel
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 
@@ -42,6 +44,10 @@ class SettingsFragment : Fragment() {
             }
         )
         languageViewModel.getLanguages()
+
+        binding.aboutBackgroundView.setOnClickListener {
+            context?.startActivity(Intent(context, AboutActivity::class.java))
+        }
 
         binding.clearFavoritesTextView.setOnClickListener {
             pokemonViewModel.deleteAllPokemons(requireContext())
