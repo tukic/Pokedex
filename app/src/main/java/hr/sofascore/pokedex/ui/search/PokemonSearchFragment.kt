@@ -82,7 +82,7 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
     }
 
     override fun onStart() {
-        pokemonViewModel.getFavouritePokemon(requireContext())
+        pokemonViewModel.getFavouritePokemonSortedByByFavoriteIndex(requireContext())
         super.onStart()
     }
 }

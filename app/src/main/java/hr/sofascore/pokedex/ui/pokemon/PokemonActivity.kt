@@ -89,7 +89,7 @@ class PokemonActivity : AppCompatActivity() {
                 }
             }
         )
-        pokemonViewModel.getFavouritePokemon(this)
+        pokemonViewModel.getFavouritePokemonSortedByByFavoriteIndex(this)
 
         binding.favouritePokemonStarIcon.setOnClickListener {
             pokemonViewModel.favouritePokemon.value?.let {

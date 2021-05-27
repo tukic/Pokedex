@@ -21,6 +21,7 @@ data class PokemonResponse @JvmOverloads constructor (
     val name: String,
     val height: Int,
     val weight: Int,
+    var favoriteIndex: Int,
     @Ignore
     val stats: List<Stats>? = arrayListOf(),
     @Ignore

@@ -13,6 +13,7 @@ import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.networking.initialPokemonURL
 import hr.sofascore.pokedex.model.shared.PokemonResponse
 import hr.sofascore.pokedex.ui.PokemonDataSource
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class PokemonViewModel : ViewModel() {
@@ -50,22 +51,36 @@ class PokemonViewModel : ViewModel() {
 
     fun insertFavouritePokemon(context: Context, pokemon: PokemonResponse) {
         viewModelScope.launch {
+            val index = PokemonDatabase.getDatabase(context)?.pokemonDao()?.getMaxFavoriteIndex()
+            if(index != null) {
+                pokemon.favoriteIndex = index+1
+            }
             PokemonDatabase.getDatabase(context)?.pokemonDao()?.insertPokemon(pokemon)
-            getFavouritePokemon(context)
+            getFavouritePokemonSortedByByFavoriteIndex(context)
         }
     }
 
-    fun getFavouritePokemon(context: Context) {
+    fun getFavouritePokemonSortedByByFavoriteIndex(context: Context) {
         viewModelScope.launch {
             favouritePokemon.value =
-                PokemonDatabase.getDatabase(context)?.pokemonDao()?.getAllPokemon()
+                PokemonDatabase.getDatabase(context)?.pokemonDao()?.getAllPokemonSortedByFavoriteIndex()
         }
     }
 
     fun deleteFavouritePokemon(context: Context, pokemon: PokemonResponse) {
         viewModelScope.launch {
             PokemonDatabase.getDatabase(context)?.pokemonDao()?.deletePokemon(pokemon)
-            getFavouritePokemon(context)
+            getFavouritePokemonSortedByByFavoriteIndex(context)
+        }
+    }
+
+    fun updatePokemon(context: Context, pokemons: List<PokemonResponse>) {
+        viewModelScope.launch {
+            pokemons.forEach {
+                async {
+                    PokemonDatabase.getDatabase(context)?.pokemonDao()?.updatePokemon(it)
+                }
+            }
         }
     }
 }

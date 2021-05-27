@@ -18,4 +18,13 @@ interface PokemonDao {
     @Delete
     suspend fun deletePokemon(pokemon: PokemonResponse)
 
+    @Query("SELECT MAX(`favoriteIndex`) FROM PokemonResponse")
+    suspend fun getMaxFavoriteIndex(): Int
+
+    @Update
+    suspend fun updatePokemon(pokemon: PokemonResponse)
+
+    @Query("SELECT * FROM PokemonResponse ORDER BY favoriteIndex")
+    suspend fun getAllPokemonSortedByFavoriteIndex(): List<PokemonResponse>
+
 }
