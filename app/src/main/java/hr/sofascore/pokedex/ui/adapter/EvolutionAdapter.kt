@@ -34,7 +34,7 @@ class EvolutionAdapter(
 
         viewHolder.binding.currentEvolutionItem.pokemonImageView.load(pokemon.getImageURL())
         viewHolder.binding.currentEvolutionItem.evolutionPokemonTextView.text = pokemon.name
-        pokemon.types?.get(0)?.let {
+        pokemon.types?.getOrNull(0)?.let {
             viewHolder.binding.currentEvolutionItem.pokemonTypeTextView.text = it.type.name
             viewHolder.binding.currentEvolutionItem.pokemonTypeTextView.backgroundTintList =
                 context.getColorStateList(it.type.getTypeColor())

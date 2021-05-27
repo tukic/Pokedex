@@ -49,6 +49,21 @@ class PokemonActivity : AppCompatActivity() {
 
         val pokemon = intent.extras?.getSerializable(POKEMON_EXTRA) as PokemonResponse
 
+        pokemon.types?.let {
+            if (it.isEmpty()) {
+                pokemonViewModel.getPokemon(pokemon.id)
+            }
+        }
+        pokemonViewModel.pokemon.observe(
+            this as LifecycleOwner,
+            {
+                typeViewModel.getPokemonTypes(it)
+                evolutionViewModel.getEvolutions(it.id)
+                setStats(it)
+                setAbilites(it)
+            }
+        )
+
         binding.pokemonToolbar.title = pokemon.name.capitalize(Locale.getDefault())
 
         binding.collapsingToolbarLayout.title = pokemon.name.capitalize(Locale.getDefault())
@@ -61,6 +76,71 @@ class PokemonActivity : AppCompatActivity() {
         binding.weightTextView.text = pokemon.getFormattedWeight()
         binding.heightTextView.text = pokemon.getFormattedHeight()
 
+        setAbilites(pokemon)
+        setStats(pokemon)
+
+        pokemonViewModel.favouritePokemon.observe(
+            this as LifecycleOwner,
+            {
+                if (it.any { it.id == pokemon.id }) {
+                    binding.favouritePokemonStarIcon.load(R.drawable.ic_star_1)
+                } else {
+                    binding.favouritePokemonStarIcon.load(R.drawable.ic_star_0)
+                }
+            }
+        )
+        pokemonViewModel.getFavouritePokemon(this)
+
+        binding.favouritePokemonStarIcon.setOnClickListener {
+            pokemonViewModel.favouritePokemon.value?.let {
+                if (it.any { it.id == pokemon.id }) {
+                    pokemonViewModel.deleteFavouritePokemon(baseContext, pokemon)
+                } else {
+                    pokemonViewModel.insertFavouritePokemon(baseContext, pokemon)
+                }
+            }
+        }
+
+        binding.pokemonTypeRecycler.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.pokemonTypeRecycler.itemAnimator = DefaultItemAnimator()
+
+        typeViewModel.pokemonTypes.observe(
+            this as LifecycleOwner,
+            {
+                binding.pokemonTypeRecycler.adapter = PokemonTypeAdapter(this, it)
+            }
+        )
+        typeViewModel.getPokemonTypes(pokemon)
+        /*
+        pokemonViewModel.pokemon.observe(
+            this as LifecycleOwner,
+            {
+                pokemon.types?.let {
+                    binding.pokemonTypeRecycler.adapter = PokemonTypeAdapter(
+                        this, it.stream().map {
+                            PokemonTypeDescription(it.type.name, it.type.url)
+                        }.collect(Collectors.toList())
+                    )
+                }
+            }
+        )
+         */
+
+        //pokemonViewModel.getPokemon(pokemon.id)
+
+        binding.evolutionRecyclerView.layoutManager = LinearLayoutManager(this)
+        evolutionViewModel.evolutions.observe(
+            this as LifecycleOwner,
+            {
+                binding.evolutionRecyclerView.adapter = EvolutionAdapter(this, pokemon, it)
+            }
+        )
+        evolutionViewModel.getEvolutions(pokemon.id)
+
+    }
+
+    private fun setAbilites(pokemon: PokemonResponse) {
         pokemon.abilities?.filter { !it.is_hidden }?.let {
             if (it.isNotEmpty()) {
                 binding.abilityTextView.text = it[0].ability.name.capitalize(Locale.getDefault())
@@ -73,7 +153,9 @@ class PokemonActivity : AppCompatActivity() {
                     it[0].ability.name.capitalize(Locale.getDefault())
             }
         }
+    }
 
+    fun setStats(pokemon: PokemonResponse) {
         pokemon.getStat(HP_STAT)?.let {
             binding.hpBaseStat.baseStatsValueTextView.text = it.base_stat.toString()
             binding.hpBaseStat.statsProgressBar.progress = it.base_stat
@@ -99,65 +181,6 @@ class PokemonActivity : AppCompatActivity() {
             binding.speedBaseStat.statsProgressBar.progress = it.base_stat
         }
         binding.totalStatsValueTextView.text = pokemon.getTotalStats().toString()
-
-        pokemonViewModel.favouritePokemon.observe(
-            this as LifecycleOwner,
-            {
-                if (it.any { it.id == pokemon.id }) {
-                    binding.favouritePokemonStarIcon.load(R.drawable.ic_star_1)
-                } else {
-                    binding.favouritePokemonStarIcon.load(R.drawable.ic_star_0)
-                }
-            }
-        )
-        pokemonViewModel.getFavouritePokemon(this)
-
-        binding.favouritePokemonStarIcon.setOnClickListener {
-            pokemonViewModel.favouritePokemon.value?.let {
-                if (it.any { it.id == pokemon.id }) {
-                    pokemonViewModel.deleteFavouritePokemon(baseContext, pokemon)
-                } else {
-                    pokemonViewModel.insertFavouritePokemon(baseContext, pokemon)
-                }
-            }
-        }
-
-        binding.pokemonTypeRecycler.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        binding.pokemonTypeRecycler.itemAnimator = DefaultItemAnimator()
-
-        typeViewModel.pokemonTypes.observe(
-            this as LifecycleOwner,
-            {
-                binding.pokemonTypeRecycler.adapter = PokemonTypeAdapter(this, it)
-            }
-        )
-        typeViewModel.getPokemonTypes(pokemon)
-        /*
-        pokemonViewModel.pokemon.observe(
-            this as LifecycleOwner,
-            {
-                pokemon.types?.let {
-                    binding.pokemonTypeRecycler.adapter = PokemonTypeAdapter(
-                        this, it.stream().map {
-                            PokemonTypeDescription(it.type.name, it.type.url)
-                        }.collect(Collectors.toList())
-                    )
-                }
-            }
-        )
-         */
-
-        pokemonViewModel.getPokemon(pokemon.id)
-
-        binding.evolutionRecyclerView.layoutManager = LinearLayoutManager(this)
-        evolutionViewModel.evolutions.observe(
-            this as LifecycleOwner,
-            {
-                binding.evolutionRecyclerView.adapter = EvolutionAdapter(this, pokemon, it)
-            }
-        )
-        evolutionViewModel.getEvolutions(this, pokemon.id)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

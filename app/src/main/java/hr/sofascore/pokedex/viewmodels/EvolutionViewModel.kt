@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class EvolutionViewModel : ViewModel() {
     val evolutions = MutableLiveData<List<EvolutionDescription>>()
 
-    fun getEvolutions(context: Context, pokemonId: Int) {
+    fun getEvolutions(pokemonId: Int) {
         viewModelScope.launch {
             evolutions.value =
                 Network().getService().getSpecies(pokemonId).body()?.let {
