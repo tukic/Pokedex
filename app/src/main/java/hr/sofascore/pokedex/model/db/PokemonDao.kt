@@ -27,4 +27,6 @@ interface PokemonDao {
     @Query("SELECT * FROM PokemonResponse ORDER BY favoriteIndex")
     suspend fun getAllPokemonSortedByFavoriteIndex(): List<PokemonResponse>
 
+    @Query("DELETE FROM PokemonResponse")
+    suspend fun deleteAllPokemons()
 }

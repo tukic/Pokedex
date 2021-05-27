@@ -11,11 +11,13 @@ import androidx.lifecycle.LifecycleOwner
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentSettingsBinding
 import hr.sofascore.pokedex.viewmodels.LanguageViewModel
+import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 
 
 class SettingsFragment : Fragment() {
 
     private val languageViewModel: LanguageViewModel by activityViewModels()
+    private val pokemonViewModel: PokemonViewModel by activityViewModels()
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
@@ -40,6 +42,10 @@ class SettingsFragment : Fragment() {
             }
         )
         languageViewModel.getLanguages()
+
+        binding.clearFavoritesTextView.setOnClickListener {
+            pokemonViewModel.deleteAllPokemons(requireContext())
+        }
 
         return view
     }

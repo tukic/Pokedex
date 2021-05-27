@@ -83,4 +83,10 @@ class PokemonViewModel : ViewModel() {
             }
         }
     }
+
+    fun deleteAllPokemons(context: Context) {
+        viewModelScope.launch {
+            PokemonDatabase.getDatabase(context)?.pokemonDao()?.deleteAllPokemons()
+        }
+    }
 }

@@ -116,4 +116,18 @@
         app:layout_constraintStart_toStartOf="@id/about_background_view"
         app:layout_constraintTop_toBottomOf="@id/about_content_text_view" />
 
+    <TextView
+        android:id="@+id/clear_favorites_text_view"
+        android:layout_width="328dp"
+        android:layout_height="36dp"
+        android:text="@string/clear_my_favorites_list"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/clear_favorites_background"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textColor="@color/error"
+        app:layout_constraintTop_toBottomOf="@id/about_background_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
