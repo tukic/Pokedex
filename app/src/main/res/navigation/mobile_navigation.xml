@@ -11,4 +11,16 @@
         android:label="@string/search"
         tools:layout="@layout/fragment_pokemon_search" />
 
+    <fragment
+        android:id="@+id/favorite_pokemon"
+        android:name="hr.sofascore.pokedex.ui.favorites.FavoritesFragment"
+        android:label="@string/favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+    <fragment
+        android:id="@+id/settings"
+        android:name="hr.sofascore.pokedex.ui.settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>
