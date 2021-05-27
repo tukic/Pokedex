@@ -44,4 +44,5 @@
     <color name="success_opacity_10">#1a12ca5d</color>
     <color name="cold_gray_opacity_10">#1a798fa4</color>
     <color name="pokemon_type_grass_opacity_30">#4d2db407</color>
+    <color name="transparent">#0000</color>
 </resources>

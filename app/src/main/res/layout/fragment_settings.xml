@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@id/header_view"
         tools:listitem="@layout/spinner_language_item"
         android:background="@drawable/language_spinner_background"
-        android:dropDownVerticalOffset="56dp"/>
+        android:dropDownVerticalOffset="112dp"/>
 
     <TextView
         android:id="@+id/language_label_text_view"
@@ -70,5 +70,50 @@
         app:layout_constraintTop_toTopOf="@id/language_spinner"
         app:layout_constraintBottom_toBottomOf="@id/language_spinner"
         app:layout_constraintEnd_toEndOf="@id/language_spinner"/>
+
+    <View
+        android:id="@+id/about_background_view"
+        android:layout_width="328dp"
+        android:layout_height="152dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/about_rectangle_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/language_spinner" />
+
+    <TextView
+        android:id="@+id/about_title_text_view"
+        style="@style/Headline2DarkLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/about"
+        app:layout_constraintStart_toStartOf="@id/about_background_view"
+        app:layout_constraintTop_toTopOf="@id/about_background_view" />
+
+    <TextView
+        android:id="@+id/about_content_text_view"
+        android:layout_width="296dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/about_content"
+        app:layout_constraintEnd_toEndOf="@id/about_background_view"
+        app:layout_constraintStart_toStartOf="@id/about_background_view"
+        app:layout_constraintTop_toBottomOf="@id/about_title_text_view" />
+
+    <Button
+        android:id="@+id/more_info_button"
+        style="@style/ButtonLabelTintSecondaryCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/transparent"
+        android:text="@string/more_info"
+        app:layout_constraintBottom_toBottomOf="@id/about_background_view"
+        app:layout_constraintStart_toStartOf="@id/about_background_view"
+        app:layout_constraintTop_toBottomOf="@id/about_content_text_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
