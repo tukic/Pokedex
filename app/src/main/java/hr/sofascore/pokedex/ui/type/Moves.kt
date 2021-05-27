@@ -160,8 +160,8 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
                 }
                 gravity = Gravity.CENTER
                 setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
-                //setBackgroundColor(context.getColor(R.color.cold_gray))
-                //background.alpha = (0.1 * 255).roundToInt()
+                setBackgroundColor(context.getColor(R.color.cold_gray))
+                background.alpha = (0.1 * 255).roundToInt()
             })
             binding.table.addView(row)
         }

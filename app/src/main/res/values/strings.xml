@@ -25,4 +25,9 @@
     <string name="damage_overview">damage overview</string>
     <string name="moves">moves</string>
     <string name="pokemon">pokemon</string>
+    <string name="offensive">Offensive</string>
+    <string name="power">power</string>
+    <string name="types">types</string>
+    <string name="defensive">Defensive</string>
+    <string name="none">None</string>
 </resources>

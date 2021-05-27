@@ -15,7 +15,14 @@ class TypeViewModel : ViewModel() {
     val pokemons = MutableLiveData<List<PokemonResponse>>()
     val pokemonType = MutableLiveData<PokemonType>()
     val pokemonTypes = MutableLiveData<List<PokemonType>>()
-    val pokemonTypesByUrls = MutableLiveData<List<PokemonType>>()
+
+    val offensiveDoubleDamageTypes = MutableLiveData<List<PokemonType>>()
+    val offensiveHalfDamageTypes = MutableLiveData<List<PokemonType>>()
+    val offensiveNoDamageTypes = MutableLiveData<List<PokemonType>>()
+    val defensiveHalfDamageTypes = MutableLiveData<List<PokemonType>>()
+    val defensiveDoubleDamageTypes = MutableLiveData<List<PokemonType>>()
+    val defensiveNoDamageTypes = MutableLiveData<List<PokemonType>>()
+
 
     fun getPokemons(pokemonList: List<PokemonTypeDetail>) {
         viewModelScope.launch {
@@ -46,9 +53,54 @@ class TypeViewModel : ViewModel() {
         }
     }
 
-    fun getTypesByUrls(urls: List<String>) {
+    fun getOffensiveDoubleDamageTypes(urls: List<String>) {
         viewModelScope.launch {
-            pokemonTypesByUrls.value =
+            offensiveDoubleDamageTypes.value =
+                urls.map {
+                    Network().getService().getPokemonType(it).body()
+                }.toList().filterNotNull()
+        }
+    }
+
+    fun getOffensiveHalfDamageTypes(urls: List<String>) {
+        viewModelScope.launch {
+            offensiveHalfDamageTypes.value =
+                urls.map {
+                    Network().getService().getPokemonType(it).body()
+                }.toList().filterNotNull()
+        }
+    }
+
+    fun getOffensiveNoDamageTypes(urls: List<String>) {
+        viewModelScope.launch {
+            offensiveNoDamageTypes.value =
+                urls.map {
+                    Network().getService().getPokemonType(it).body()
+                }.toList().filterNotNull()
+        }
+    }
+
+    fun getDefensiveHalfDamageTypes(urls: List<String>) {
+        viewModelScope.launch {
+            defensiveHalfDamageTypes.value =
+                urls.map {
+                    Network().getService().getPokemonType(it).body()
+                }.toList().filterNotNull()
+        }
+    }
+
+    fun getDefensiveDoubleTypes(urls: List<String>) {
+        viewModelScope.launch {
+            defensiveDoubleDamageTypes.value =
+                urls.map {
+                    Network().getService().getPokemonType(it).body()
+                }.toList().filterNotNull()
+        }
+    }
+
+    fun getDefensiveNoDamageTypes(urls: List<String>) {
+        viewModelScope.launch {
+            defensiveNoDamageTypes.value =
                 urls.map {
                     Network().getService().getPokemonType(it).body()
                 }.toList().filterNotNull()

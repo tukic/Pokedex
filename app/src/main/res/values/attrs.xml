@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="PokemonItem">
-    </declare-styleable>
+    <declare-styleable name="PokemonItem"></declare-styleable>
 
     <declare-styleable name="BaseStatsItem">
         <attr name="base_stats_label" format="string" />
@@ -9,6 +8,13 @@
     </declare-styleable>
 
     <declare-styleable name="EvolutionItem">
-        <attr name="evolution_phase" format="string"/>
+        <attr name="evolution_phase" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="DamageOverviewItem">
+        <attr name="power_amount" format="string" />
+        <attr name="background_color" format="color" />
+        <attr name="item_background" format="integer" />
+        <attr name="background_opacity" format="integer" />
     </declare-styleable>
 </resources>

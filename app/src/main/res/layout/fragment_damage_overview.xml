@@ -1,12 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.type.TypeActivity">
+    android:layout_width="match_parent">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/damage_overview" />
-</FrameLayout>
+        tools:context=".ui.type.TypeActivity">
+
+        <TextView
+            android:id="@+id/offensive_title_text_view"
+            style="@style/Headline2DarkCenter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="@string/offensive"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/offense_power_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/power"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/offensive_title_text_view" />
+
+        <TextView
+            android:id="@+id/offense_types_label_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="37dp"
+            android:layout_marginLeft="37dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/types"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toEndOf="@id/offense_power_title_text_view"
+            app:layout_constraintTop_toBottomOf="@id/offensive_title_text_view" />
+
+        <hr.sofascore.pokedex.ui.views.DamageOverviewItem
+            android:id="@+id/offense_double_damage_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            app:background_color="@color/success"
+            app:background_opacity="10"
+            app:item_background="@drawable/damage_overview_item_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/offense_power_title_text_view"
+            app:power_amount="2X" />
+
+        <hr.sofascore.pokedex.ui.views.DamageOverviewItem
+            android:id="@+id/offense_half_damage_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            app:background_color="@color/error"
+            app:background_opacity="10"
+            app:item_background="@drawable/damage_overview_item_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/offense_double_damage_overview"
+            app:power_amount="1/2X" />
+
+        <hr.sofascore.pokedex.ui.views.DamageOverviewItem
+            android:id="@+id/offense_no_damage_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            app:background_color="@color/surface_2"
+            app:item_background="@drawable/damage_overview_item_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/offense_half_damage_overview"
+            app:power_amount="0X" />
+
+        <TextView
+            android:id="@+id/defensive_title_text_view"
+            style="@style/Headline2DarkCenter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center_horizontal"
+            android:text="@string/defensive"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/offense_no_damage_overview" />
+
+        <TextView
+            android:id="@+id/defense_power_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/power"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/defensive_title_text_view" />
+
+        <TextView
+            android:id="@+id/defense_types_label_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="37dp"
+            android:layout_marginLeft="37dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/types"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toEndOf="@id/defense_power_title_text_view"
+            app:layout_constraintTop_toBottomOf="@id/defensive_title_text_view" />
+
+
+        <hr.sofascore.pokedex.ui.views.DamageOverviewItem
+            android:id="@+id/defensive_half_damage_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            app:background_color="@color/error"
+            app:background_opacity="10"
+            app:item_background="@drawable/damage_overview_item_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/defense_power_title_text_view"
+            app:power_amount="1/2X" />
+
+        <hr.sofascore.pokedex.ui.views.DamageOverviewItem
+            android:id="@+id/defensive_double_damage_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            app:background_color="@color/success"
+            app:background_opacity="10"
+            app:item_background="@drawable/damage_overview_item_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/defensive_half_damage_overview"
+            app:power_amount="2X" />
+
+        <hr.sofascore.pokedex.ui.views.DamageOverviewItem
+            android:id="@+id/defensive_no_damage_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            app:background_color="@color/surface_2"
+            app:item_background="@drawable/damage_overview_item_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/defensive_double_damage_overview"
+            app:power_amount="0X" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

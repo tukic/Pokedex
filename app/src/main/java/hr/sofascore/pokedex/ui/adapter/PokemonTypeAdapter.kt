@@ -2,6 +2,7 @@ package hr.sofascore.pokedex.ui.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.PokemonTypeLayoutBinding
 import hr.sofascore.pokedex.model.shared.PokemonType
-import hr.sofascore.pokedex.model.shared.PokemonTypeDescription
-import hr.sofascore.pokedex.model.shared.PokemonTypeInfo
-import hr.sofascore.pokedex.model.shared.Result
 import hr.sofascore.pokedex.ui.type.POKEMON_TYPE_EXTRA
 import hr.sofascore.pokedex.ui.type.TypeActivity
 import java.util.*
@@ -43,6 +41,21 @@ class PokemonTypeAdapter (
                 putExtra(POKEMON_TYPE_EXTRA, type)
             }
             context.startActivity(intent)
+        }
+    }
+
+    companion object {
+        class SpacesItemDecoration(private val spaceSize: Int) : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                outRect.right = spaceSize
+                outRect.bottom = spaceSize
+            }
+
         }
     }
 

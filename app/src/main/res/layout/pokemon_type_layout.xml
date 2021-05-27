@@ -5,7 +5,8 @@
     android:gravity="center"
     android:background="@drawable/type_label_background"
     android:layout_marginRight="4dp"
-    android:layout_marginEnd="4dp">
+    android:layout_marginEnd="4dp"
+    android:layout_marginTop="4dp">
 
     <TextView
         android:id="@+id/pokemon_type_text_view"

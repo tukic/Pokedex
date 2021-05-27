@@ -41,4 +41,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="pokemon_status_bar_color">#0c000000</color>
+    <color name="success_opacity_10">#1a12ca5d</color>
+    <color name="cold_gray_opacity_10">#1a798fa4</color>
+    <color name="pokemon_type_grass_opacity_30">#4d2db407</color>
 </resources>
