@@ -24,7 +24,14 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:title="title">
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/about_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                app:layout_collapseMode="pin" />
+
             <View
+                android:id="@+id/back_button_view"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginTop="20dp"
@@ -33,12 +40,6 @@
                 android:background="@drawable/ic_arrow_back_black"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/about_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                app:layout_collapseMode="pin" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -185,7 +186,5 @@
             android:text="@string/developer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/developer_label_text_view" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </RelativeLayout>

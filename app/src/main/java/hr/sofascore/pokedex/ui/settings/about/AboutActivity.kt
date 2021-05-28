@@ -17,19 +17,14 @@ class AboutActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.aboutToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
 
         binding.collapsingToolbarLayout.setExpandedTitleTextColor(getColorStateList(R.color.white))
         binding.collapsingToolbarLayout.setCollapsedTitleTextColor(getColorStateList(R.color.white))
 
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> onBackPressed()
+        binding.backButtonView.setOnClickListener {
+            onBackPressed()
         }
-        return super.onOptionsItemSelected(item)
     }
-
 }
