@@ -9,5 +9,7 @@
         android:id="@+id/pokemon_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/surface_0"/>
+        android:background="@color/surface_0"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="12dp"/>
 </FrameLayout>

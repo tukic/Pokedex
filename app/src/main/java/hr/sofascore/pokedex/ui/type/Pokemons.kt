@@ -33,7 +33,7 @@ class Pokemons(val type: PokemonType) : Fragment() {
         _binding = FragmentPokemonsBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        binding.pokemonRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding.pokemonRecycler.layoutManager = GridLayoutManager(context, 3)
         typeViewModel.pokemons.observe(
             this as LifecycleOwner,
             {
@@ -41,10 +41,6 @@ class Pokemons(val type: PokemonType) : Fragment() {
             }
         )
         typeViewModel.getPokemons(type.pokemon)
-        binding.pokemonRecycler.addItemDecoration(PokemonGridAdapter.Companion.MarginItemDecoration(
-            resources.getDimensionPixelSize(R.dimen.pokemon_grid_margin)
-        ))
-
         return view
     }
 }
