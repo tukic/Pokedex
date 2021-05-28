@@ -26,23 +26,12 @@
         app:layout_constraintTop_toTopOf="@id/favorites_title_background_view" />
 
     <View
-        android:id="@+id/edit_favorites_view"
+        android:id="@+id/edit_favorites_reordering_view"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:background="@drawable/ic_pencil"
         app:layout_constraintBottom_toBottomOf="@id/favorites_title_background_view"
         app:layout_constraintEnd_toEndOf="@id/favorites_title_background_view"
-        app:layout_constraintTop_toTopOf="@id/favorites_title_background_view"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:padding="8dp"/>
-
-    <View
-        android:id="@+id/edit"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toBottomOf="@id/favorites_title_background_view"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/favorites_title_background_view"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"

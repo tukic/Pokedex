@@ -45,7 +45,6 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
 
                     return true
                 }
-
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 }
             }
@@ -63,9 +62,9 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
 
         binding.favoritesRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        binding.edit.setOnClickListener{
+        binding.editFavoritesReorderingView.setOnClickListener{
             pokemonViewModel.favouritePokemon.value?.let {
-                binding.editFavoritesView.visibility = View.GONE
+                binding.editFavoritesReorderingView.visibility = View.GONE
                 binding.favoritesRecyclerView.adapter =
                     ReorderFavoritesAdapter(
                         requireContext(),
@@ -81,7 +80,7 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
                 binding.favoritesRecyclerView.adapter =
                     FavoritePokemonAdapter(requireContext(), it.sortedBy { it.favoriteIndex }, this, this)
                 itemTouchHelper.attachToRecyclerView(null)
-                binding.editFavoritesView.visibility = View.VISIBLE
+                binding.editFavoritesReorderingView.visibility = View.VISIBLE
             }
         }
 
@@ -92,12 +91,6 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
                     FavoritePokemonAdapter(requireContext(), it, this, this)
             }
         )
-
-        binding.editFavoritesView.setOnClickListener {
-            pokemonViewModel.favouritePokemon.value?.let {
-                FavoritePokemonAdapter(requireContext(), it, this, this)
-            }
-        }
 
         return view
     }
