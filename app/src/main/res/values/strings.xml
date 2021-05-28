@@ -49,4 +49,7 @@
     <string name="skill_label">Skill</string>
     <string name="jump_label">Jump</string>
     <string name="total_label">Total</string>
+    <string name="clear_favorites_list_title">Clear favorites list?</string>
+    <string name="cancel">cancel</string>
+    <string name="clear">clear</string>
 </resources>
