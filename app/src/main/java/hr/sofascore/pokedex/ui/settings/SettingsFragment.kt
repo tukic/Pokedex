@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -23,7 +24,6 @@ import hr.sofascore.pokedex.databinding.PopoverLayoutBinding
 import hr.sofascore.pokedex.ui.settings.about.AboutActivity
 import hr.sofascore.pokedex.viewmodels.LanguageViewModel
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
-
 
 class SettingsFragment : Fragment() {
 
@@ -69,8 +69,28 @@ class SettingsFragment : Fragment() {
                 popupWindow.dismiss()
             }
 
+            popoverBinding.clearTextView.setOnClickListener {
+                pokemonViewModel.deleteAllPokemons(requireContext())
+                popupWindow.dismiss()
+                val snackbar = Snackbar.make(
+                    binding.snackbarContainer,
+                    getString(R.string.snackbar_favorites_cleared_text),
+                    Snackbar.LENGTH_LONG
+                ).setAction(" ") {
+                    it.visibility = View.GONE
+                }
+                snackbar.config(requireContext())
+                snackbar.show()
+            }
         }
 
         return view
+    }
+
+    fun Snackbar.config(context: Context) {
+        val actionButton =
+            this.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_action)
+        actionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close, 0, 0, 0)
+        this.view.background = AppCompatResources.getDrawable(context, R.drawable.snackbar_background)
     }
 }

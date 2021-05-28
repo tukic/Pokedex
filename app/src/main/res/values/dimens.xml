@@ -9,4 +9,5 @@
     <dimen name="pokemon_grid_margin">8dp</dimen>
     <dimen name="moves_table_column_margin">8dp</dimen>
     <dimen name="pokeathlon_star_size">24dp</dimen>
+    <dimen name="snack_bar_action_button_padding">8dp</dimen>
 </resources>
