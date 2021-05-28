@@ -3,8 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.type.TypeActivity"
-    android:background="@color/surface_1">
+    android:background="@color/surface_1"
+    tools:context=".ui.type.TypeActivity">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TableLayout
             android:id="@+id/table"
@@ -16,13 +20,13 @@
 
                 <LinearLayout
                     android:id="@+id/gen_cell"
+                    android:layout_gravity="center"
                     android:background="@color/surface_1"
                     android:paddingVertical="16dp"
                     android:paddingStart="4dp"
                     android:paddingLeft="4dp"
                     android:paddingEnd="4dp"
-                    android:paddingRight="4dp"
-                    android:layout_gravity="center">
+                    android:paddingRight="4dp">
 
                     <TextView
                         style="@style/DescriptionDarkLeft"
@@ -39,13 +43,13 @@
 
                 <LinearLayout
                     android:id="@+id/move_cell"
+                    android:layout_gravity="center"
                     android:background="@color/surface_1"
                     android:paddingVertical="16dp"
                     android:paddingStart="8dp"
                     android:paddingLeft="8dp"
                     android:paddingEnd="4dp"
-                    android:paddingRight="4dp"
-                    android:layout_gravity="center">
+                    android:paddingRight="4dp">
 
                     <TextView
                         style="@style/DescriptionDarkLeft"
@@ -62,13 +66,13 @@
 
                 <LinearLayout
                     android:id="@+id/category_cell"
+                    android:layout_gravity="center"
                     android:background="@color/surface_1"
                     android:paddingVertical="16dp"
                     android:paddingStart="3dp"
                     android:paddingLeft="3dp"
                     android:paddingEnd="4dp"
-                    android:paddingRight="4dp"
-                    android:layout_gravity="center">
+                    android:paddingRight="4dp">
 
                     <TextView
                         style="@style/DescriptionDarkLeft"
@@ -86,13 +90,13 @@
 
                 <LinearLayout
                     android:id="@+id/power_cell"
+                    android:layout_gravity="center"
                     android:background="@color/surface_1"
                     android:paddingVertical="16dp"
                     android:paddingStart="8dp"
                     android:paddingLeft="8dp"
                     android:paddingEnd="4dp"
-                    android:paddingRight="4dp"
-                    android:layout_gravity="center">
+                    android:paddingRight="4dp">
 
                     <TextView
                         style="@style/DescriptionDarkLeft"
@@ -110,13 +114,13 @@
 
                 <LinearLayout
                     android:id="@+id/pp_cell"
+                    android:layout_gravity="center"
                     android:background="@color/surface_1"
                     android:paddingVertical="16dp"
                     android:paddingStart="8dp"
                     android:paddingLeft="8dp"
                     android:paddingEnd="4dp"
-                    android:paddingRight="4dp"
-                    android:layout_gravity="center">
+                    android:paddingRight="4dp">
 
                     <TextView
                         style="@style/DescriptionDarkLeft"
@@ -132,4 +136,5 @@
                 </LinearLayout>
             </TableRow>
         </TableLayout>
+    </HorizontalScrollView>
 </ScrollView>

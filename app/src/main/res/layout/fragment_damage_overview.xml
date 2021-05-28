@@ -144,6 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             app:background_color="@color/success"
+            android:layout_marginTop="4dp"
             app:background_opacity="10"
             app:item_background="@drawable/damage_overview_item_background"
             app:layout_constraintEnd_toEndOf="parent"

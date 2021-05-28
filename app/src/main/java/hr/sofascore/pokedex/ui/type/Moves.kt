@@ -122,20 +122,23 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
         }
         pokemonMove.forEach {
             val row = TableRow(requireContext())
-            row.addView(TextView(context, null, R.style.AssistiveDarkCenter).apply {
+            row.addView(TextView(context).apply {
+                setTextAppearance(R.style.AssistiveDarkCenter)
                 text = it.generation.getRomanNumberGen()
                 gravity = Gravity.CENTER
                 setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
                 background = context.getDrawable(it.generation.getColor())
                 background.alpha = (0.3 * 255).roundToInt()
             })
-            row.addView(TextView(context, null, R.style.AssistiveDarkCenter).apply {
+            row.addView(TextView(context).apply {
+                setTextAppearance(R.style.AssistiveDarkCenter)
                 text = it.name
                 gravity = Gravity.CENTER
-                //setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
+                setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
             })
 
-            row.addView(TextView(context, null, R.style.AssistiveDarkCenter).apply {
+            row.addView(TextView(context).apply {
+                setTextAppearance(R.style.AssistiveDarkCenter)
                 text = it.damage_class?.name ?: "-"
                 gravity = Gravity.CENTER
                 setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
@@ -145,7 +148,8 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
                 }
             })
 
-            row.addView(TextView(context, null, R.style.AssistiveDarkCenter).apply {
+            row.addView(TextView(context).apply {
+                setTextAppearance(R.style.AssistiveDarkCenter)
                 text = it.power.let {
                     if (it != 0) it.toString()
                     else "-"
@@ -153,7 +157,8 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
                 gravity = Gravity.CENTER
                 setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
             })
-            row.addView(TextView(context, null, R.style.AssistiveDarkCenter).apply {
+            row.addView(TextView(context).apply {
+                setTextAppearance(R.style.AssistiveDarkCenter)
                 text = it.pp.let {
                     if (it != 0) it.toString()
                     else "-"
