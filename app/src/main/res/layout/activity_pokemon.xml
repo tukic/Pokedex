@@ -372,12 +372,99 @@
                 app:layout_constraintStart_toEndOf="@id/total_stats_label_text_view" />
 
             <View
+                android:id="@+id/pokeathlon_stats_background_view"
+                android:layout_width="344dp"
+                android:layout_height="272dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/specs_container_background"
+                app:layout_constraintTop_toBottomOf="@id/stats_container_background_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/pokeathlon_stats_title_text_view"
+                style="@style/Headline2DarkCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/pokeathlon_stats"
+                app:layout_constraintEnd_toEndOf="@id/pokeathlon_stats_background_view"
+                app:layout_constraintStart_toStartOf="@id/pokeathlon_stats_background_view"
+                app:layout_constraintTop_toTopOf="@id/pokeathlon_stats_background_view" />
+
+            <hr.sofascore.pokedex.ui.views.PokeathlonStatsItem
+                android:id="@+id/speed_pokeathlon_stats_item"
+                android:layout_width="160dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                app:stat_name="@string/speed_label"
+                app:layout_constraintTop_toBottomOf="@id/pokeathlon_stats_title_text_view"
+                app:layout_constraintStart_toStartOf="@id/pokeathlon_stats_background_view"/>
+
+            <hr.sofascore.pokedex.ui.views.PokeathlonStatsItem
+                android:id="@+id/power_pokeathlon_stats_item"
+                android:layout_width="160dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                app:stat_name="@string/power_label"
+                app:layout_constraintTop_toBottomOf="@id/pokeathlon_stats_title_text_view"
+                app:layout_constraintStart_toEndOf="@id/speed_pokeathlon_stats_item"/>
+
+            <hr.sofascore.pokedex.ui.views.PokeathlonStatsItem
+                android:id="@+id/skill_pokeathlon_stats_item"
+                android:layout_width="160dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:stat_name="@string/skill_label"
+                app:layout_constraintTop_toBottomOf="@id/speed_pokeathlon_stats_item"
+                app:layout_constraintStart_toStartOf="@id/pokeathlon_stats_background_view"/>
+
+            <hr.sofascore.pokedex.ui.views.PokeathlonStatsItem
+                android:id="@+id/stamina_pokeathlon_stats_item"
+                android:layout_width="160dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:stat_name="@string/power_label"
+                app:layout_constraintTop_toBottomOf="@id/power_pokeathlon_stats_item"
+                app:layout_constraintStart_toEndOf="@id/skill_pokeathlon_stats_item"/>
+
+            <hr.sofascore.pokedex.ui.views.PokeathlonStatsItem
+                android:id="@+id/jump_pokeathlon_stats_item"
+                android:layout_width="160dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:stat_name="@string/jump_label"
+                app:layout_constraintTop_toBottomOf="@id/skill_pokeathlon_stats_item"
+                app:layout_constraintStart_toStartOf="@id/pokeathlon_stats_background_view"/>
+
+            <hr.sofascore.pokedex.ui.views.PokeathlonStatsItem
+                android:id="@+id/total_pokeathlon_stats_item"
+                android:layout_width="160dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:stat_name="@string/total_label"
+                app:layout_constraintTop_toBottomOf="@id/stamina_pokeathlon_stats_item"
+                app:layout_constraintStart_toEndOf="@id/skill_pokeathlon_stats_item"/>
+
+            <View
                 android:id="@+id/evolution_title_background_view"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:layout_marginTop="8dp"
                 android:background="@color/surface_1"
-                app:layout_constraintTop_toBottomOf="@id/stats_container_background_view"/>
+                app:layout_constraintTop_toBottomOf="@id/pokeathlon_stats_background_view"/>
 
             <TextView
                 android:layout_width="wrap_content"

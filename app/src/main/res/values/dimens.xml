@@ -8,4 +8,5 @@
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="pokemon_grid_margin">8dp</dimen>
     <dimen name="moves_table_column_margin">8dp</dimen>
+    <dimen name="pokeathlon_star_size">24dp</dimen>
 </resources>
