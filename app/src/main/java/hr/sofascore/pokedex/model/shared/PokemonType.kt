@@ -70,3 +70,10 @@ data class DamageRelations (
     val no_damage_to: List<PokemonTypeDescription>,
     val no_damage_from: List<PokemonTypeDescription>
 ): Serializable
+
+data class TypeList(
+    val count: Int,
+    val next: String,
+    val previous: String,
+    val results: List<Result>
+)

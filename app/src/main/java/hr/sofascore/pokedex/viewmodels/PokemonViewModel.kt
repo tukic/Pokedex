@@ -57,8 +57,8 @@ class PokemonViewModel : ViewModel() {
     fun insertFavouritePokemon(context: Context, pokemon: PokemonResponse) {
         viewModelScope.launch {
             val index = PokemonDatabase.getDatabase(context)?.pokemonDao()?.getMaxFavoriteIndex()
-            if(index != null) {
-                pokemon.favoriteIndex = index+1
+            if (index != null) {
+                pokemon.favoriteIndex = index + 1
             }
             PokemonDatabase.getDatabase(context)?.pokemonDao()?.insertPokemon(pokemon)
             getFavouritePokemonSortedByByFavoriteIndex(context)
@@ -68,7 +68,8 @@ class PokemonViewModel : ViewModel() {
     fun getFavouritePokemonSortedByByFavoriteIndex(context: Context) {
         viewModelScope.launch {
             favouritePokemon.value =
-                PokemonDatabase.getDatabase(context)?.pokemonDao()?.getAllPokemonSortedByFavoriteIndex()
+                PokemonDatabase.getDatabase(context)?.pokemonDao()
+                    ?.getAllPokemonSortedByFavoriteIndex()
         }
     }
 
@@ -112,6 +113,29 @@ class PokemonViewModel : ViewModel() {
                     }
                 }
                 filteredPokemons.value = async.awaitAll().filterNotNull()
+            }
+        }
+    }
+
+    fun getPokemonsFilteredByType(type: String) {
+        viewModelScope.launch {
+            Network().getService().getPagedTypes(Int.MAX_VALUE).body()?.let {
+                val asyncTypes = it.results.filter { it.name.contains(type) }.map {
+                    async {
+                        Network().getService().getTypesByURL(it.url).body()
+                    }
+                }
+                val types = asyncTypes.awaitAll().filterNotNull()
+
+                val pokemonResults = types.flatMap { it.pokemon }
+
+                val asyncPokemons = pokemonResults.map {
+                    async {
+                        Network().getService().getPokemonByURL(it.pokemon.url).body()
+                    }
+                }
+                filteredPokemons.value = asyncPokemons.awaitAll().filterNotNull().sortedBy { it.id }
+
             }
         }
     }

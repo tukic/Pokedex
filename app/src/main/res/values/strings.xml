@@ -6,6 +6,7 @@
     <string name="search_pokemons">Search Pokemons</string>
     <string name="pokedex_num">pokedex num</string>
     <string name="type">type</string>
+    <string name="cap_type">Type</string>
     <string name="height">height</string>
     <string name="weight">weight</string>
     <string name="hidden_ability">Hidden Ability</string>
@@ -53,4 +54,5 @@
     <string name="cancel">cancel</string>
     <string name="clear">clear</string>
     <string name="snackbar_favorites_cleared_text">Favorites list is clear.</string>
+    <string name="name">Name</string>
 </resources>

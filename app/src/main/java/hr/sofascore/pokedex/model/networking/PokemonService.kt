@@ -34,9 +34,14 @@ interface PokemonService {
     suspend fun getPokemonType(@Url url: String): Response<PokemonType>
 
     @GET
+    suspend fun getTypesByURL(@Url url: String): Response<PokemonType>
+
+    @GET
     suspend fun getPokemonMove(@Url url: String): Response<PokemonMove>
 
     @GET("language")
     suspend fun getLanguages(): Response<Language>
 
+    @GET("type")
+    suspend fun getPagedTypes(@Query("limit") limit: Int): Response<TypeList>
 }

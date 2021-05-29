@@ -76,26 +76,64 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
         binding.searchPokemonTextView.doOnTextChanged { text, start, before, count ->
             binding.searchIcon.visibility = View.GONE
             pagingAdapterOn = false
-            if (count > 0 && start + count == 2) {
+            when (binding.filterRadioGroup.checkedRadioButtonId) {
+                2 -> {
+                    if (count > 0 && start + count == 2) {
+                        pokemonViewModel.getPokemonsFilteredByType(
+                            text.toString().trim()
+                        )
+                    } else if ((start + count > 2) || (start >= 2 && before > 0)) {
+                        binding.recyclerView.adapter = FavoritePokemonAdapter(
+                            requireContext(),
+                            filteredPokemons.filter { it.types!!.any { it.type.name.contains(text.toString()) } }
+                                .sortedBy { it.id },
+                            this,
+                            this,
+                            pokemonViewModel.favouritePokemon.value
+                        )
+                    }
+                }
+                else -> {
+                    if (count > 0 && start + count == 2) {
+                        pokemonViewModel.getPokemonsFilteredByName(
+                            text.toString().trim()
+                        )
+                    } else if ((start + count > 2) || (start >= 2 && before > 0)) {
+                        filteredPokemons
+                        binding.recyclerView.adapter = FavoritePokemonAdapter(
+                            requireContext(),
+                            filteredPokemons.filter { it.name.contains(text.toString()) },
+                            this,
+                            this,
+                            pokemonViewModel.favouritePokemon.value
+                        )
+                    }
+                }
+            }
+            if (text.toString().isNotEmpty()) {
+                binding.closeIcon.visibility = View.VISIBLE
+            }
+        }
+
+        binding.filterByNameRadioButton.setOnClickListener {
+            if (binding.searchPokemonTextView.text.length >= 2) {
                 pokemonViewModel.getPokemonsFilteredByName(
-                    text.toString().trim()
-                )
-            } else if ((start + count > 2) || (start >= 2 && before > 0)) {
-                binding.recyclerView.adapter = FavoritePokemonAdapter(
-                    requireContext(),
-                    filteredPokemons.filter { it.name.contains(text.toString()) },
-                    this,
-                    this,
-                    pokemonViewModel.favouritePokemon.value
+                    binding.searchPokemonTextView.text.toString().trim()
                 )
             }
-            if(text.toString().isNotEmpty()) {
-                binding.closeIcon.visibility = View.VISIBLE
+        }
+
+        binding.filterByTypeRadioButton.setOnClickListener {
+            if (binding.searchPokemonTextView.text.length >= 2) {
+                pokemonViewModel.getPokemonsFilteredByType(
+                    binding.searchPokemonTextView.text.toString().trim()
+                )
             }
         }
 
         binding.closeIcon.setOnClickListener {
             binding.closeIcon.visibility = View.GONE
+            binding.filterRadioGroup.visibility = View.GONE
             pagingAdapterOn = true
             binding.searchPokemonTextView.text.clear()
             binding.recyclerView.adapter = adapter
@@ -115,6 +153,10 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
                 filteredPokemons = it
             }
         )
+
+        binding.filterIcon.setOnClickListener {
+            binding.filterRadioGroup.visibility = View.VISIBLE
+        }
 
         return view
     }
