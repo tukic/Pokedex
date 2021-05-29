@@ -79,7 +79,7 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
             binding.searchIcon.visibility = View.GONE
             pagingAdapterOn = false
             when (binding.filterRadioGroup.checkedRadioButtonId) {
-                2 -> {
+                R.id.filter_by_type_radio_button -> {
                     if (count > 0 && start + count == 2) {
                         pokemonViewModel.getPokemonsFilteredByType(
                             text.toString().trim()
@@ -95,7 +95,7 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
                         )
                     }
                 }
-                else -> {
+                R.id.filter_by_name_radio_button -> {
                     if (count > 0 && start + count == 2) {
                         pokemonViewModel.getPokemonsFilteredByName(
                             text.toString().trim()
@@ -120,6 +120,12 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
         binding.filterByNameRadioButton.setOnClickListener {
             binding.searchPokemonTextView.isEnabled = true
             removeRangeSlider()
+            binding.recyclerView.setPadding(
+                0,
+                resources.getDimensionPixelSize(R.dimen.pokemon_search_top_margin),
+                0,
+                resources.getDimensionPixelSize(R.dimen.pokemon_search_bottom_margin_filter)
+            )
             if (binding.searchPokemonTextView.text.length >= 2) {
                 pokemonViewModel.getPokemonsFilteredByName(
                     binding.searchPokemonTextView.text.toString().trim()
@@ -130,6 +136,12 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
         binding.filterByTypeRadioButton.setOnClickListener {
             binding.searchPokemonTextView.isEnabled = true
             removeRangeSlider()
+            binding.recyclerView.setPadding(
+                0,
+                resources.getDimensionPixelSize(R.dimen.pokemon_search_top_margin),
+                0,
+                resources.getDimensionPixelSize(R.dimen.pokemon_search_bottom_margin_filter)
+            )
             if (binding.searchPokemonTextView.text.length >= 2) {
                 pokemonViewModel.getPokemonsFilteredByType(
                     binding.searchPokemonTextView.text.toString().trim()
