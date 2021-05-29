@@ -17,7 +17,7 @@ class PokemonDataSource(private val initialURL: String, private val scope: Corou
         callback: LoadInitialCallback<String, PokemonResponse>
     ) {
         scope.launch {
-            val pokemonUrlResponse = service.getPagedPokemon(initialURL)
+            val pokemonUrlResponse = service.getPagedPokemonByURL(initialURL)
             val pokemon = arrayListOf<PokemonResponse>()
             async {
                 pokemonUrlResponse.body()?.results?.forEach {
@@ -32,7 +32,7 @@ class PokemonDataSource(private val initialURL: String, private val scope: Corou
 
     override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, PokemonResponse>) {
         scope.launch {
-            val pokemonUrlResponse = service.getPagedPokemon(params.key)
+            val pokemonUrlResponse = service.getPagedPokemonByURL(params.key)
             val pokemon = arrayListOf<PokemonResponse>()
             async {
                 pokemonUrlResponse.body()?.results?.forEach {
@@ -41,14 +41,14 @@ class PokemonDataSource(private val initialURL: String, private val scope: Corou
                     }
                 }
             }.await()
-            val response = service.getPagedPokemon(params.key)
+            val response = service.getPagedPokemonByURL(params.key)
             callback.onResult(pokemon, response.body()?.next)
         }
     }
 
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, PokemonResponse>) {
         scope.launch {
-            val pokemonUrlResponse = service.getPagedPokemon(params.key)
+            val pokemonUrlResponse = service.getPagedPokemonByURL(params.key)
             val pokemon = arrayListOf<PokemonResponse>()
             async {
                 pokemonUrlResponse.body()?.results?.forEach {
@@ -57,7 +57,7 @@ class PokemonDataSource(private val initialURL: String, private val scope: Corou
                     }
                 }
             }.await()
-            val response = service.getPagedPokemon(params.key)
+            val response = service.getPagedPokemonByURL(params.key)
             callback.onResult(pokemon, response.body()?.next)
         }
     }

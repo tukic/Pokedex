@@ -36,6 +36,19 @@
         app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background"
         app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"/>
 
+    <View
+        android:id="@+id/close_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_close"
+        android:backgroundTint="@color/dark"
+        android:visibility="gone"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintStart_toStartOf="@id/inner_pokemon_search_bar_background"
+        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background"
+        app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"/>
+
 
     <EditText
         android:id="@+id/search_pokemon_text_view"

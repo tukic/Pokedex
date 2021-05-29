@@ -4,6 +4,7 @@ import hr.sofascore.pokedex.model.shared.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface PokemonService {
@@ -17,8 +18,11 @@ interface PokemonService {
     @GET
     suspend fun getPokemonByURL(@Url url: String): Response<PokemonResponse>
 
+    @GET("pokemon")
+    suspend fun getPagedPokemons(@Query("limit") limit: Int): Response<PokemonList>
+
     @GET
-    suspend fun getPagedPokemon(@Url url: String): Response<PokemonList>
+    suspend fun getPagedPokemonByURL(@Url url: String): Response<PokemonList>
 
     @GET("pokemon-species/{id}")
     suspend fun getSpecies(@Path("id") id: Int): Response<PokemonSpecies>
@@ -34,4 +38,5 @@ interface PokemonService {
 
     @GET("language")
     suspend fun getLanguages(): Response<Language>
+
 }

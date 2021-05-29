@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import hr.sofascore.pokedex.databinding.FragmentPokemonSearchBinding
 import hr.sofascore.pokedex.model.shared.PokemonResponse
+import hr.sofascore.pokedex.ui.adapter.FavoritePokemonAdapter
 import hr.sofascore.pokedex.ui.adapter.PagedPokemonAdapter
 import hr.sofascore.pokedex.ui.adapter.StartPokemonActivityListener
 import hr.sofascore.pokedex.ui.pokemon.POKEMON_EXTRA
@@ -27,6 +29,10 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
     private var _binding: FragmentPokemonSearchBinding? = null
     private val binding get() = _binding!!
 
+    var pagingAdapterOn = true
+
+    var filteredPokemons: List<PokemonResponse> = arrayListOf()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,12 +42,6 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
 
         _binding = FragmentPokemonSearchBinding.inflate(inflater, container, false)
         val view = binding.root
-
-        binding.searchIcon.setOnClickListener {
-            pokemonViewModel.getPokemon(
-                binding.searchPokemonTextView.text.toString()
-            )
-        }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
@@ -54,8 +54,65 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
 
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,
+            { favoritePokemons ->
+                adapter.updateFavouritePokemon(favoritePokemons as ArrayList<PokemonResponse>)
+                if (pagingAdapterOn) {
+                    binding.recyclerView.adapter = adapter
+                } else {
+                    pokemonViewModel.filteredPokemons.value?.let {
+                        binding.recyclerView.adapter =
+                            FavoritePokemonAdapter(
+                                requireContext(),
+                                it,
+                                this,
+                                this,
+                                favoritePokemons
+                            )
+                    }
+                }
+            }
+        )
+
+        binding.searchPokemonTextView.doOnTextChanged { text, start, before, count ->
+            binding.searchIcon.visibility = View.GONE
+            pagingAdapterOn = false
+            if (count > 0 && start + count == 2) {
+                pokemonViewModel.getPokemonsFilteredByName(
+                    text.toString().trim()
+                )
+            } else if ((start + count > 2) || (start >= 2 && before > 0)) {
+                binding.recyclerView.adapter = FavoritePokemonAdapter(
+                    requireContext(),
+                    filteredPokemons.filter { it.name.contains(text.toString()) },
+                    this,
+                    this,
+                    pokemonViewModel.favouritePokemon.value
+                )
+            }
+            if(text.toString().isNotEmpty()) {
+                binding.closeIcon.visibility = View.VISIBLE
+            }
+        }
+
+        binding.closeIcon.setOnClickListener {
+            binding.closeIcon.visibility = View.GONE
+            pagingAdapterOn = true
+            binding.searchPokemonTextView.text.clear()
+            binding.recyclerView.adapter = adapter
+            binding.searchIcon.visibility = View.VISIBLE
+        }
+
+        pokemonViewModel.filteredPokemons.observe(
+            this as LifecycleOwner,
             {
-                adapter.updateFavouritePokemon(it as ArrayList<PokemonResponse>)
+                binding.recyclerView.adapter = FavoritePokemonAdapter(
+                    requireContext(),
+                    it,
+                    this,
+                    this,
+                    pokemonViewModel.favouritePokemon.value
+                )
+                filteredPokemons = it
             }
         )
 

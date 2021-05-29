@@ -78,7 +78,7 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
             pokemonViewModel.favouritePokemon.value?.let {
                 binding.doneFavoritesReorderingView.visibility = View.GONE
                 binding.favoritesRecyclerView.adapter =
-                    FavoritePokemonAdapter(requireContext(), it.sortedBy { it.favoriteIndex }, this, this)
+                    FavoritePokemonAdapter(requireContext(), it.sortedBy { it.favoriteIndex }, this, this, it)
                 itemTouchHelper.attachToRecyclerView(null)
                 binding.editFavoritesReorderingView.visibility = View.VISIBLE
             }
@@ -88,7 +88,7 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
             this as LifecycleOwner,
             {
                 binding.favoritesRecyclerView.adapter =
-                    FavoritePokemonAdapter(requireContext(), it, this, this)
+                    FavoritePokemonAdapter(requireContext(), it, this, this, it)
             }
         )
 

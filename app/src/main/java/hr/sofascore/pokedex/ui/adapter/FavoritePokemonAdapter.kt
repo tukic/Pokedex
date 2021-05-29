@@ -15,7 +15,8 @@ class FavoritePokemonAdapter(
     val context: Context,
     val pokemons: List<PokemonResponse>,
     private val favouritePokemonListener: FavouritePokemonListener,
-    private val pokemonActivityListener: StartPokemonActivityListener
+    private val pokemonActivityListener: StartPokemonActivityListener,
+    private val favoritePokemons: List<PokemonResponse>? = null
 ) : RecyclerView.Adapter<FavoritePokemonAdapter.ViewHolder>() {
 
     class ViewHolder(view: View, viewGroup: ViewGroup) : RecyclerView.ViewHolder(view) {
@@ -43,6 +44,24 @@ class FavoritePokemonAdapter(
 
         viewHolder.binding.starIconImageView.setOnClickListener {
             favouritePokemonListener.favouritePokemonRemoved(pokemon)
+        }
+
+        favoritePokemons?.let {
+            if (it.any { it.id == pokemon.id }) {
+                viewHolder.binding.starIconImageView.load(R.drawable.ic_star_1)
+            } else {
+                viewHolder.binding.starIconImageView.load(R.drawable.ic_star_0)
+            }
+        }
+
+        viewHolder.binding.starIconImageView.setOnClickListener {
+            favoritePokemons?.let {
+                if (it.any { it.id == pokemon.id }) {
+                    favouritePokemonListener.favouritePokemonRemoved(pokemon)
+                } else {
+                    favouritePokemonListener.favouritePokemonAdded(pokemon)
+                }
+            }
         }
     }
 

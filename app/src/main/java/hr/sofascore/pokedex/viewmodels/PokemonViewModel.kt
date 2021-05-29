@@ -11,9 +11,11 @@ import androidx.paging.PagedList
 import hr.sofascore.pokedex.model.db.PokemonDatabase
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.networking.initialPokemonURL
+import hr.sofascore.pokedex.model.shared.PokemonList
 import hr.sofascore.pokedex.model.shared.PokemonResponse
 import hr.sofascore.pokedex.ui.PokemonDataSource
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class PokemonViewModel : ViewModel() {
@@ -22,6 +24,9 @@ class PokemonViewModel : ViewModel() {
     val pokemonPagedList: LiveData<PagedList<PokemonResponse>>
 
     val favouritePokemon = MutableLiveData<List<PokemonResponse>>()
+
+    val allPokemons = MutableLiveData<PokemonList>()
+    val filteredPokemons = MutableLiveData<List<PokemonResponse>>()
 
     init {
         val config = PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(false).build()
@@ -87,6 +92,27 @@ class PokemonViewModel : ViewModel() {
     fun deleteAllPokemons(context: Context) {
         viewModelScope.launch {
             PokemonDatabase.getDatabase(context)?.pokemonDao()?.deleteAllPokemons()
+        }
+    }
+
+    fun getAllPokemons() {
+        viewModelScope.launch {
+            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
+                allPokemons.value = it
+            }
+        }
+    }
+
+    fun getPokemonsFilteredByName(name: String) {
+        viewModelScope.launch {
+            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
+                val async = it.results.filter { it.name.contains(name) }.map {
+                    async {
+                        Network().getService().getPokemonByURL(it.url).body()
+                    }
+                }
+                filteredPokemons.value = async.awaitAll().filterNotNull()
+            }
         }
     }
 }
