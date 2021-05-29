@@ -2,12 +2,17 @@ package hr.sofascore.pokedex.ui
 
 import androidx.paging.PageKeyedDataSource
 import hr.sofascore.pokedex.model.networking.Network
+import hr.sofascore.pokedex.model.shared.PokemonList
 import hr.sofascore.pokedex.model.shared.PokemonResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
-class PokemonDataSource(private val initialURL: String, private val scope: CoroutineScope):
+class PokemonDataSource(
+    private val initialURL: String,
+    private val scope: CoroutineScope,
+) :
     PageKeyedDataSource<String, PokemonResponse>() {
 
     val service = Network().getService()
@@ -18,47 +23,51 @@ class PokemonDataSource(private val initialURL: String, private val scope: Corou
     ) {
         scope.launch {
             val pokemonUrlResponse = service.getPagedPokemonByURL(initialURL)
-            val pokemon = arrayListOf<PokemonResponse>()
-            async {
-                pokemonUrlResponse.body()?.results?.forEach {
-                    service.getPokemonByURL(it.url).body()?.let {
-                        pokemon.add(it)
-                    }
+            val async = pokemonUrlResponse.body()?.results?.map {
+                async {
+                    service.getPokemonByURL(it.url).body()
                 }
-            }.await()
-            callback.onResult(pokemon, null, pokemonUrlResponse.body()?.next)
+            }
+            async?.awaitAll()?.let {
+                callback.onResult(it.filterNotNull(), null, pokemonUrlResponse.body()?.next)
+            }
+
         }
     }
 
-    override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, PokemonResponse>) {
+    override fun loadBefore(
+        params: LoadParams<String>,
+        callback: LoadCallback<String, PokemonResponse>
+    ) {
         scope.launch {
             val pokemonUrlResponse = service.getPagedPokemonByURL(params.key)
-            val pokemon = arrayListOf<PokemonResponse>()
-            async {
-                pokemonUrlResponse.body()?.results?.forEach {
-                    service.getPokemonByURL(it.url).body()?.let {
-                        pokemon.add(it)
-                    }
+            val async = pokemonUrlResponse.body()?.results?.map {
+                async {
+                    service.getPokemonByURL(it.url).body()
                 }
-            }.await()
+            }
             val response = service.getPagedPokemonByURL(params.key)
-            callback.onResult(pokemon, response.body()?.next)
+            async?.awaitAll()?.let {
+                callback.onResult(it.filterNotNull(), response.body()?.next)
+            }
         }
     }
 
-    override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, PokemonResponse>) {
+    override fun loadAfter(
+        params: LoadParams<String>,
+        callback: LoadCallback<String, PokemonResponse>
+    ) {
         scope.launch {
             val pokemonUrlResponse = service.getPagedPokemonByURL(params.key)
-            val pokemon = arrayListOf<PokemonResponse>()
-            async {
-                pokemonUrlResponse.body()?.results?.forEach {
-                    service.getPokemonByURL(it.url).body()?.let {
-                        pokemon.add(it)
-                    }
+            val async = pokemonUrlResponse.body()?.results?.map {
+                async {
+                    service.getPokemonByURL(it.url).body()
                 }
-            }.await()
+            }
             val response = service.getPagedPokemonByURL(params.key)
-            callback.onResult(pokemon, response.body()?.next)
+            async?.awaitAll()?.let {
+                callback.onResult(it.filterNotNull(), response.body()?.next)
+            }
         }
     }
 

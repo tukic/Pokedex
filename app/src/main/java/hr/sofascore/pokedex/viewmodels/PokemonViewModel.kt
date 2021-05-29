@@ -28,6 +28,8 @@ class PokemonViewModel : ViewModel() {
     val allPokemons = MutableLiveData<PokemonList>()
     val filteredPokemons = MutableLiveData<List<PokemonResponse>>()
 
+    val pokemonCount = MutableLiveData<Int>()
+
     init {
         val config = PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(false).build()
         pokemonPagedList = initializePagedList(config).build()
@@ -117,6 +119,22 @@ class PokemonViewModel : ViewModel() {
         }
     }
 
+    fun getPokemonsFilteredByRange(start: Int, end: Int) {
+        viewModelScope.launch {
+            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
+                val async = it.results.filter {
+                    val parts = it.url.split("/")
+                    parts[parts.size - 2].toInt() in start..end
+                }.map {
+                    async {
+                        Network().getService().getPokemonByURL(it.url).body()
+                    }
+                }
+                filteredPokemons.value = async.awaitAll().filterNotNull()
+            }
+        }
+    }
+
     fun getPokemonsFilteredByType(type: String) {
         viewModelScope.launch {
             Network().getService().getPagedTypes(Int.MAX_VALUE).body()?.let {
@@ -135,7 +153,14 @@ class PokemonViewModel : ViewModel() {
                     }
                 }
                 filteredPokemons.value = asyncPokemons.awaitAll().filterNotNull().sortedBy { it.id }
+            }
+        }
+    }
 
+    fun getPokemonCount() {
+        viewModelScope.launch {
+            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
+                pokemonCount.value = it.count
             }
         }
     }

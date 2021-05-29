@@ -24,6 +24,12 @@ interface PokemonService {
     @GET
     suspend fun getPagedPokemonByURL(@Url url: String): Response<PokemonList>
 
+    @GET("pokemon")
+    suspend fun getPagedPokemonByURL(
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int? = null
+    ): Response<PokemonList>
+
     @GET("pokemon-species/{id}")
     suspend fun getSpecies(@Path("id") id: Int): Response<PokemonSpecies>
 
