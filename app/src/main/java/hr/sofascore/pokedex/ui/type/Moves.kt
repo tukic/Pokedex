@@ -132,14 +132,20 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
             })
             row.addView(TextView(context).apply {
                 setTextAppearance(R.style.AssistiveDarkCenter)
-                text = it.name
+                text = it.getName(requireContext())
                 gravity = Gravity.CENTER
                 setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
             })
 
             row.addView(TextView(context).apply {
                 setTextAppearance(R.style.AssistiveDarkCenter)
-                text = it.damage_class?.name ?: "-"
+                if(it.damage_class_detail != null) {
+                    text = it.damage_class_detail!!.getName(requireContext())
+                } else if(it.damage_class != null){
+                    text = it.damage_class.name
+                } else {
+                    text = "-"
+                }
                 gravity = Gravity.CENTER
                 setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
                 it.damage_class?.let{

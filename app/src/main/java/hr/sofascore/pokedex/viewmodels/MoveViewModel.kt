@@ -16,7 +16,11 @@ class MoveViewModel : ViewModel() {
         viewModelScope.launch {
             val async = urls.map {
                 async {
-                    Network().getService().getPokemonMove(it).body()
+                    Network().getService().getPokemonMove(it).body().apply {
+                        this?.damage_class?.url?.let {
+                            this.damage_class_detail = Network().getService().getPokemonMoveDamageClass(it).body()
+                        }
+                    }
                 }
             }
             move.value = async.awaitAll().filterNotNull()

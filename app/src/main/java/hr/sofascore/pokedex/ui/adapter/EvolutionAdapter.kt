@@ -54,10 +54,17 @@ class EvolutionAdapter(
 
             current.pokemonResponse?.let { pokemon ->
                 image.load(pokemon.getImageURL())
-                pokemon.types?.get(0)?.type?.let {
-                    type.text = it.name
-                    type.backgroundTintList = context.getColorStateList(it.getTypeColor())
+                var typeName: String? = null
+                pokemon.typeDetail?.let {
+                    typeName = it.getName(context)
                 }
+                pokemon.types?.get(0)?.type?.let {
+                    type.backgroundTintList = context.getColorStateList(it.getTypeColor())
+                    if(typeName == null) {
+                        typeName = it.name
+                    }
+                }
+                type.text = typeName
             }
 
             if (evolutionLevel == 0) {

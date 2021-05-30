@@ -1,15 +1,25 @@
 package hr.sofascore.pokedex.model.shared
 
+import android.content.Context
+import android.preference.PreferenceManager
 import hr.sofascore.pokedex.R
+import hr.sofascore.pokedex.util.LanguageHelper
 import java.io.Serializable
 
 data class PokemonMove (
     val generation: Generation,
     val name: String,
     val damage_class: Result,
+    var damage_class_detail: PokemonDamageClass?,
     val power: Int,
-    val pp: Int
-): Serializable
+    val pp: Int,
+    val names: List<LanguageDescription>
+): Serializable {
+    fun getName(context: Context): String {
+        val language = LanguageHelper.getPreferredLanguage(context)
+        return names.find { it.language.name == language }?.name ?: this.name
+    }
+}
 
 data class Generation (
     val name: String,
@@ -34,4 +44,5 @@ data class Generation (
             else -> R.color.surface_1
         }
     }
+
 }

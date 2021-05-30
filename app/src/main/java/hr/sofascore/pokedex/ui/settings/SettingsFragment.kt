@@ -3,14 +3,12 @@ package hr.sofascore.pokedex.ui.settings
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.PopupWindow
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -22,6 +20,9 @@ import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentSettingsBinding
 import hr.sofascore.pokedex.databinding.PopoverLayoutBinding
 import hr.sofascore.pokedex.ui.settings.about.AboutActivity
+import hr.sofascore.pokedex.util.LOCALE_DEFAULT
+import hr.sofascore.pokedex.util.LanguageHelper
+import hr.sofascore.pokedex.util.PREF_LANGUAGE_CODE
 import hr.sofascore.pokedex.viewmodels.LanguageViewModel
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 
@@ -50,13 +51,44 @@ class SettingsFragment : Fragment() {
                     R.layout.spinner_language_item,
                     it.results.map { it.name }.toList()
                 )
+                var select = 0
+                it.results.forEachIndexed { index, result ->
+                    if (result.name == LanguageHelper.getPreferredLanguage(requireContext())) {
+                        select = index
+                    }
+                }
+                binding.languageSpinner.setSelection(select)
             }
         )
-        languageViewModel.getLanguages()
+        binding.languageSpinner.adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.spinner_language_item,
+            arrayListOf<String>().apply {
+                add(LanguageHelper.getPreferredLanguage(requireContext()))
+            }
+        )
 
+        languageViewModel.getLanguages()
         binding.aboutBackgroundView.setOnClickListener {
             context?.startActivity(Intent(context, AboutActivity::class.java))
         }
+
+        binding.languageSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    LanguageHelper.setPreferredLanguage(
+                        requireContext(),
+                        parent?.getItemAtPosition(position) as String
+                    )
+                    println(LanguageHelper.getPreferredLanguage(requireContext()))
+                }
+            }
 
         binding.clearFavoritesTextView.setOnClickListener {
             val popoverBinding = PopoverLayoutBinding.inflate(inflater, binding.root, false)
@@ -91,6 +123,7 @@ class SettingsFragment : Fragment() {
         val actionButton =
             this.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_action)
         actionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close, 0, 0, 0)
-        this.view.background = AppCompatResources.getDrawable(context, R.drawable.snackbar_background)
+        this.view.background =
+            AppCompatResources.getDrawable(context, R.drawable.snackbar_background)
     }
 }
