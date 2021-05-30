@@ -21,6 +21,8 @@
     <string name="total">Total:</string>
     <string name="evolution">Evolution</string>
     <string name="unevolved">unevolved</string>
+    <string name="evolution_level">Lv %d</string>
+    <string name="evolution_level_formatted">%s evolution</string>
     <string name="first_evolution">1st evolution</string>
     <string name="title_activity_type">TypeActivity</string>
     <string name="damage_overview">damage overview</string>

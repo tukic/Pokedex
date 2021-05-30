@@ -29,9 +29,9 @@ class EvolutionItem(context: Context, attrs: AttributeSet) : FrameLayout(context
             R.styleable.EvolutionItem,
             0, 0
         ).apply {
-            pokemonImageView = binding.pokemonImageView
-            evolutionPokemonTextView = binding.evolutionPokemonTextView
-            pokemonTypeTextView = binding.pokemonTypeTextView
+            pokemonImageView = binding.evolutionPokemonImageView
+            evolutionPokemonTextView = binding.evolutionPokemonNameTextView
+            pokemonTypeTextView = binding.evolutionPokemonTypeTextView
 
             binding.evolutionLabelTextView.text = getString(R.styleable.EvolutionItem_evolution_phase)
         }

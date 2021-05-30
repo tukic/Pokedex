@@ -6,7 +6,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.api.load
@@ -19,7 +18,6 @@ import hr.sofascore.pokedex.viewmodels.EvolutionViewModel
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 import hr.sofascore.pokedex.viewmodels.TypeViewModel
 import java.util.*
-import java.util.stream.Collectors
 
 const val POKEMON_EXTRA = "POKEMON"
 
@@ -36,8 +34,6 @@ class PokemonActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityPokemonBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
         setContentView(binding.root)
         setSupportActionBar(binding.pokemonToolbar)
 
@@ -112,32 +108,87 @@ class PokemonActivity : AppCompatActivity() {
             }
         )
         typeViewModel.getPokemonTypes(pokemon)
-        /*
-        pokemonViewModel.pokemon.observe(
+
+        val evolutionChains: MutableList<EvolutionHelper> = arrayListOf()
+        evolutionViewModel.evolution.observe(
             this as LifecycleOwner,
             {
-                pokemon.types?.let {
-                    binding.pokemonTypeRecycler.adapter = PokemonTypeAdapter(
-                        this, it.stream().map {
-                            PokemonTypeDescription(it.type.name, it.type.url)
-                        }.collect(Collectors.toList())
+                findEvolutions(evolutionChains, it.chain.evolves_to)
+
+                /* add unevolved pokemon to chain */
+                it.chain.evolves_to.forEach { evolutions ->
+                    val next = evolutionChains.find { next ->
+                        it.chain.evolves_to!!.any {
+                            next.name == it.species.name
+                        }
+                    }
+                    evolutionChains.remove(next)
+                    val new = EvolutionHelper(it.chain.species.name, next)
+                    evolutionChains.add(new)
+                }
+
+                val pokemonNames = evolutionChains.flatMap { chain ->
+                    arrayListOf<String>().apply { addAll(chain.getAllPokemonNames()) }
+                }
+                pokemonViewModel.getEvolutionPokemon(pokemonNames)
+            }
+
+        )
+        evolutionViewModel.getEvolution(pokemon.id)
+
+        pokemonViewModel.evolutionPokemons.observe(
+            this as LifecycleOwner,
+            { pokemonResponses ->
+                evolutionChains.forEach {
+                    var current: EvolutionHelper? = it
+                    while (current != null) {
+                        current.pokemonResponse =
+                            pokemonResponses.find { it.name == current!!.name }
+                        current = current.evolves_to
+                    }
+                }
+                binding.evolutionRecyclerView.layoutManager = LinearLayoutManager(this)
+                binding.evolutionRecyclerView.adapter =
+                    EvolutionAdapter(this, evolutionChains, pokemonViewModel)
+            }
+        )
+        setPokeathlonStats()
+
+    }
+
+    private fun findEvolutions(
+        evolutionChains: MutableList<EvolutionHelper>,
+        evolutions: List<EvolutionDescription>?
+    ) {
+        evolutions?.let { evolutions ->
+            if (evolutions.flatMap { arrayListOf<EvolutionDescription>().apply { addAll(it.evolves_to!!) } }
+                    .isEmpty()) {
+                evolutions.forEach { evolution ->
+                    evolutionChains.add(
+                        EvolutionHelper(
+                            evolution.species.name,
+                            minLevel = if (evolution.evolution_details != null && evolution.evolution_details[0] != null) evolution.evolution_details[0].min_level else null
+                        )
                     )
                 }
+            } else {
+                evolutions.forEach { evolution ->
+                    findEvolutions(evolutionChains, evolution.evolves_to)
+                    val next = evolutionChains.find { next ->
+                        evolution.evolves_to!!.any {
+                            next.name == it.species.name
+                        }
+                    }
+                    evolutionChains.remove(next)
+                    val new = EvolutionHelper(
+                        evolution.species.name,
+                        next,
+                        minLevel = if (evolution.evolution_details != null && evolution.evolution_details[0] != null) evolution.evolution_details[0].min_level else null
+                    )
+                    evolutionChains.add(new)
+                }
             }
-        )
-         */
-
-        //pokemonViewModel.getPokemon(pokemon.id)
-
-        binding.evolutionRecyclerView.layoutManager = LinearLayoutManager(this)
-        evolutionViewModel.evolutions.observe(
-            this as LifecycleOwner,
-            {
-                binding.evolutionRecyclerView.adapter = EvolutionAdapter(this, pokemon, it)
-            }
-        )
-        evolutionViewModel.getEvolutions(pokemon.id)
-
+        }
     }
 
     private fun setAbilites(pokemon: PokemonResponse) {
@@ -181,6 +232,11 @@ class PokemonActivity : AppCompatActivity() {
             binding.speedBaseStat.statsProgressBar.progress = it.base_stat
         }
         binding.totalStatsValueTextView.text = pokemon.getTotalStats().toString()
+    }
+
+    fun setPokeathlonStats() {
+        //binding.skillPokeathlonStatsItem.addStars(2,1, R.color.success)
+        //binding.powerPokeathlonStatsItem.addStars(2,1, R.color.error)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
