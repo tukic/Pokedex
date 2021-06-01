@@ -1,10 +1,7 @@
 package hr.sofascore.pokedex.viewmodels
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -14,7 +11,7 @@ import hr.sofascore.pokedex.model.networking.initialPokemonURL
 import hr.sofascore.pokedex.model.shared.PokemonList
 import hr.sofascore.pokedex.model.shared.PokemonResponse
 import hr.sofascore.pokedex.ui.PokemonDataSource
-import hr.sofascore.pokedex.ui.PokemonDataSource2
+import hr.sofascore.pokedex.ui.FilteringPokemonDataSource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
@@ -23,7 +20,7 @@ class PokemonViewModel : ViewModel() {
 
     val pokemon = MutableLiveData<PokemonResponse>()
     val pokemonPagedList: LiveData<PagedList<PokemonResponse>>
-    var pokemonRangeFilteredPagedList: LiveData<PagedList<PokemonResponse>>
+    val pokemonRangeFilteredPagedList: LiveData<PagedList<PokemonResponse>>
 
     val favouritePokemon = MutableLiveData<List<PokemonResponse>>()
 
@@ -34,12 +31,27 @@ class PokemonViewModel : ViewModel() {
 
     val evolutionPokemons = MutableLiveData<List<PokemonResponse>>()
 
-    init {
+    val noFilter = MutableLiveData<Boolean>()
+    val filter = MutableLiveData<List<Int>>()
 
+    init {
         evolutionPokemons.value = arrayListOf<PokemonResponse>()
         val config = PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(false).build()
-        pokemonPagedList = initializePagedList(config).build()
-        pokemonRangeFilteredPagedList = initializeRangeFilteredPagedList(config, 0, 0).build()
+
+        pokemonRangeFilteredPagedList = filter.switchMap { input ->
+            if(input == null) {
+                initializePagedList(config).build()
+            }
+           initializeRangeFilteredPagedList(config, input[0], input[1]).build()
+        }
+
+
+        pokemonPagedList =
+            noFilter.switchMap { input ->
+                    initializePagedList(config).build()
+            }
+
+        //pokemonRangeFilteredPagedList = initializeRangeFilteredPagedList(config, 0, 0).build()
     }
 
     private fun initializePagedList(config: PagedList.Config): LivePagedListBuilder<String, PokemonResponse> {
@@ -58,7 +70,7 @@ class PokemonViewModel : ViewModel() {
     ): LivePagedListBuilder<Int, PokemonResponse> {
         val dataSource = object : DataSource.Factory<Int, PokemonResponse>() {
             override fun create(): DataSource<Int, PokemonResponse> {
-                return PokemonDataSource2(viewModelScope, start, end)
+                return FilteringPokemonDataSource(viewModelScope, start, end)
             }
         }
         return LivePagedListBuilder(dataSource, config)
@@ -72,7 +84,22 @@ class PokemonViewModel : ViewModel() {
 
     fun getPokemon(id: Int) {
         viewModelScope.launch {
-            pokemon.value = Network().getService().getPokemonById(id).body()
+            pokemon.value = Network().getService().getPokemonById(id).body().apply {
+                this?.abilities?.forEach {
+                    Network().getService().getAbilityByURL(it.ability.url).body()?.let { ability ->
+                        this.ability?.add(
+                            ability
+                        )
+                    }
+                }
+                this?.stats?.forEach {
+                    Network().getService().getStatByURL(it.stat.url).body()?.let { stat ->
+                        this.stat?.add(
+                            stat
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -177,6 +204,7 @@ class PokemonViewModel : ViewModel() {
         }
     }
 
+
     fun getPokemonCount() {
         viewModelScope.launch {
             Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
@@ -185,10 +213,13 @@ class PokemonViewModel : ViewModel() {
         }
     }
 
+    /*
     fun getPokemonRangeFilteredPagedList(start: Int, end: Int) {
         val config = PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(false).build()
         pokemonRangeFilteredPagedList = initializeRangeFilteredPagedList(config, start, end).build()
     }
+
+     */
 
     fun getEvolutionPokemon(names: List<String>) {
         viewModelScope.launch {
@@ -196,12 +227,27 @@ class PokemonViewModel : ViewModel() {
             evolutionPokemons.value?.let {
                 tmp.addAll(it)
             }
-            names.forEach {
-                Network().getService().getPokemonByName(it).body()?.let {
-                    tmp.add(it)
+            val async = names.map {
+                async {
+                    Network().getService().getPokemonByName(it).body().apply {
+                        this?.types?.get(0)?.type?.url?.let {
+                            this.typeDetail = Network().getService().getPokemonType(it).body()
+                        }
+                    }
                 }
             }
-            evolutionPokemons.value = tmp
+            evolutionPokemons.value = async.awaitAll().filterNotNull()
         }
+    }
+
+    fun filterByRange(from: Int, to: Int) {
+        filter.value = arrayListOf<Int>().apply {
+            add(from)
+            add(to)
+        }
+    }
+
+    fun noFilter() {
+        noFilter.value = true
     }
 }

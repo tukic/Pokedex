@@ -54,6 +54,13 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
             }
         )
 
+        pokemonViewModel.pokemonRangeFilteredPagedList.observe(
+            this as LifecycleOwner,
+            {
+                adapter.submitList(it)
+            }
+        )
+
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,
             { favoritePokemons ->
@@ -153,17 +160,22 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
             object:RangeSlider.OnSliderTouchListener{
                 override fun onStartTrackingTouch(slider: RangeSlider) = Unit
                 override fun onStopTrackingTouch(slider: RangeSlider) {
-                    pokemonViewModel.getPokemonsFilteredByRange(slider.values[0].toInt(), slider.values[1].toInt())
+                    pokemonViewModel.filterByRange(slider.values[0].toInt(), slider.values[1].toInt())
                 }
             }
         )
 
+        pokemonViewModel.noFilter()
+
+        /*
         pokemonViewModel.pokemonRangeFilteredPagedList.observe(
             this as LifecycleOwner,
             {
                 adapter.submitList(it)
             }
         )
+
+         */
 
         binding.closeIcon.setOnClickListener {
             binding.closeIcon.visibility = View.GONE
