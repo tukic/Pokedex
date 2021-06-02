@@ -27,7 +27,14 @@ data class PokemonResponse @JvmOverloads constructor (
     @Ignore
     val abilities: List<Ability>? = arrayListOf(),
     @Ignore
-    var types: List<PokemonTypeInfo>? = arrayListOf()
+    var types: List<PokemonTypeInfo>? = arrayListOf(),
+    @Ignore
+    var typeDetail: PokemonType? = null,
+    @Ignore
+    var ability: MutableList<AbilityResponse>? = arrayListOf<AbilityResponse>(),
+    @Ignore
+    var stat: MutableList<Stat>? = arrayListOf<Stat>()
+
 ) : Serializable {
 
     fun getFormattedId() = "%03d".format(id)
