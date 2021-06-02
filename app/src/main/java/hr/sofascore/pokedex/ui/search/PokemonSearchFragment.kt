@@ -61,6 +61,13 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
             }
         )
 
+        pokemonViewModel.pokemonNameFilteredPagedList.observe(
+            this as LifecycleOwner,
+            {
+                adapter.submitList(it)
+            }
+        )
+
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,
             { favoritePokemons ->
@@ -103,18 +110,9 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
                     }
                 }
                 R.id.filter_by_name_radio_button -> {
-                    if (count > 0 && start + count == 2) {
-                        pokemonViewModel.getPokemonsFilteredByName(
+                    if (start > 1) {
+                        pokemonViewModel.filterByPokemonName(
                             text.toString().trim()
-                        )
-                    } else if ((start + count > 2) || (start >= 2 && before > 0)) {
-                        filteredPokemons
-                        binding.recyclerView.adapter = FavoritePokemonAdapter(
-                            requireContext(),
-                            filteredPokemons.filter { it.name.contains(text.toString()) },
-                            this,
-                            this,
-                            pokemonViewModel.favouritePokemon.value
                         )
                     }
                 }
@@ -126,6 +124,7 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
 
         binding.filterByNameRadioButton.setOnClickListener {
             binding.searchPokemonTextView.isEnabled = true
+            binding.searchIcon.visibility = View.GONE
             removeRangeSlider()
             binding.recyclerView.setPadding(
                 0,
@@ -133,15 +132,17 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
                 0,
                 resources.getDimensionPixelSize(R.dimen.pokemon_search_bottom_margin_filter)
             )
-            if (binding.searchPokemonTextView.text.length >= 2) {
-                pokemonViewModel.getPokemonsFilteredByName(
+            if (binding.searchPokemonTextView.text.length > 1) {
+                pokemonViewModel.filterByPokemonName(
                     binding.searchPokemonTextView.text.toString().trim()
                 )
             }
+            binding.closeIcon.visibility = View.VISIBLE
         }
 
         binding.filterByTypeRadioButton.setOnClickListener {
             binding.searchPokemonTextView.isEnabled = true
+            binding.searchIcon.visibility = View.GONE
             removeRangeSlider()
             binding.recyclerView.setPadding(
                 0,
@@ -150,39 +151,38 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
                 resources.getDimensionPixelSize(R.dimen.pokemon_search_bottom_margin_filter)
             )
             if (binding.searchPokemonTextView.text.length >= 2) {
+                /*
                 pokemonViewModel.getPokemonsFilteredByType(
                     binding.searchPokemonTextView.text.toString().trim()
                 )
+                 */
+                pokemonViewModel.filterByPokemonName(
+                    binding.searchPokemonTextView.text.toString().trim()
+                )
             }
+            binding.closeIcon.visibility = View.VISIBLE
         }
 
         binding.selectRangeBar.addOnSliderTouchListener(
-            object:RangeSlider.OnSliderTouchListener{
+            object : RangeSlider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: RangeSlider) = Unit
                 override fun onStopTrackingTouch(slider: RangeSlider) {
-                    pokemonViewModel.filterByRange(slider.values[0].toInt(), slider.values[1].toInt())
+                    pokemonViewModel.filterByRange(
+                        slider.values[0].toInt(),
+                        slider.values[1].toInt()
+                    )
                 }
             }
         )
 
         pokemonViewModel.noFilter()
 
-        /*
-        pokemonViewModel.pokemonRangeFilteredPagedList.observe(
-            this as LifecycleOwner,
-            {
-                adapter.submitList(it)
-            }
-        )
-
-         */
-
         binding.closeIcon.setOnClickListener {
             binding.closeIcon.visibility = View.GONE
             binding.filterRadioGroup.visibility = View.GONE
             binding.searchPokemonTextView.isEnabled = true
             removeRangeSlider()
-            pagingAdapterOn = true
+            pokemonViewModel.noFilter()
             binding.searchPokemonTextView.text.clear()
             binding.recyclerView.adapter = adapter
             binding.searchIcon.visibility = View.VISIBLE

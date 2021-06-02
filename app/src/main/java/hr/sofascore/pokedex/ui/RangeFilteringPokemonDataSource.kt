@@ -9,7 +9,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
-class FilteringPokemonDataSource(
+class RangeFilteringPokemonDataSource(
     private val scope: CoroutineScope,
     private val start: Int,
     private val end: Int

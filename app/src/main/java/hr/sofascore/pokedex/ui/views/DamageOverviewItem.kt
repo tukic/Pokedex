@@ -35,13 +35,13 @@ class DamageOverviewItem(context: Context, attrs: AttributeSet) : FrameLayout(co
                     0
                 )
             )
-            binding.damageRecycler.background =
+            binding.recyclerBackgroundView.background =
                 getDrawable(R.styleable.DamageOverviewItem_item_background)
-            binding.damageRecycler.backgroundTintList =
+            binding.recyclerBackgroundView.backgroundTintList =
                 getColorStateList(R.styleable.DamageOverviewItem_background_color)
             val alpha = ((getInt(R.styleable.DamageOverviewItem_background_opacity, 0)
                 .toFloat()  / 100) * 255).roundToInt()
-            binding.damageRecycler.background.alpha = alpha
+            binding.recyclerBackgroundView.background.alpha = alpha
             damageRecyclerView = binding.damageRecycler
             noTypesTextView = binding.noTypesLabelTextView
         }
