@@ -235,8 +235,36 @@ class PokemonActivity : AppCompatActivity() {
     }
 
     fun setPokeathlonStats() {
-        //binding.skillPokeathlonStatsItem.addStars(2,1, R.color.success)
-        //binding.powerPokeathlonStatsItem.addStars(2,1, R.color.error)
+        //mock data
+        val speed = 2
+        val maxSpeed = 3
+        val power = 2
+        val maxPower = 3
+        val skill = 3
+        val maxSkill = 4
+        val stamina = 3
+        val maxStamina = 4
+        val jump = 3
+        val maxJump = 3
+        val total = speed + power + skill + stamina + jump
+        val maxTotal = maxSpeed + maxPower + maxSkill + maxStamina + maxJump
+
+        binding.speedPokeathlonStatsItem.addStars(speed, maxSpeed - speed, R.color.flat_pokemon_type_poison)
+        binding.powerPokeathlonStatsItem.addStars(power, maxPower - power, R.color.error)
+        binding.skillPokeathlonStatsItem.addStars(skill, maxSkill - skill, R.color.tint_secondary)
+        binding.staminaPokeathlonStatsItem.addStars(
+            stamina,
+            maxStamina - stamina,
+            R.color.tint_primary
+        )
+        binding.jumpPokeathlonStatsItem.addStars(jump, maxJump - jump, R.color.success)
+        binding.totalPokeathlonStatsItem.addTotalStars(
+            total / 5,
+            maxTotal / 5 - total / 5,
+            total,
+            maxTotal,
+            R.color.cold_gray
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

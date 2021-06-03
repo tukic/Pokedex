@@ -51,4 +51,27 @@ class PokeathlonStatsItem(context: Context, attrs: AttributeSet) : FrameLayout(c
             binding.pokeathlonStarsLinearLayout.addView(starView)
         }
     }
+
+    fun addTotalStars(filledStars: Int, emptyStars: Int, total: Int, maxTotal: Int, color: Int) {
+        binding.pokeathlonStatAmountTextView.text = "$total/${maxTotal}"
+        val starDimen = resources.getDimensionPixelSize(R.dimen.pokeathlon_star_size)
+        for (i: Int in 1..filledStars) {
+            val starView = View(context).apply {
+                background = context.getDrawable(R.drawable.ic_star_1)?.apply {
+                    setTint(context.getColor(color))
+                }
+                layoutParams = LayoutParams(starDimen, starDimen)
+            }
+            binding.pokeathlonStarsLinearLayout.addView(starView)
+        }
+        for (i: Int in 1..emptyStars) {
+            val starView = View(context).apply {
+                background = context.getDrawable(R.drawable.ic_star_0)?.apply {
+                    setTint(context.getColor(color))
+                }
+                layoutParams = LayoutParams(starDimen, starDimen)
+            }
+            binding.pokeathlonStarsLinearLayout.addView(starView)
+        }
+    }
 }

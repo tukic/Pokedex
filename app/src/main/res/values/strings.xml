@@ -49,6 +49,7 @@
     <string name="pokeathlon_stats">Pokéathlon stats</string>
     <string name="speed_label">Speed</string>
     <string name="power_label">Power</string>
+    <string name="stamina_label">Stamina</string>
     <string name="skill_label">Skill</string>
     <string name="jump_label">Jump</string>
     <string name="total_label">Total</string>
