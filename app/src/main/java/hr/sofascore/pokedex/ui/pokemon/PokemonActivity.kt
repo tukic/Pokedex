@@ -149,7 +149,7 @@ class PokemonActivity : AppCompatActivity() {
                 }
                 binding.evolutionRecyclerView.layoutManager = LinearLayoutManager(this)
                 binding.evolutionRecyclerView.adapter =
-                    EvolutionAdapter(this, evolutionChains, pokemonViewModel)
+                    EvolutionAdapter(this, evolutionChains, pokemonViewModel, pokemon.id)
             }
         )
         setPokeathlonStats()

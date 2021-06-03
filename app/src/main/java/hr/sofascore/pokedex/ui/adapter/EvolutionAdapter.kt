@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import hr.sofascore.pokedex.R
@@ -19,7 +20,8 @@ class EvolutionAdapter(
     val context: Context,
     //val pokemon: PokemonResponse,
     val evolutions: List<EvolutionHelper>,
-    val pokemonViewModel: PokemonViewModel
+    val pokemonViewModel: PokemonViewModel,
+    val currentId: Int
 ) : RecyclerView.Adapter<EvolutionAdapter.ViewHolder>() {
 
     class ViewHolder(view: View, viewGroup: ViewGroup) : RecyclerView.ViewHolder(view) {
@@ -46,11 +48,18 @@ class EvolutionAdapter(
                 viewHolder.binding.linear,
                 false
             )
+            val rootConstarintLayout =
+                layout.findViewById<ConstraintLayout>(R.id.root_constraint_layout)
             val evolution_level = layout.findViewById<TextView>(R.id.evolution_label_text_view)
             val image = layout.findViewById<ImageView>(R.id.evolution_pokemon_image_view)
             val name = layout.findViewById<TextView>(R.id.evolution_pokemon_name_text_view)
             val type = layout.findViewById<TextView>(R.id.evolution_pokemon_type_text_view)
-            name.text = current.name
+
+            if (current.pokemonResponse?.id == currentId) {
+                rootConstarintLayout.background =
+                    context.getDrawable(R.drawable.current_evolution_item_background)
+            }
+            name.text = current.name.capitalize(Locale.getDefault())
 
             current.pokemonResponse?.let { pokemon ->
                 image.load(pokemon.getImageURL())
@@ -58,17 +67,40 @@ class EvolutionAdapter(
                 pokemon.typeDetail?.let {
                     typeName = it.getName(context)
                 }
-                pokemon.types?.get(0)?.type?.let {
-                    type.backgroundTintList = context.getColorStateList(it.getTypeColor())
-                    if(typeName == null) {
-                        typeName = it.name
+                if (pokemon.types?.size == 1) {
+                    pokemon.types?.get(0)?.type?.let {
+                        type.backgroundTintList = context.getColorStateList(it.getTypeColor())
+                        if (typeName == null) {
+                            typeName = it.name
+                        }
+                    }
+                    type.text = typeName
+                } else {
+                    type.visibility = View.GONE
+                    val type1 =
+                        layout.findViewById<TextView>(R.id.evolution_pokemon_first_type_text_view)
+                            .apply {
+                                visibility = View.VISIBLE
+                            }
+                    val type2 =
+                        layout.findViewById<TextView>(R.id.evolution_pokemon_second_type_text_view)
+                            .apply {
+                                visibility = View.VISIBLE
+                            }
+                    pokemon.types?.get(0)?.type?.let {
+                        type1.backgroundTintList = context.getColorStateList(it.getTypeColor())
+                        type1.text = it.name
+                    }
+                    pokemon.types?.get(1)?.type?.let {
+                        type2.backgroundTintList = context.getColorStateList(it.getTypeColor())
+                        type2.text = it.name
                     }
                 }
-                type.text = typeName
             }
 
             if (evolutionLevel == 0) {
-                evolution_level.text = context.getString(R.string.unevolved).toUpperCase(Locale.getDefault())
+                evolution_level.text =
+                    context.getString(R.string.unevolved).toUpperCase(Locale.getDefault())
             } else {
                 val transitionView = LayoutInflater.from(context).inflate(
                     R.layout.evolution_item_transition_layout,
