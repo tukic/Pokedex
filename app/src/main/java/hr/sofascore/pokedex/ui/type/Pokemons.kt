@@ -13,13 +13,18 @@ import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentMovesBinding
 import hr.sofascore.pokedex.databinding.FragmentPokemonsBinding
 import hr.sofascore.pokedex.model.shared.PokemonType
+import hr.sofascore.pokedex.ui.adapter.PagedPokemonAdapter
 import hr.sofascore.pokedex.ui.adapter.PokemonGridAdapter
 import hr.sofascore.pokedex.viewmodels.EvolutionViewModel
+import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 import hr.sofascore.pokedex.viewmodels.TypeViewModel
 
 class Pokemons(val type: PokemonType) : Fragment() {
 
-    val typeViewModel by activityViewModels<TypeViewModel>()
+    //val typeViewModel by activityViewModels<TypeViewModel>()
+    val pokemonViewModel by activityViewModels<PokemonViewModel>()
+
+    private val adapter = PokemonGridAdapter()
 
     private var _binding: FragmentPokemonsBinding? = null
     private val binding get() = _binding!!
@@ -34,13 +39,14 @@ class Pokemons(val type: PokemonType) : Fragment() {
         val view = binding.root
 
         binding.pokemonRecycler.layoutManager = GridLayoutManager(context, 3)
-        typeViewModel.pokemons.observe(
+        binding.pokemonRecycler.adapter = adapter
+        pokemonViewModel.pokemonTypeFilteredPagedList.observe(
             this as LifecycleOwner,
             {
-                binding.pokemonRecycler.adapter = PokemonGridAdapter(requireContext(), it)
+                adapter.submitList(it)
             }
         )
-        typeViewModel.getPokemons(type.pokemon)
+        pokemonViewModel.filterByPokemonType(type.name)
         return view
     }
 }
