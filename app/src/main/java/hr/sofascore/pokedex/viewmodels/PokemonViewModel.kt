@@ -13,6 +13,7 @@ import hr.sofascore.pokedex.model.shared.PokemonResponse
 import hr.sofascore.pokedex.ui.NameFilteringPokemonDataSource
 import hr.sofascore.pokedex.ui.PokemonDataSource
 import hr.sofascore.pokedex.ui.RangeFilteringPokemonDataSource
+import hr.sofascore.pokedex.ui.TypeFilteringPokemonDataSource
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ class PokemonViewModel : ViewModel() {
     val pokemon = MutableLiveData<PokemonResponse>()
     val pokemonPagedList: LiveData<PagedList<PokemonResponse>>
     val pokemonNameFilteredPagedList: LiveData<PagedList<PokemonResponse>>
+    val pokemonTypeFilteredPagedList: LiveData<PagedList<PokemonResponse>>
     val pokemonRangeFilteredPagedList: LiveData<PagedList<PokemonResponse>>
 
     val favouritePokemon = MutableLiveData<List<PokemonResponse>>()
@@ -35,6 +37,7 @@ class PokemonViewModel : ViewModel() {
 
     val noFilter = MutableLiveData<Boolean>()
     val pokemonNameFilter = MutableLiveData<String>()
+    val pokemonTypeFilter = MutableLiveData<String>()
     val rangeFilter = MutableLiveData<List<Int>>()
 
     init {
@@ -54,14 +57,19 @@ class PokemonViewModel : ViewModel() {
             initializeNameFilteredPagedList(config, input).build()
         }
 
+        pokemonTypeFilteredPagedList = pokemonTypeFilter.switchMap { input ->
+            if(input == null) {
+                initializePagedList(config).build()
+            }
+            initializeTypeFilteredPagedList(config, input).build()
+        }
+
         pokemonRangeFilteredPagedList = rangeFilter.switchMap { input ->
             if(input == null) {
                 initializePagedList(config).build()
             }
            initializeRangeFilteredPagedList(config, input[0], input[1]).build()
         }
-
-
     }
 
     private fun initializePagedList(config: PagedList.Config): LivePagedListBuilder<String, PokemonResponse> {
@@ -80,6 +88,18 @@ class PokemonViewModel : ViewModel() {
         val dataSource = object : DataSource.Factory<Int, PokemonResponse>() {
             override fun create(): DataSource<Int, PokemonResponse> {
                 return NameFilteringPokemonDataSource(viewModelScope, filter)
+            }
+        }
+        return LivePagedListBuilder(dataSource, config)
+    }
+
+    private fun initializeTypeFilteredPagedList(
+        config: PagedList.Config,
+        filter: String
+    ): LivePagedListBuilder<Int, PokemonResponse> {
+        val dataSource = object : DataSource.Factory<Int, PokemonResponse>() {
+            override fun create(): DataSource<Int, PokemonResponse> {
+                return TypeFilteringPokemonDataSource(viewModelScope, filter)
             }
         }
         return LivePagedListBuilder(dataSource, config)
@@ -264,6 +284,10 @@ class PokemonViewModel : ViewModel() {
 
     fun filterByPokemonName(filter: String) {
         pokemonNameFilter.value = filter
+    }
+
+    fun filterByPokemonType(filter: String) {
+        pokemonTypeFilter.value = filter
     }
 
     fun filterByRange(from: Int, to: Int) {

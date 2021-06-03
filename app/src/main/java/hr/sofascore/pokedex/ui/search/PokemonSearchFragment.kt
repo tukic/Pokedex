@@ -68,6 +68,13 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
             }
         )
 
+        pokemonViewModel.pokemonTypeFilteredPagedList.observe(
+            this as LifecycleOwner,
+            {
+                adapter.submitList(it)
+            }
+        )
+
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,
             { favoritePokemons ->
@@ -94,25 +101,19 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
             pagingAdapterOn = false
             when (binding.filterRadioGroup.checkedRadioButtonId) {
                 R.id.filter_by_type_radio_button -> {
-                    if (count > 0 && start + count == 2) {
-                        pokemonViewModel.getPokemonsFilteredByType(
-                            text.toString().trim()
-                        )
-                    } else if ((start + count > 2) || (start >= 2 && before > 0)) {
-                        binding.recyclerView.adapter = FavoritePokemonAdapter(
-                            requireContext(),
-                            filteredPokemons.filter { it.types!!.any { it.type.name.contains(text.toString()) } }
-                                .sortedBy { it.id },
-                            this,
-                            this,
-                            pokemonViewModel.favouritePokemon.value
+                    if (binding.searchPokemonTextView.text.length > 1) {
+                        pokemonViewModel.filterByPokemonType(
+                            text.toString().trim().toLowerCase()
                         )
                     }
                 }
-                R.id.filter_by_name_radio_button -> {
-                    if (start > 1) {
+                R.id.filter_by_range -> {
+                    // do nothing
+                }
+                else -> {
+                    if (binding.searchPokemonTextView.text.length > 1) {
                         pokemonViewModel.filterByPokemonName(
-                            text.toString().trim()
+                            text.toString().trim().toLowerCase()
                         )
                     }
                 }
@@ -134,7 +135,7 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
             )
             if (binding.searchPokemonTextView.text.length > 1) {
                 pokemonViewModel.filterByPokemonName(
-                    binding.searchPokemonTextView.text.toString().trim()
+                    binding.searchPokemonTextView.text.toString().trim().toLowerCase()
                 )
             }
             binding.closeIcon.visibility = View.VISIBLE
@@ -150,14 +151,9 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
                 0,
                 resources.getDimensionPixelSize(R.dimen.pokemon_search_bottom_margin_filter)
             )
-            if (binding.searchPokemonTextView.text.length >= 2) {
-                /*
-                pokemonViewModel.getPokemonsFilteredByType(
-                    binding.searchPokemonTextView.text.toString().trim()
-                )
-                 */
-                pokemonViewModel.filterByPokemonName(
-                    binding.searchPokemonTextView.text.toString().trim()
+            if (binding.searchPokemonTextView.text.length > 1) {
+                pokemonViewModel.filterByPokemonType(
+                    binding.searchPokemonTextView.text.toString().trim().toLowerCase()
                 )
             }
             binding.closeIcon.visibility = View.VISIBLE
@@ -226,6 +222,7 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
         binding.filterByRange.setOnClickListener {
             binding.selectRangeBar.visibility = View.VISIBLE
             binding.searchPokemonTextView.isEnabled = false
+            binding.searchPokemonTextView.text.clear()
             binding.recyclerView.setPadding(
                 0,
                 resources.getDimensionPixelSize(R.dimen.pokemon_search_top_margin),

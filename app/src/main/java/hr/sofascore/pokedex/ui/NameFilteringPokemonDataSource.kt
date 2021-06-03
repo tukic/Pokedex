@@ -28,13 +28,21 @@ class NameFilteringPokemonDataSource(
             var counter = 0
             var lastIndex = 0
             val filteredResults = pokemonUrlResponse?.results?.filterIndexed { index, result ->
-                if(result.name.contains(filter) && counter < pageSize) {
+                if(result.name.contains(filter, true) && counter < pageSize) {
                     counter++
                     lastIndex = index
                     true
                 } else {
                     false
                 }
+            }
+            if(filteredResults.isEmpty()) {
+                callback.onResult(
+                    arrayListOf(),
+                    null,
+                    if(counter >= pageSize) lastIndex else null
+                )
+                return@launch
             }
             filteredResults.subList(0, if(pageSize < filteredResults.size) pageSize else filteredResults.size-1)
             val async = filteredResults?.map {
@@ -46,7 +54,7 @@ class NameFilteringPokemonDataSource(
                 callback.onResult(
                     it.filterNotNull(),
                     null,
-                    if(counter >= pageSize) lastIndex else null
+                    null
                 )
             }
         }
@@ -64,13 +72,20 @@ class NameFilteringPokemonDataSource(
             var counter = 0
             var lastIndex = 0
             val filteredResults = pokemonUrlResponse?.results?.filterIndexed { index, result ->
-                if(result.name.contains(filter) && counter < pageSize) {
+                if(result.name.contains(filter, true) && counter < pageSize) {
                     counter++
                     lastIndex = index
                     true
                 } else {
                     false
                 }
+            }
+            if(filteredResults.isEmpty()) {
+                callback.onResult(
+                    arrayListOf(),
+                    null
+                )
+                return@launch
             }
             filteredResults.subList(0, if(pageSize < filteredResults.size) pageSize else filteredResults.size-1)
             lastIndex += offset
@@ -100,13 +115,20 @@ class NameFilteringPokemonDataSource(
             var lastIndex = 0
             var counter = 0
             val filteredResults = pokemonUrlResponse?.results?.filterIndexed { index, result ->
-                if(result.name.contains(filter) && counter < pageSize) {
+                if(result.name.contains(filter, true) && counter < pageSize) {
                     counter++
                     lastIndex = index
                     true
                 } else {
                     false
                 }
+            }
+            if(filteredResults.isEmpty()) {
+                callback.onResult(
+                    arrayListOf(),
+                    null,
+                )
+                return@launch
             }
             filteredResults.subList(0, if(pageSize < filteredResults.size) pageSize else filteredResults.size-1)
             lastIndex += offset
