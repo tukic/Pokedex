@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import hr.sofascore.pokedex.databinding.FragmentDamageOverviewBinding
 import hr.sofascore.pokedex.model.shared.PokemonType
 import hr.sofascore.pokedex.ui.adapter.PokemonTypeAdapter
-import hr.sofascore.pokedex.ui.adapter.WrappableGridLayoutManager
-import hr.sofascore.pokedex.ui.adapter.WrappableGridLayoutManager1
 import hr.sofascore.pokedex.viewmodels.TypeViewModel
+import kotlin.math.ceil
 
 class DamageOverview(val pokemonType: PokemonType) : Fragment() {
 
@@ -31,37 +30,16 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
         _binding = FragmentDamageOverviewBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        /*
-        binding.damageRecycler.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL).apply {
-            gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-        }
-        binding.offenseDoubleDamageOverview.damageRecyclerView.addItemDecoration(
-            PokemonTypeAdapter.Companion.SpacesItemDecoration(
-                resources.getDimensionPixelSize(R.dimen.empty_margin)
-            )
-        )
-         */
-
-        binding.offenseHalfDamageOverview.damageRecyclerView.layoutManager =
-            GridLayoutManager(context, 3)
-        binding.offenseNoDamageOverview.damageRecyclerView.layoutManager =
-            GridLayoutManager(context, 3)
-
-        binding.defensiveDoubleDamageOverview.damageRecyclerView.layoutManager =
-            GridLayoutManager(context, 3)
-        binding.defensiveNoDamageOverview.damageRecyclerView.layoutManager =
-            GridLayoutManager(context, 3)
-
         typeViewModel.offensiveDoubleDamageTypes.observe(
             this as LifecycleOwner,
             {
-                if(it.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     binding.offenseDoubleDamageOverview.damageRecyclerView.adapter =
                         PokemonTypeAdapter(requireContext(), it)
                     binding.offenseDoubleDamageOverview.damageRecyclerView.layoutManager =
-                        WrappableGridLayoutManager(
-                            context,
-                            3
+                        StaggeredGridLayoutManager(
+                            ceil(it.size.toFloat() / 4).toInt(),
+                            StaggeredGridLayoutManager.HORIZONTAL
                         )
                 } else {
                     binding.offenseDoubleDamageOverview.noTypesTextView.visibility = View.VISIBLE
@@ -71,7 +49,12 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
         typeViewModel.offensiveHalfDamageTypes.observe(
             this as LifecycleOwner,
             {
-                if(it.isNotEmpty()) {
+                if (it.isNotEmpty()) {
+                    binding.offenseHalfDamageOverview.damageRecyclerView.layoutManager =
+                        StaggeredGridLayoutManager(
+                            ceil(it.size.toFloat() / 4).toInt(),
+                            StaggeredGridLayoutManager.HORIZONTAL
+                        )
                     binding.offenseHalfDamageOverview.damageRecyclerView.adapter =
                         PokemonTypeAdapter(requireContext(), it)
                 } else {
@@ -82,9 +65,14 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
         typeViewModel.offensiveNoDamageTypes.observe(
             this as LifecycleOwner,
             {
-                if(it.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     binding.offenseNoDamageOverview.damageRecyclerView.adapter =
                         PokemonTypeAdapter(requireContext(), it)
+                    binding.offenseNoDamageOverview.damageRecyclerView.layoutManager =
+                        StaggeredGridLayoutManager(
+                            ceil(it.size.toFloat() / 4).toInt(),
+                            StaggeredGridLayoutManager.HORIZONTAL
+                        )
                 } else {
                     binding.offenseNoDamageOverview.noTypesTextView.visibility = View.VISIBLE
                 }
@@ -93,13 +81,13 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
         typeViewModel.defensiveHalfDamageTypes.observe(
             this as LifecycleOwner,
             {
-                if(it.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     binding.defensiveHalfDamageOverview.damageRecyclerView.adapter =
                         PokemonTypeAdapter(requireContext(), it)
                     binding.defensiveHalfDamageOverview.damageRecyclerView.layoutManager =
-                        WrappableGridLayoutManager1(
-                            context,
-                            3
+                        StaggeredGridLayoutManager(
+                            ceil(it.size.toFloat() / 4).toInt(),
+                            StaggeredGridLayoutManager.HORIZONTAL
                         )
                 } else {
                     binding.defensiveHalfDamageOverview.noTypesTextView.visibility = View.VISIBLE
@@ -109,9 +97,14 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
         typeViewModel.defensiveDoubleDamageTypes.observe(
             this as LifecycleOwner,
             {
-                if(it.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     binding.defensiveDoubleDamageOverview.damageRecyclerView.adapter =
                         PokemonTypeAdapter(requireContext(), it)
+                    binding.defensiveDoubleDamageOverview.damageRecyclerView.layoutManager =
+                        StaggeredGridLayoutManager(
+                            ceil(it.size.toFloat() / 4).toInt(),
+                            StaggeredGridLayoutManager.HORIZONTAL
+                        )
                 } else {
                     binding.defensiveDoubleDamageOverview.noTypesTextView.visibility = View.VISIBLE
                 }
@@ -120,9 +113,14 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
         typeViewModel.defensiveNoDamageTypes.observe(
             this as LifecycleOwner,
             {
-                if(it.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     binding.defensiveNoDamageOverview.damageRecyclerView.adapter =
                         PokemonTypeAdapter(requireContext(), it)
+                    binding.defensiveNoDamageOverview.damageRecyclerView.layoutManager =
+                        StaggeredGridLayoutManager(
+                            ceil(it.size.toFloat() / 4).toInt(),
+                            StaggeredGridLayoutManager.HORIZONTAL
+                        )
                 } else {
                     binding.defensiveNoDamageOverview.noTypesTextView.visibility = View.VISIBLE
                 }
