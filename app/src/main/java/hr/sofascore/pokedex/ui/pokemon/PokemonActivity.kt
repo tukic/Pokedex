@@ -15,6 +15,7 @@ import hr.sofascore.pokedex.model.shared.*
 import hr.sofascore.pokedex.ui.adapter.EvolutionAdapter
 import hr.sofascore.pokedex.ui.adapter.PokemonTypeAdapter
 import hr.sofascore.pokedex.viewmodels.EvolutionViewModel
+import hr.sofascore.pokedex.viewmodels.LanguageViewModel
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 import hr.sofascore.pokedex.viewmodels.TypeViewModel
 import java.util.*
@@ -28,6 +29,7 @@ class PokemonActivity : AppCompatActivity() {
     val pokemonViewModel: PokemonViewModel by viewModels<PokemonViewModel>()
     val evolutionViewModel: EvolutionViewModel by viewModels<EvolutionViewModel>()
     val typeViewModel: TypeViewModel by viewModels<TypeViewModel>()
+    val languageViewModel: LanguageViewModel by viewModels<LanguageViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_PokemonActivity)
@@ -55,8 +57,17 @@ class PokemonActivity : AppCompatActivity() {
             {
                 typeViewModel.getPokemonTypes(it)
                 evolutionViewModel.getEvolutions(it.id)
+                it.abilities?.find { !it.is_hidden }?.ability?.url?.let {
+                    languageViewModel.translateAbility(this, it)
+                }
+                it.abilities?.find { it.is_hidden }?.ability?.url?.let {
+                    languageViewModel.translateHiddenAbility(this, it)
+                }
                 setStats(it)
-                setAbilites(it)
+                it.stats?.map { it.stat.url }?.let {
+                    languageViewModel.translateStats(it)
+                }
+                //setAbilites(it)
             }
         )
 
@@ -72,7 +83,7 @@ class PokemonActivity : AppCompatActivity() {
         binding.weightTextView.text = pokemon.getFormattedWeight()
         binding.heightTextView.text = pokemon.getFormattedHeight()
 
-        setAbilites(pokemon)
+        //setAbilites(pokemon)
         setStats(pokemon)
 
         pokemonViewModel.favouritePokemon.observe(
@@ -98,7 +109,8 @@ class PokemonActivity : AppCompatActivity() {
         }
 
         binding.pokemonTypeRecycler.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        //StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.pokemonTypeRecycler.itemAnimator = DefaultItemAnimator()
 
         typeViewModel.pokemonTypes.observe(
@@ -154,6 +166,52 @@ class PokemonActivity : AppCompatActivity() {
         )
         setPokeathlonStats()
 
+        languageViewModel.abilityTranslation.observe(
+            this as LifecycleOwner,
+            {
+                binding.abilityTextView.text = it
+            }
+        )
+        languageViewModel.hiddenAbilityTranslation.observe(
+            this as LifecycleOwner,
+            {
+                binding.hiddenAbilityTextView.text = it
+            }
+        )
+
+        languageViewModel.statsTranslations.observe(
+            this as LifecycleOwner,
+            {
+                it.forEach {
+                    when (it.name) {
+                        "hp" -> binding.hpBaseStat.baseStatsLabelTextView.text =
+                            "${it.getName(this)}:"
+                        "attack" -> binding.attackBaseStat.baseStatsLabelTextView.text =
+                            "${it.getName(this)}:"
+                        "defense" -> binding.defenseBaseStat.baseStatsLabelTextView.text =
+                            "${it.getName(this)}:"
+                        "special-attack" -> binding.spAttackBaseStat.baseStatsLabelTextView.text =
+                            "${it.getName(this)}:"
+                        "special-defense" -> binding.spDefenseBaseStat.baseStatsLabelTextView.text =
+                            "${it.getName(this)}:"
+                        "speed" -> binding.speedBaseStat.baseStatsLabelTextView.text =
+                            "${it.getName(this)}:"
+                    }
+                }
+            }
+        )
+
+        pokemon.stats?.map { it.stat.url }?.let {
+            languageViewModel.translateStats(it)
+        }
+
+        pokemon.abilities?.find { !it.is_hidden }?.ability?.url?.let {
+            languageViewModel.translateAbility(this, it)
+        }
+        pokemon.abilities?.find { it.is_hidden }?.ability?.url?.let {
+            languageViewModel.translateHiddenAbility(this, it)
+        }
+
     }
 
     private fun findEvolutions(
@@ -189,6 +247,7 @@ class PokemonActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
     private fun setAbilites(pokemon: PokemonResponse) {
@@ -249,7 +308,11 @@ class PokemonActivity : AppCompatActivity() {
         val total = speed + power + skill + stamina + jump
         val maxTotal = maxSpeed + maxPower + maxSkill + maxStamina + maxJump
 
-        binding.speedPokeathlonStatsItem.addStars(speed, maxSpeed - speed, R.color.flat_pokemon_type_poison)
+        binding.speedPokeathlonStatsItem.addStars(
+            speed,
+            maxSpeed - speed,
+            R.color.flat_pokemon_type_poison
+        )
         binding.powerPokeathlonStatsItem.addStars(power, maxPower - power, R.color.error)
         binding.skillPokeathlonStatsItem.addStars(skill, maxSkill - skill, R.color.tint_secondary)
         binding.staminaPokeathlonStatsItem.addStars(

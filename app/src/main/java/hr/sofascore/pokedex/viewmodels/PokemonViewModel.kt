@@ -10,6 +10,7 @@ import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.networking.initialPokemonURL
 import hr.sofascore.pokedex.model.shared.PokemonList
 import hr.sofascore.pokedex.model.shared.PokemonResponse
+import hr.sofascore.pokedex.model.shared.PokemonType
 import hr.sofascore.pokedex.ui.NameFilteringPokemonDataSource
 import hr.sofascore.pokedex.ui.PokemonDataSource
 import hr.sofascore.pokedex.ui.RangeFilteringPokemonDataSource
@@ -272,8 +273,14 @@ class PokemonViewModel : ViewModel() {
             val async = names.map {
                 async {
                     Network().getService().getPokemonByName(it).body().apply {
-                        this?.types?.get(0)?.type?.url?.let {
-                            this.typeDetail = Network().getService().getPokemonType(it).body()
+                        val tmp = arrayListOf<PokemonType>()
+                        this?.types?.forEach {
+                            it.type.url?.let {
+                                Network().getService().getPokemonType(it).body()?.let {
+                                    tmp.add(it)
+                                }
+                            }
+                            this.typeDetail = tmp
                         }
                     }
                 }

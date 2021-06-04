@@ -20,6 +20,7 @@ class BaseStatsItem(context: Context, attrs: AttributeSet) : FrameLayout(context
 
     var statsProgressBar: ProgressBar
     var baseStatsValueTextView: TextView
+    var baseStatsLabelTextView: TextView
 
     init {
         val view = LayoutInflater.from(context)
@@ -35,7 +36,8 @@ class BaseStatsItem(context: Context, attrs: AttributeSet) : FrameLayout(context
         ).apply {
             baseStatsValueTextView = binding.baseStatsValueTextView
             statsProgressBar = binding.baseStatsValueProgressBar
-            binding.baseStatsLabelTextView.text = getString(R.styleable.BaseStatsItem_base_stats_label)
+            baseStatsLabelTextView = binding.baseStatsLabelTextView
+            //binding.baseStatsLabelTextView.text = getString(R.styleable.BaseStatsItem_base_stats_label)
             binding.baseStatsValueProgressBar.progressTintList = ColorStateList.valueOf(
                 getColor(R.styleable.BaseStatsItem_stats_bar_color, Color.BLACK)
             )

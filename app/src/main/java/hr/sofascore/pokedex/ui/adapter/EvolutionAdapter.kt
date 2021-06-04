@@ -64,14 +64,11 @@ class EvolutionAdapter(
             current.pokemonResponse?.let { pokemon ->
                 image.load(pokemon.getImageURL())
                 var typeName: String? = null
-                pokemon.typeDetail?.let {
-                    typeName = it.getName(context)
-                }
-                if (pokemon.types?.size == 1) {
-                    pokemon.types?.get(0)?.type?.let {
+                if (pokemon.typeDetail?.size == 1) {
+                    pokemon.typeDetail?.get(0)?.let {
                         type.backgroundTintList = context.getColorStateList(it.getTypeColor())
                         if (typeName == null) {
-                            typeName = it.name
+                            typeName = it.getName(context)
                         }
                     }
                     type.text = typeName
@@ -87,13 +84,13 @@ class EvolutionAdapter(
                             .apply {
                                 visibility = View.VISIBLE
                             }
-                    pokemon.types?.get(0)?.type?.let {
+                    pokemon.typeDetail?.get(0)?.let {
                         type1.backgroundTintList = context.getColorStateList(it.getTypeColor())
-                        type1.text = it.name
+                        type1.text = it.getName(context)
                     }
-                    pokemon.types?.get(1)?.type?.let {
+                    pokemon.typeDetail?.get(1)?.let {
                         type2.backgroundTintList = context.getColorStateList(it.getTypeColor())
-                        type2.text = it.name
+                        type2.text = it.getName(context)
                     }
                 }
             }

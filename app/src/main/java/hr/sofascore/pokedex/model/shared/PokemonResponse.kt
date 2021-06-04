@@ -29,7 +29,7 @@ data class PokemonResponse @JvmOverloads constructor (
     @Ignore
     var types: List<PokemonTypeInfo>? = arrayListOf(),
     @Ignore
-    var typeDetail: PokemonType? = null,
+    var typeDetail: List<PokemonType>? = arrayListOf(),
     @Ignore
     var ability: MutableList<AbilityResponse>? = arrayListOf<AbilityResponse>(),
     @Ignore

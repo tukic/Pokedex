@@ -46,6 +46,9 @@ interface PokemonService {
     suspend fun getStatByURL(@Url url: String): Response<Stat>
 
     @GET
+    suspend fun getPokeathlonStatByURL(@Url url: String): Response<PokeathlonStat>
+
+    @GET
     suspend fun getAbilityByURL(@Url url: String): Response<AbilityResponse>
 
     @GET
