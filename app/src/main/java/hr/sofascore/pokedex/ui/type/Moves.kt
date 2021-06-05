@@ -176,5 +176,6 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
             })
             binding.table.addView(row)
         }
+        binding.tableProgressBar.visibility = View.GONE
     }
 }

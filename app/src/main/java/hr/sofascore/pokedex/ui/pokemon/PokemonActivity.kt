@@ -2,12 +2,13 @@ package hr.sofascore.pokedex.ui.pokemon
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.api.load
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.ActivityPokemonBinding
@@ -47,6 +48,8 @@ class PokemonActivity : AppCompatActivity() {
 
         val pokemon = intent.extras?.getSerializable(POKEMON_EXTRA) as PokemonResponse
 
+        binding.typeProgressBar.visibility = ProgressBar.VISIBLE
+
         pokemon.types?.let {
             if (it.isEmpty()) {
                 pokemonViewModel.getPokemon(pokemon.id)
@@ -84,7 +87,7 @@ class PokemonActivity : AppCompatActivity() {
         binding.heightTextView.text = pokemon.getFormattedHeight()
 
         //setAbilites(pokemon)
-        setStats(pokemon)
+        if(pokemon.stats?.isNotEmpty() == true) setStats(pokemon)
 
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,
@@ -117,9 +120,10 @@ class PokemonActivity : AppCompatActivity() {
             this as LifecycleOwner,
             {
                 binding.pokemonTypeRecycler.adapter = PokemonTypeAdapter(this, it)
+                binding.typeProgressBar.visibility = ProgressBar.GONE
             }
         )
-        typeViewModel.getPokemonTypes(pokemon)
+        if(pokemon.types?.isNotEmpty() == true) typeViewModel.getPokemonTypes(pokemon)
 
         val evolutionChains: MutableList<EvolutionHelper> = arrayListOf()
         evolutionViewModel.evolution.observe(
@@ -169,12 +173,14 @@ class PokemonActivity : AppCompatActivity() {
         languageViewModel.abilityTranslation.observe(
             this as LifecycleOwner,
             {
+                binding.abilityProgressBar.visibility = View.GONE
                 binding.abilityTextView.text = it
             }
         )
         languageViewModel.hiddenAbilityTranslation.observe(
             this as LifecycleOwner,
             {
+                binding.hiddenAbilityProgressBar.visibility = View.GONE
                 binding.hiddenAbilityTextView.text = it
             }
         )
@@ -291,6 +297,7 @@ class PokemonActivity : AppCompatActivity() {
             binding.speedBaseStat.statsProgressBar.progress = it.base_stat
         }
         binding.totalStatsValueTextView.text = pokemon.getTotalStats().toString()
+        setStatsVisible()
     }
 
     fun setPokeathlonStats() {
@@ -328,6 +335,18 @@ class PokemonActivity : AppCompatActivity() {
             maxTotal,
             R.color.cold_gray
         )
+    }
+
+    fun setStatsVisible() {
+        binding.statsProgressBar.visibility = View.GONE
+        binding.hpBaseStat.visibility = View.VISIBLE
+        binding.attackBaseStat.visibility = View.VISIBLE
+        binding.defenseBaseStat.visibility = View.VISIBLE
+        binding.spAttackBaseStat.visibility = View.VISIBLE
+        binding.spDefenseBaseStat.visibility = View.VISIBLE
+        binding.speedBaseStat.visibility = View.VISIBLE
+        binding.totalStatsLabelTextView.visibility = View.VISIBLE
+        binding.totalStatsValueTextView.visibility = View.VISIBLE
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

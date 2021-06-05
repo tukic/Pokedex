@@ -3,6 +3,7 @@ package hr.sofascore.pokedex.ui.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -47,5 +48,9 @@ class DamageOverviewItem(context: Context, attrs: AttributeSet) : FrameLayout(co
             damageRecyclerView = binding.damageRecycler
             noTypesTextView = binding.noTypesLabelTextView
         }
+    }
+
+    fun removeProgressBar() {
+        binding.progressBar.visibility = View.GONE
     }
 }

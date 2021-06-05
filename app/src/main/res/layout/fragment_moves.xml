@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/surface_1"
     tools:context=".ui.type.TypeActivity">
 
@@ -135,6 +136,13 @@
                         android:background="@drawable/ic_sort" />
                 </LinearLayout>
             </TableRow>
+
+            <ProgressBar
+                android:id="@+id/table_progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/cold_gray" />
         </TableLayout>
     </HorizontalScrollView>
 </ScrollView>

@@ -99,6 +99,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/pokedex_num_text_view" />
 
+            <ProgressBar
+                android:id="@+id/type_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/cold_gray"
+                app:layout_constraintTop_toBottomOf="@id/pokemon_type_text_view" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/pokemon_type_recycler"
                 android:layout_width="wrap_content"
@@ -224,6 +236,18 @@
                 app:layout_constraintStart_toStartOf="@id/abilities_container_background_view"
                 app:layout_constraintTop_toTopOf="@id/abilities_container_background_view" />
 
+            <ProgressBar
+                android:id="@+id/ability_progress_bar"
+                android:layout_width="148dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/cold_gray"
+                app:layout_constraintBottom_toBottomOf="@id/abilities_container_background_view"
+                app:layout_constraintStart_toStartOf="@id/abilities_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/abilities_title_text_view" />
+
             <TextView
                 android:id="@+id/ability_text_view"
                 style="@style/InputTextDarkCenter"
@@ -234,6 +258,16 @@
                 app:layout_constraintBottom_toBottomOf="@id/abilities_container_background_view"
                 app:layout_constraintStart_toStartOf="@id/abilities_container_background_view"
                 app:layout_constraintTop_toBottomOf="@id/abilities_title_text_view" />
+
+            <ProgressBar
+                android:id="@+id/hidden_ability_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/cold_gray"
+                app:layout_constraintStart_toStartOf="@id/hidden_ability_label_text_view"
+                app:layout_constraintEnd_toEndOf="@id/hidden_ability_label_text_view"
+                app:layout_constraintBottom_toTopOf="@id/hidden_ability_label_text_view" />
 
             <TextView
                 android:id="@+id/hidden_ability_text_view"
@@ -278,11 +312,23 @@
                 app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
                 app:layout_constraintTop_toTopOf="@id/stats_container_background_view" />
 
+            <ProgressBar
+                android:id="@+id/stats_progress_bar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/cold_gray"
+                app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
+                app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
+                app:layout_constraintTop_toBottomOf="@id/stats_title_text_view"
+                app:layout_constraintBottom_toBottomOf="@id/stats_container_background_view" />
+
             <hr.sofascore.pokedex.ui.views.BaseStatsItem
                 android:id="@+id/hp_base_stat"
                 android:layout_width="328dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
+                android:visibility="gone"
                 app:base_stats_label="@string/hp"
                 app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
                 app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
@@ -292,6 +338,7 @@
             <hr.sofascore.pokedex.ui.views.BaseStatsItem
                 android:id="@+id/attack_base_stat"
                 android:layout_width="328dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="4dp"
@@ -305,6 +352,7 @@
                 android:id="@+id/defense_base_stat"
                 android:layout_width="328dp"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="4dp"
                 app:base_stats_label="@string/defense"
@@ -317,6 +365,7 @@
                 android:id="@+id/sp_attack_base_stat"
                 android:layout_width="328dp"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="4dp"
                 app:base_stats_label="@string/sp_atk"
@@ -331,6 +380,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="4dp"
+                android:visibility="gone"
                 app:base_stats_label="@string/sp_def"
                 app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
                 app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
@@ -343,6 +393,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="4dp"
+                android:visibility="gone"
                 app:base_stats_label="@string/speed"
                 app:layout_constraintEnd_toEndOf="@id/stats_container_background_view"
                 app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
@@ -353,6 +404,7 @@
                 android:id="@+id/total_stats_label_text_view"
                 android:layout_width="52dp"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
@@ -365,6 +417,7 @@
                 android:id="@+id/total_stats_value_text_view"
                 android:layout_width="28dp"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="4dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
@@ -476,6 +529,18 @@
                 app:layout_constraintTop_toTopOf="@id/evolution_title_background_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ProgressBar
+                android:id="@+id/evolutions_progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/cold_gray"
+                android:paddingVertical="32dp"
+                android:background="@color/surface_1"
+                app:layout_constraintTop_toBottomOf="@id/evolution_title_background_view"
+                app:layout_constraintStart_toStartOf="@id/stats_container_background_view"
+                app:layout_constraintEnd_toEndOf="@id/stats_container_background_view" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/evolution_recycler_view"

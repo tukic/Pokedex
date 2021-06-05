@@ -44,6 +44,7 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
                 } else {
                     binding.offenseDoubleDamageOverview.noTypesTextView.visibility = View.VISIBLE
                 }
+                binding.offenseDoubleDamageOverview.removeProgressBar()
             }
         )
         typeViewModel.offensiveHalfDamageTypes.observe(
@@ -60,6 +61,7 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
                 } else {
                     binding.offenseHalfDamageOverview.noTypesTextView.visibility = View.VISIBLE
                 }
+                binding.offenseHalfDamageOverview.removeProgressBar()
             }
         )
         typeViewModel.offensiveNoDamageTypes.observe(
@@ -76,6 +78,7 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
                 } else {
                     binding.offenseNoDamageOverview.noTypesTextView.visibility = View.VISIBLE
                 }
+                binding.offenseNoDamageOverview.removeProgressBar()
             }
         )
         typeViewModel.defensiveHalfDamageTypes.observe(
@@ -92,6 +95,7 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
                 } else {
                     binding.defensiveHalfDamageOverview.noTypesTextView.visibility = View.VISIBLE
                 }
+                binding.defensiveHalfDamageOverview.removeProgressBar()
             }
         )
         typeViewModel.defensiveDoubleDamageTypes.observe(
@@ -108,6 +112,7 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
                 } else {
                     binding.defensiveDoubleDamageOverview.noTypesTextView.visibility = View.VISIBLE
                 }
+                binding.defensiveDoubleDamageOverview.removeProgressBar()
             }
         )
         typeViewModel.defensiveNoDamageTypes.observe(
@@ -124,6 +129,7 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
                 } else {
                     binding.defensiveNoDamageOverview.noTypesTextView.visibility = View.VISIBLE
                 }
+                binding.defensiveNoDamageOverview.removeProgressBar()
             }
         )
 
