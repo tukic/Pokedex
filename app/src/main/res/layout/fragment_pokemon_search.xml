@@ -113,6 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stepSize="1"
+        android:theme="@style/Theme.Slider"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/filter_radio_group" />
 
