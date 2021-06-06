@@ -41,14 +41,14 @@ class SettingsFragment : Fragment() {
 
         languageViewModel.languages.observe(
             this as LifecycleOwner,
-            {
+            { language ->
                 binding.languageSpinner.adapter = ArrayAdapter(
                     requireContext(),
                     R.layout.spinner_language_item,
-                    it.results.map { it.name }.toList()
+                    language.results.map { it.name }.toList()
                 )
                 var select = 0
-                it.results.forEachIndexed { index, result ->
+                language.results.forEachIndexed { index, result ->
                     if (result.name == LanguageHelper.getPreferredLanguage(requireContext())) {
                         select = index
                     }
@@ -56,6 +56,8 @@ class SettingsFragment : Fragment() {
                 binding.languageSpinner.setSelection(select)
             }
         )
+        languageViewModel.getLanguages()
+
         binding.languageSpinner.adapter = ArrayAdapter(
             requireContext(),
             R.layout.spinner_language_item,
@@ -64,7 +66,6 @@ class SettingsFragment : Fragment() {
             }
         )
 
-        languageViewModel.getLanguages()
         binding.aboutBackgroundView.setOnClickListener {
             context?.startActivity(Intent(context, AboutActivity::class.java))
         }
@@ -82,7 +83,6 @@ class SettingsFragment : Fragment() {
                         requireContext(),
                         parent?.getItemAtPosition(position) as String
                     )
-                    println(LanguageHelper.getPreferredLanguage(requireContext()))
                 }
             }
 

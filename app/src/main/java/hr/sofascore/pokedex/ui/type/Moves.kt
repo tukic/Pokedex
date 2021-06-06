@@ -52,11 +52,11 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
 
         moveViewModel.error.observe(
             this as LifecycleOwner,
-            {
+            { message ->
                 binding.tableProgressBar.visibility = View.GONE
                 val snackbar = Snackbar.make(
                     binding.snackbarContainer,
-                    it,
+                    message,
                     Snackbar.LENGTH_LONG
                 ).setAction(" ") {
                     it.visibility = View.GONE
@@ -134,66 +134,64 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
         return view
     }
 
-    fun addRowsToTable(pokemonMove: List<PokemonMove>) {
+    private fun addRowsToTable(pokemonMove: List<PokemonMove>) {
         while (binding.table.childCount > 1) {
             binding.table.removeViewAt(binding.table.childCount - 1)
         }
         pokemonMove.forEach {
             val row = TableRow(requireContext())
             row.addView(TextView(context).apply {
-                setTextAppearance(R.style.AssistiveDarkCenter)
-                text = it.generation.getRomanNumberGen()
-                gravity = Gravity.CENTER
-                setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
+                this.applyStyle(it.generation.getRomanNumberGen())
                 background = context.getDrawable(it.generation.getColor())
                 background.alpha = (0.3 * 255).roundToInt()
             })
             row.addView(TextView(context).apply {
-                setTextAppearance(R.style.AssistiveDarkCenter)
-                text = it.getName(requireContext())
-                gravity = Gravity.CENTER
-                setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
+                this.applyStyle(it.getName(requireContext()))
             })
 
             row.addView(TextView(context).apply {
-                setTextAppearance(R.style.AssistiveDarkCenter)
-                if(it.damage_class_detail != null) {
-                    text = it.damage_class_detail!!.getName(requireContext())
-                } else if(it.damage_class != null){
-                    text = it.damage_class.name
-                } else {
-                    text = "-"
-                }
-                gravity = Gravity.CENTER
-                setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
-                it.damage_class?.let{
+                this.applyStyle(
+                    when {
+                        it.damage_class_detail != null -> {
+                            it.damage_class_detail!!.getName(requireContext())
+                        }
+                        it.damage_class != null -> {
+                            it.damage_class.name
+                        }
+                        else -> {
+                            "-"
+                        }
+                    }
+                )
+                it.damage_class?.let {
                     background = context.getDrawable(it.getDamageClassColor())
                     background.alpha = (0.3 * 255).roundToInt()
                 }
             })
 
             row.addView(TextView(context).apply {
-                setTextAppearance(R.style.AssistiveDarkCenter)
-                text = it.power.let {
+                this.applyStyle(it.power.let {
                     if (it != 0) it.toString()
                     else "-"
-                }
-                gravity = Gravity.CENTER
-                setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
+                })
             })
             row.addView(TextView(context).apply {
-                setTextAppearance(R.style.AssistiveDarkCenter)
-                text = it.pp.let {
+                this.applyStyle(it.pp.let {
                     if (it != 0) it.toString()
                     else "-"
-                }
-                gravity = Gravity.CENTER
-                setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
+                })
                 setBackgroundColor(context.getColor(R.color.cold_gray))
                 background.alpha = (0.1 * 255).roundToInt()
             })
             binding.table.addView(row)
         }
         binding.tableProgressBar.visibility = View.GONE
+    }
+
+    private fun TextView.applyStyle(value: String) {
+        setTextAppearance(R.style.AssistiveDarkCenter)
+        setPadding(resources.getDimensionPixelSize(R.dimen.moves_table_column_margin))
+        text = value
+        gravity = Gravity.CENTER
     }
 }

@@ -34,10 +34,10 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
 
         typeViewModel.error.observe(
             this as LifecycleOwner,
-            {
+            { message ->
                 val snackbar = Snackbar.make(
                     binding.snackbarContainer,
-                    it,
+                    message,
                     Snackbar.LENGTH_LONG
                 ).setAction(" ") {
                     it.visibility = View.GONE
@@ -49,104 +49,38 @@ class DamageOverview(val pokemonType: PokemonType) : Fragment() {
 
         typeViewModel.offensiveDoubleDamageTypes.observe(
             this as LifecycleOwner,
-            {
-                if (it.isNotEmpty()) {
-                    binding.offenseDoubleDamageOverview.damageRecyclerView.adapter =
-                        PokemonTypeAdapter(requireContext(), it)
-                    binding.offenseDoubleDamageOverview.damageRecyclerView.layoutManager =
-                        StaggeredGridLayoutManager(
-                            ceil(it.size.toFloat() / 4).toInt(),
-                            StaggeredGridLayoutManager.HORIZONTAL
-                        )
-                } else {
-                    binding.offenseDoubleDamageOverview.noTypesTextView.visibility = View.VISIBLE
-                }
-                binding.offenseDoubleDamageOverview.removeProgressBar()
+            { types ->
+                binding.offenseDoubleDamageOverview.setRecycler(requireContext(), types)
             }
         )
         typeViewModel.offensiveHalfDamageTypes.observe(
             this as LifecycleOwner,
-            {
-                if (it.isNotEmpty()) {
-                    binding.offenseHalfDamageOverview.damageRecyclerView.layoutManager =
-                        StaggeredGridLayoutManager(
-                            ceil(it.size.toFloat() / 4).toInt(),
-                            StaggeredGridLayoutManager.HORIZONTAL
-                        )
-                    binding.offenseHalfDamageOverview.damageRecyclerView.adapter =
-                        PokemonTypeAdapter(requireContext(), it)
-                } else {
-                    binding.offenseHalfDamageOverview.noTypesTextView.visibility = View.VISIBLE
-                }
-                binding.offenseHalfDamageOverview.removeProgressBar()
+            { types ->
+                binding.offenseHalfDamageOverview.setRecycler(requireContext(), types)
             }
         )
         typeViewModel.offensiveNoDamageTypes.observe(
             this as LifecycleOwner,
-            {
-                if (it.isNotEmpty()) {
-                    binding.offenseNoDamageOverview.damageRecyclerView.adapter =
-                        PokemonTypeAdapter(requireContext(), it)
-                    binding.offenseNoDamageOverview.damageRecyclerView.layoutManager =
-                        StaggeredGridLayoutManager(
-                            ceil(it.size.toFloat() / 4).toInt(),
-                            StaggeredGridLayoutManager.HORIZONTAL
-                        )
-                } else {
-                    binding.offenseNoDamageOverview.noTypesTextView.visibility = View.VISIBLE
-                }
-                binding.offenseNoDamageOverview.removeProgressBar()
+            { types ->
+                binding.offenseNoDamageOverview.setRecycler(requireContext(), types)
             }
         )
         typeViewModel.defensiveHalfDamageTypes.observe(
             this as LifecycleOwner,
-            {
-                if (it.isNotEmpty()) {
-                    binding.defensiveHalfDamageOverview.damageRecyclerView.adapter =
-                        PokemonTypeAdapter(requireContext(), it)
-                    binding.defensiveHalfDamageOverview.damageRecyclerView.layoutManager =
-                        StaggeredGridLayoutManager(
-                            ceil(it.size.toFloat() / 4).toInt(),
-                            StaggeredGridLayoutManager.HORIZONTAL
-                        )
-                } else {
-                    binding.defensiveHalfDamageOverview.noTypesTextView.visibility = View.VISIBLE
-                }
-                binding.defensiveHalfDamageOverview.removeProgressBar()
+            { types ->
+                binding.defensiveHalfDamageOverview.setRecycler(requireContext(), types)
             }
         )
         typeViewModel.defensiveDoubleDamageTypes.observe(
             this as LifecycleOwner,
-            {
-                if (it.isNotEmpty()) {
-                    binding.defensiveDoubleDamageOverview.damageRecyclerView.adapter =
-                        PokemonTypeAdapter(requireContext(), it)
-                    binding.defensiveDoubleDamageOverview.damageRecyclerView.layoutManager =
-                        StaggeredGridLayoutManager(
-                            ceil(it.size.toFloat() / 4).toInt(),
-                            StaggeredGridLayoutManager.HORIZONTAL
-                        )
-                } else {
-                    binding.defensiveDoubleDamageOverview.noTypesTextView.visibility = View.VISIBLE
-                }
-                binding.defensiveDoubleDamageOverview.removeProgressBar()
+            { types ->
+                binding.defensiveDoubleDamageOverview.setRecycler(requireContext(), types)
             }
         )
         typeViewModel.defensiveNoDamageTypes.observe(
             this as LifecycleOwner,
-            {
-                if (it.isNotEmpty()) {
-                    binding.defensiveNoDamageOverview.damageRecyclerView.adapter =
-                        PokemonTypeAdapter(requireContext(), it)
-                    binding.defensiveNoDamageOverview.damageRecyclerView.layoutManager =
-                        StaggeredGridLayoutManager(
-                            ceil(it.size.toFloat() / 4).toInt(),
-                            StaggeredGridLayoutManager.HORIZONTAL
-                        )
-                } else {
-                    binding.defensiveNoDamageOverview.noTypesTextView.visibility = View.VISIBLE
-                }
-                binding.defensiveNoDamageOverview.removeProgressBar()
+            { types ->
+                binding.defensiveNoDamageOverview.setRecycler(requireContext(), types)
             }
         )
 

@@ -5,17 +5,17 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.DamageOverviewItemBinding
+import hr.sofascore.pokedex.model.shared.PokemonType
+import hr.sofascore.pokedex.ui.adapter.PokemonTypeAdapter
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 class DamageOverviewItem(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
 
     private val binding: DamageOverviewItemBinding
-    val damageRecyclerView: RecyclerView
-    val noTypesTextView: TextView
 
     init {
         val view = LayoutInflater.from(context)
@@ -45,12 +45,25 @@ class DamageOverviewItem(context: Context, attrs: AttributeSet) : FrameLayout(co
             binding.recyclerLeftBorderView.backgroundTintList =
                 getColorStateList(R.styleable.DamageOverviewItem_background_color)
             binding.recyclerBackgroundView.background.alpha = alpha
-            damageRecyclerView = binding.damageRecycler
-            noTypesTextView = binding.noTypesLabelTextView
         }
     }
 
-    fun removeProgressBar() {
+    fun setRecycler(context: Context, types: List<PokemonType>) {
+        if (types.isNotEmpty()) {
+            binding.damageRecycler.adapter =
+                PokemonTypeAdapter(context, types)
+            binding.damageRecycler.layoutManager =
+                StaggeredGridLayoutManager(
+                    ceil(types.size.toFloat() / 4).toInt(),
+                    StaggeredGridLayoutManager.HORIZONTAL
+                )
+        } else {
+            binding.noTypesLabelTextView.visibility = View.VISIBLE
+        }
+        removeProgressBar()
+    }
+
+    private fun removeProgressBar() {
         binding.progressBar.visibility = View.GONE
     }
 }
