@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.EvolutionChain
 import hr.sofascore.pokedex.model.shared.EvolutionDescription
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -15,8 +16,13 @@ class EvolutionViewModel : ViewModel() {
     val evolutions = MutableLiveData<List<EvolutionDescription>>()
     val evolution = MutableLiveData<EvolutionChain>()
 
+    val error = MutableLiveData<String>()
+
     fun getEvolutions(pokemonId: Int) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
             evolutions.value =
                 Network().getService().getSpecies(pokemonId).body()?.let {
                     Network().getService().getEvolutionChain(it.evolution_chain.url)
@@ -26,11 +32,19 @@ class EvolutionViewModel : ViewModel() {
     }
 
     fun getEvolution(pokemonId: Int) {
-        viewModelScope.launch {
-            evolution.value =
-                Network().getService().getSpecies(pokemonId).body()?.let {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
+            val response = Network().getService().getSpecies(pokemonId)
+            evolution.value = response
+                .body()?.let {
                     Network().getService().getEvolutionChain(it.evolution_chain.url).body()
                 }
         }
+    }
+
+    fun handleError(exception: Throwable) {
+        error.value = exception.toString()
     }
 }

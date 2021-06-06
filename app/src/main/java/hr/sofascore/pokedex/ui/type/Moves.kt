@@ -11,10 +11,12 @@ import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
+import com.google.android.material.snackbar.Snackbar
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentMovesBinding
 import hr.sofascore.pokedex.model.shared.PokemonMove
 import hr.sofascore.pokedex.model.shared.PokemonType
+import hr.sofascore.pokedex.ui.views.Snackbars.Companion.configError
 import hr.sofascore.pokedex.viewmodels.MoveViewModel
 import kotlin.math.roundToInt
 
@@ -47,6 +49,22 @@ class Moves(val pokemonType: PokemonType) : Fragment() {
             }
         )
         moveViewModel.getMoves(pokemonType.moves.map { it.url })
+
+        moveViewModel.error.observe(
+            this as LifecycleOwner,
+            {
+                binding.tableProgressBar.visibility = View.GONE
+                val snackbar = Snackbar.make(
+                    binding.snackbarContainer,
+                    it,
+                    Snackbar.LENGTH_LONG
+                ).setAction(" ") {
+                    it.visibility = View.GONE
+                }
+                snackbar.configError(requireContext())
+                snackbar.show()
+            }
+        )
 
         binding.genCell.setOnClickListener {
             if (genAscending) {

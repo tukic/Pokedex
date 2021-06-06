@@ -9,12 +9,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentMovesBinding
 import hr.sofascore.pokedex.databinding.FragmentPokemonsBinding
 import hr.sofascore.pokedex.model.shared.PokemonType
 import hr.sofascore.pokedex.ui.adapter.PagedPokemonAdapter
 import hr.sofascore.pokedex.ui.adapter.PokemonGridAdapter
+import hr.sofascore.pokedex.ui.views.Snackbars.Companion.configError
 import hr.sofascore.pokedex.viewmodels.EvolutionViewModel
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 import hr.sofascore.pokedex.viewmodels.TypeViewModel
@@ -44,6 +46,20 @@ class Pokemons(val type: PokemonType) : Fragment() {
             this as LifecycleOwner,
             {
                 adapter.submitList(it)
+            }
+        )
+        pokemonViewModel.error.observe(
+            this as LifecycleOwner,
+            {
+                val snackbar = Snackbar.make(
+                    binding.snackbarContainer,
+                    it,
+                    Snackbar.LENGTH_LONG
+                ).setAction(" ") {
+                    it.visibility = View.GONE
+                }
+                snackbar.configError(requireContext())
+                snackbar.show()
             }
         )
         pokemonViewModel.filterByPokemonType(type.name)

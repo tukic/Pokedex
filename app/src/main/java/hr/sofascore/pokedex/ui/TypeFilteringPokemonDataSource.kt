@@ -1,16 +1,15 @@
 package hr.sofascore.pokedex.ui
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.PokemonResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class TypeFilteringPokemonDataSource(
     private val scope: CoroutineScope,
     private val filter: String,
+    private val error: MutableLiveData<String>,
     private val pageSize: Int = 10
 ) :
     PageKeyedDataSource<Int, PokemonResponse>() {
@@ -21,7 +20,10 @@ class TypeFilteringPokemonDataSource(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val typeUrlResponse =
                 service.getPagedTypes(Int.MAX_VALUE).body()
             var lastIndex = 0
@@ -75,7 +77,10 @@ class TypeFilteringPokemonDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val start = params.key
             val typeUrlResponse =
                 service.getPagedTypes(Int.MAX_VALUE).body()
@@ -128,7 +133,10 @@ class TypeFilteringPokemonDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val start = params.key
             val typeUrlResponse =
                 service.getPagedTypes(Int.MAX_VALUE).body()
@@ -175,5 +183,9 @@ class TypeFilteringPokemonDataSource(
                 )
             }
         }
+    }
+
+    private fun handleError(exception: Throwable) {
+        error.value = exception.toString()
     }
 }

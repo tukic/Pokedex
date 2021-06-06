@@ -1,16 +1,15 @@
 package hr.sofascore.pokedex.ui
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.PokemonResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class NameFilteringPokemonDataSource(
     private val scope: CoroutineScope,
     private val filter: String,
+    private val error: MutableLiveData<String>,
     private val pageSize: Int = 10
 ) :
     PageKeyedDataSource<Int, PokemonResponse>() {
@@ -21,7 +20,10 @@ class NameFilteringPokemonDataSource(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val pokemonUrlResponse =
                 service.getPagedPokemons(Int.MAX_VALUE).body()
             val count = pokemonUrlResponse!!.count
@@ -64,7 +66,10 @@ class NameFilteringPokemonDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val offset = params.key
             val pokemonUrlResponse =
                 service.getPagedPokemonByURL(offset, Int.MAX_VALUE).body()
@@ -107,7 +112,10 @@ class NameFilteringPokemonDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val offset = params.key
             val pokemonUrlResponse =
                 service.getPagedPokemonByURL(offset, Int.MAX_VALUE).body()
@@ -145,5 +153,9 @@ class NameFilteringPokemonDataSource(
                 )
             }
         }
+    }
+
+    private fun handleError(exception: Throwable) {
+        error.value = exception.toString()
     }
 }

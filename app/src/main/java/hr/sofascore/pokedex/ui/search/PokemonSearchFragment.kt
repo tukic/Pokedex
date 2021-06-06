@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.slider.RangeSlider
+import com.google.android.material.snackbar.Snackbar
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentPokemonSearchBinding
 import hr.sofascore.pokedex.model.shared.PokemonResponse
@@ -20,6 +21,7 @@ import hr.sofascore.pokedex.ui.adapter.StartPokemonActivityListener
 import hr.sofascore.pokedex.ui.pokemon.POKEMON_EXTRA
 import hr.sofascore.pokedex.ui.pokemon.PokemonActivity
 import hr.sofascore.pokedex.ui.views.FavouritePokemonListener
+import hr.sofascore.pokedex.ui.views.Snackbars.Companion.configError
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 
 
@@ -47,6 +49,22 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+
+        pokemonViewModel.error.observe(
+            this as LifecycleOwner,
+            {
+                val snackbar = Snackbar.make(
+                    binding.snackbarContainer,
+                    it,
+                    Snackbar.LENGTH_LONG
+                ).setAction(" ") {
+                    it.visibility = View.GONE
+                }
+                snackbar.configError(requireContext())
+                snackbar.show()
+            }
+        )
+
         pokemonViewModel.pokemonPagedList.observe(
             this as LifecycleOwner,
             {

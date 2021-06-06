@@ -1,17 +1,17 @@
 package hr.sofascore.pokedex.ui
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PageKeyedDataSource
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.PokemonList
 import hr.sofascore.pokedex.model.shared.PokemonResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class PokemonDataSource(
     private val initialURL: String,
     private val scope: CoroutineScope,
+    private val error: MutableLiveData<String>
 ) :
     PageKeyedDataSource<String, PokemonResponse>() {
 
@@ -21,7 +21,10 @@ class PokemonDataSource(
         params: LoadInitialParams<String>,
         callback: LoadInitialCallback<String, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val pokemonUrlResponse = service.getPagedPokemonByURL(initialURL)
             val async = pokemonUrlResponse.body()?.results?.map {
                 async {
@@ -39,7 +42,10 @@ class PokemonDataSource(
         params: LoadParams<String>,
         callback: LoadCallback<String, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val pokemonUrlResponse = service.getPagedPokemonByURL(params.key)
             val async = pokemonUrlResponse.body()?.results?.map {
                 async {
@@ -57,7 +63,10 @@ class PokemonDataSource(
         params: LoadParams<String>,
         callback: LoadCallback<String, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val pokemonUrlResponse = service.getPagedPokemonByURL(params.key)
             val async = pokemonUrlResponse.body()?.results?.map {
                 async {
@@ -71,4 +80,7 @@ class PokemonDataSource(
         }
     }
 
+    private fun handleError(exception: Throwable) {
+        error.value = exception.toString()
+    }
 }

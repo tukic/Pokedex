@@ -12,4 +12,10 @@
         android:background="@color/surface_0"
         android:paddingHorizontal="4dp"
         android:paddingVertical="12dp"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snackbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"/>
 </FrameLayout>

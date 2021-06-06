@@ -3,15 +3,12 @@ package hr.sofascore.pokedex.ui.settings
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
@@ -20,9 +17,8 @@ import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.FragmentSettingsBinding
 import hr.sofascore.pokedex.databinding.PopoverLayoutBinding
 import hr.sofascore.pokedex.ui.settings.about.AboutActivity
-import hr.sofascore.pokedex.util.LOCALE_DEFAULT
+import hr.sofascore.pokedex.ui.views.Snackbars.Companion.configNormal
 import hr.sofascore.pokedex.util.LanguageHelper
-import hr.sofascore.pokedex.util.PREF_LANGUAGE_CODE
 import hr.sofascore.pokedex.viewmodels.LanguageViewModel
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
 
@@ -111,19 +107,11 @@ class SettingsFragment : Fragment() {
                 ).setAction(" ") {
                     it.visibility = View.GONE
                 }
-                snackbar.config(requireContext())
+                snackbar.configNormal(requireContext())
                 snackbar.show()
             }
         }
 
         return view
-    }
-
-    fun Snackbar.config(context: Context) {
-        val actionButton =
-            this.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_action)
-        actionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close, 0, 0, 0)
-        this.view.background =
-            AppCompatResources.getDrawable(context, R.drawable.snackbar_background)
     }
 }

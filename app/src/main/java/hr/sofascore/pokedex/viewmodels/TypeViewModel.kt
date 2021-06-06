@@ -7,6 +7,7 @@ import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.PokemonResponse
 import hr.sofascore.pokedex.model.shared.PokemonType
 import hr.sofascore.pokedex.model.shared.PokemonTypeDetail
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
@@ -22,10 +23,13 @@ class TypeViewModel : ViewModel() {
     val defensiveHalfDamageTypes = MutableLiveData<List<PokemonType>>()
     val defensiveDoubleDamageTypes = MutableLiveData<List<PokemonType>>()
     val defensiveNoDamageTypes = MutableLiveData<List<PokemonType>>()
-
+    val error = MutableLiveData<String>()
 
     fun getPokemons(pokemonList: List<PokemonTypeDetail>) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
             val asyncTask = pokemonList.map {
                 async {
                     Network().getService().getPokemonByURL(it.pokemon.url).body()
@@ -37,7 +41,10 @@ class TypeViewModel : ViewModel() {
 
 
     fun getType(url: String) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
             Network().getService().getPokemonType(url).body()?.let {
                 pokemonType.value = it
             }
@@ -45,16 +52,23 @@ class TypeViewModel : ViewModel() {
     }
 
     fun getPokemonTypes(pokemon: PokemonResponse) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
             pokemonTypes.value =
                 pokemon.types?.map {
-                    Network().getService().getPokemonType(it.type.url).body()
+                    val response = Network().getService().getPokemonType(it.type.url)
+                    response.body()
                 }?.toList()?.filterNotNull()
         }
     }
 
     fun getOffensiveDoubleDamageTypes(urls: List<String>) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
             offensiveDoubleDamageTypes.value =
                 urls.map {
                     Network().getService().getPokemonType(it).body()
@@ -63,7 +77,10 @@ class TypeViewModel : ViewModel() {
     }
 
     fun getOffensiveHalfDamageTypes(urls: List<String>) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
             offensiveHalfDamageTypes.value =
                 urls.map {
                     Network().getService().getPokemonType(it).body()
@@ -72,7 +89,10 @@ class TypeViewModel : ViewModel() {
     }
 
     fun getOffensiveNoDamageTypes(urls: List<String>) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
             offensiveNoDamageTypes.value =
                 urls.map {
                     Network().getService().getPokemonType(it).body()
@@ -81,7 +101,10 @@ class TypeViewModel : ViewModel() {
     }
 
     fun getDefensiveHalfDamageTypes(urls: List<String>) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
             defensiveHalfDamageTypes.value =
                 urls.map {
                     Network().getService().getPokemonType(it).body()
@@ -90,7 +113,10 @@ class TypeViewModel : ViewModel() {
     }
 
     fun getDefensiveDoubleTypes(urls: List<String>) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
             defensiveDoubleDamageTypes.value =
                 urls.map {
                     Network().getService().getPokemonType(it).body()
@@ -99,11 +125,19 @@ class TypeViewModel : ViewModel() {
     }
 
     fun getDefensiveNoDamageTypes(urls: List<String>) {
-        viewModelScope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        viewModelScope.launch(handler) {
             defensiveNoDamageTypes.value =
                 urls.map {
                     Network().getService().getPokemonType(it).body()
                 }.toList().filterNotNull()
+
         }
+    }
+
+    fun handleError(exception: Throwable) {
+        error.value = exception.toString()
     }
 }

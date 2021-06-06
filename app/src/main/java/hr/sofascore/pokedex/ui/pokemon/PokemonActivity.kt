@@ -1,20 +1,25 @@
 package hr.sofascore.pokedex.ui.pokemon
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
+import com.google.android.material.snackbar.Snackbar
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.ActivityPokemonBinding
 import hr.sofascore.pokedex.model.shared.*
 import hr.sofascore.pokedex.ui.adapter.EvolutionAdapter
 import hr.sofascore.pokedex.ui.adapter.PokemonTypeAdapter
+import hr.sofascore.pokedex.ui.views.Snackbars.Companion.configError
 import hr.sofascore.pokedex.viewmodels.EvolutionViewModel
 import hr.sofascore.pokedex.viewmodels.LanguageViewModel
 import hr.sofascore.pokedex.viewmodels.PokemonViewModel
@@ -49,6 +54,36 @@ class PokemonActivity : AppCompatActivity() {
         val pokemon = intent.extras?.getSerializable(POKEMON_EXTRA) as PokemonResponse
 
         binding.typeProgressBar.visibility = ProgressBar.VISIBLE
+
+        languageViewModel.error.observe(
+            this as LifecycleOwner,
+            {
+                val snackbar = Snackbar.make(
+                    binding.snackbarContainer,
+                    it,
+                    Snackbar.LENGTH_LONG
+                ).setAction(" ") {
+                    it.visibility = View.GONE
+                }
+                snackbar.configError(this)
+                snackbar.show()
+            }
+        )
+
+        pokemonViewModel.error.observe(
+            this as LifecycleOwner,
+            {
+                val snackbar = Snackbar.make(
+                    binding.snackbarContainer,
+                    it,
+                    Snackbar.LENGTH_LONG
+                ).setAction(" ") {
+                    it.visibility = View.GONE
+                }
+                snackbar.configError(this)
+                snackbar.show()
+            }
+        )
 
         pokemon.types?.let {
             if (it.isEmpty()) {

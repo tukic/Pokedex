@@ -1,18 +1,17 @@
 package hr.sofascore.pokedex.ui
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.PokemonList
 import hr.sofascore.pokedex.model.shared.PokemonResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class RangeFilteringPokemonDataSource(
     private val scope: CoroutineScope,
     private val start: Int,
-    private val end: Int
+    private val end: Int,
+    private val error: MutableLiveData<String>
 ) :
     PageKeyedDataSource<Int, PokemonResponse>() {
 
@@ -22,7 +21,10 @@ class RangeFilteringPokemonDataSource(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val limit = if (end - start < 20) end - start else 20
             val pokemonUrlResponse = service.getPagedPokemonByURL(start, limit)
             val async = pokemonUrlResponse.body()?.results?.map {
@@ -44,7 +46,10 @@ class RangeFilteringPokemonDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val newStart = params.key
             val limit = if (end - newStart < 20) end - newStart else 20
             val pokemonUrlResponse = service.getPagedPokemonByURL(newStart, limit)
@@ -66,7 +71,10 @@ class RangeFilteringPokemonDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<Int, PokemonResponse>
     ) {
-        scope.launch {
+        val handler = CoroutineExceptionHandler { context, exception ->
+            handleError(exception)
+        }
+        scope.launch(handler) {
             val newStart = params.key
             val limit = if (end - newStart < 20) end - newStart else 20
             val pokemonUrlResponse = service.getPagedPokemonByURL(newStart, limit)
@@ -82,5 +90,9 @@ class RangeFilteringPokemonDataSource(
                 )
             }
         }
+    }
+
+    private fun handleError(exception: Throwable) {
+        error.value = exception.toString()
     }
 }
