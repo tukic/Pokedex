@@ -11,15 +11,14 @@ import hr.sofascore.pokedex.model.networking.initialPokemonURL
 import hr.sofascore.pokedex.model.shared.PokemonList
 import hr.sofascore.pokedex.model.shared.PokemonResponse
 import hr.sofascore.pokedex.model.shared.PokemonType
-import hr.sofascore.pokedex.ui.NameFilteringPokemonDataSource
-import hr.sofascore.pokedex.ui.PokemonDataSource
-import hr.sofascore.pokedex.ui.RangeFilteringPokemonDataSource
-import hr.sofascore.pokedex.ui.TypeFilteringPokemonDataSource
+import hr.sofascore.pokedex.viewmodels.datasource.NameFilteringPokemonDataSource
+import hr.sofascore.pokedex.viewmodels.datasource.PokemonDataSource
+import hr.sofascore.pokedex.viewmodels.datasource.RangeFilteringPokemonDataSource
+import hr.sofascore.pokedex.viewmodels.datasource.TypeFilteringPokemonDataSource
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class PokemonViewModel : ViewModel() {
 

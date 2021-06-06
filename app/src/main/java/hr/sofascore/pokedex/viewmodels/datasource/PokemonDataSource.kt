@@ -1,93 +1,79 @@
-package hr.sofascore.pokedex.ui
+package hr.sofascore.pokedex.viewmodels.datasource
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import hr.sofascore.pokedex.model.networking.Network
-import hr.sofascore.pokedex.model.shared.PokemonList
 import hr.sofascore.pokedex.model.shared.PokemonResponse
 import kotlinx.coroutines.*
 
-class RangeFilteringPokemonDataSource(
+class PokemonDataSource(
+    private val initialURL: String,
     private val scope: CoroutineScope,
-    private val start: Int,
-    private val end: Int,
     private val error: MutableLiveData<String>
 ) :
-    PageKeyedDataSource<Int, PokemonResponse>() {
+    PageKeyedDataSource<String, PokemonResponse>() {
 
     val service = Network().getService()
 
     override fun loadInitial(
-        params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, PokemonResponse>
+        params: LoadInitialParams<String>,
+        callback: LoadInitialCallback<String, PokemonResponse>
     ) {
         val handler = CoroutineExceptionHandler { context, exception ->
             handleError(exception)
         }
         scope.launch(handler) {
-            val limit = if (end - start < 20) end - start else 20
-            val pokemonUrlResponse = service.getPagedPokemonByURL(start, limit)
+            val pokemonUrlResponse = service.getPagedPokemonByURL(initialURL)
             val async = pokemonUrlResponse.body()?.results?.map {
                 async {
                     service.getPokemonByURL(it.url).body()
                 }
             }
             async?.awaitAll()?.let {
-                callback.onResult(
-                    it.filterNotNull(),
-                    null,
-                    if (start + limit < end) start + limit else null
-                )
+                callback.onResult(it.filterNotNull(), null, pokemonUrlResponse.body()?.next)
             }
+
         }
     }
 
     override fun loadBefore(
-        params: LoadParams<Int>,
-        callback: LoadCallback<Int, PokemonResponse>
+        params: LoadParams<String>,
+        callback: LoadCallback<String, PokemonResponse>
     ) {
         val handler = CoroutineExceptionHandler { context, exception ->
             handleError(exception)
         }
         scope.launch(handler) {
-            val newStart = params.key
-            val limit = if (end - newStart < 20) end - newStart else 20
-            val pokemonUrlResponse = service.getPagedPokemonByURL(newStart, limit)
+            val pokemonUrlResponse = service.getPagedPokemonByURL(params.key)
             val async = pokemonUrlResponse.body()?.results?.map {
                 async {
                     service.getPokemonByURL(it.url).body()
                 }
             }
+            val response = service.getPagedPokemonByURL(params.key)
             async?.awaitAll()?.let {
-                callback.onResult(
-                    it.filterNotNull(),
-                    if (newStart + limit < end) newStart + limit else null
-                )
+                callback.onResult(it.filterNotNull(), response.body()?.next)
             }
         }
     }
 
     override fun loadAfter(
-        params: LoadParams<Int>,
-        callback: LoadCallback<Int, PokemonResponse>
+        params: LoadParams<String>,
+        callback: LoadCallback<String, PokemonResponse>
     ) {
         val handler = CoroutineExceptionHandler { context, exception ->
             handleError(exception)
         }
         scope.launch(handler) {
-            val newStart = params.key
-            val limit = if (end - newStart < 20) end - newStart else 20
-            val pokemonUrlResponse = service.getPagedPokemonByURL(newStart, limit)
+            val pokemonUrlResponse = service.getPagedPokemonByURL(params.key)
             val async = pokemonUrlResponse.body()?.results?.map {
                 async {
                     service.getPokemonByURL(it.url).body()
                 }
             }
+            val response = service.getPagedPokemonByURL(params.key)
             async?.awaitAll()?.let {
-                callback.onResult(
-                    it.filterNotNull(),
-                    if (newStart + limit < end) newStart + limit else null
-                )
+                callback.onResult(it.filterNotNull(), response.body()?.next)
             }
         }
     }

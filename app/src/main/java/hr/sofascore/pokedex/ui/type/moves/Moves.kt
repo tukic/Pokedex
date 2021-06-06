@@ -1,4 +1,4 @@
-package hr.sofascore.pokedex.ui.type
+package hr.sofascore.pokedex.ui.type.moves
 
 import android.os.Bundle
 import android.view.Gravity

@@ -1,4 +1,4 @@
-package hr.sofascore.pokedex.ui.type
+package hr.sofascore.pokedex.ui.type.pokemons
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +23,6 @@ import hr.sofascore.pokedex.viewmodels.TypeViewModel
 
 class Pokemons(val type: PokemonType) : Fragment() {
 
-    //val typeViewModel by activityViewModels<TypeViewModel>()
     val pokemonViewModel by activityViewModels<PokemonViewModel>()
 
     private val adapter = PokemonGridAdapter()

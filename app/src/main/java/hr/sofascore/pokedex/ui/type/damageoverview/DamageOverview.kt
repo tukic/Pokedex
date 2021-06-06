@@ -1,4 +1,4 @@
-package hr.sofascore.pokedex.ui.type
+package hr.sofascore.pokedex.ui.type.damageoverview
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,14 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import hr.sofascore.pokedex.databinding.FragmentDamageOverviewBinding
 import hr.sofascore.pokedex.model.shared.PokemonType
-import hr.sofascore.pokedex.ui.adapter.PokemonTypeAdapter
 import hr.sofascore.pokedex.ui.views.Snackbars.Companion.configError
 import hr.sofascore.pokedex.viewmodels.TypeViewModel
-import kotlin.math.ceil
 
 class DamageOverview(val pokemonType: PokemonType) : Fragment() {
 

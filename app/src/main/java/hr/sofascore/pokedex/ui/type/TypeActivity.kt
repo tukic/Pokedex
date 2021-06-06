@@ -6,8 +6,6 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import hr.sofascore.pokedex.databinding.ActivityTypeBinding
 import hr.sofascore.pokedex.model.shared.PokemonType
-import hr.sofascore.pokedex.model.shared.PokemonTypeDescription
-import hr.sofascore.pokedex.model.shared.PokemonTypeInfo
 import java.util.*
 
 const val POKEMON_TYPE_EXTRA = "POKEMON_TYPE_EXTRA"

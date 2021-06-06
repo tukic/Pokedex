@@ -6,7 +6,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.model.shared.PokemonType
-import hr.sofascore.pokedex.model.shared.PokemonTypeInfo
+import hr.sofascore.pokedex.ui.type.damageoverview.DamageOverview
+import hr.sofascore.pokedex.ui.type.moves.Moves
+import hr.sofascore.pokedex.ui.type.pokemons.Pokemons
 
 private val TAB_TITLES = arrayOf(
     R.string.damage_overview,

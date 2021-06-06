@@ -1,4 +1,4 @@
-package hr.sofascore.pokedex.ui
+package hr.sofascore.pokedex.viewmodels.datasource
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
