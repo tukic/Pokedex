@@ -61,6 +61,13 @@ class Pokemons(val type: PokemonType) : Fragment() {
                 snackbar.show()
             }
         )
+
+        adapter.addLoadStateListener { loadType, loadState ->
+            if(adapter.itemCount > 1) {
+                binding.progressBar.visibility = View.GONE
+            }
+        }
+
         pokemonViewModel.filterByPokemonType(type.name)
         return view
     }

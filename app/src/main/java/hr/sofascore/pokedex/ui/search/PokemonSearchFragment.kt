@@ -58,9 +58,15 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
                 }
                 snackbar.configError(requireContext())
                 snackbar.show()
+                binding.progressBar.visibility = View.GONE
             }
         )
 
+        adapter.addLoadStateListener { loadType, loadState ->
+            if(adapter.itemCount > 1) {
+                binding.progressBar.visibility = View.GONE
+            }
+        }
         pokemonViewModel.pokemonPagedList.observe(
             this as LifecycleOwner,
             {
