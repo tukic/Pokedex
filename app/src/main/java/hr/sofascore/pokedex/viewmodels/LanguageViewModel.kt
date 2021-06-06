@@ -79,6 +79,6 @@ class LanguageViewModel : ViewModel() {
     }
 
     private fun handleError(exception: Throwable) {
-        error.value = exception.toString()
+        error.value = "Error occurred while loading translations"
     }
 }

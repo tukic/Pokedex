@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.PokemonResponse
+import hr.sofascore.pokedex.viewmodels.loadingPokemonsErrorMessage
 import hr.sofascore.pokedex.viewmodels.pageSize
 import kotlinx.coroutines.*
 
@@ -203,6 +204,6 @@ class TypeFilteringPokemonDataSource(
     }
 
     private fun handleError(exception: Throwable) {
-        error.value = exception.toString()
+        error.value = loadingPokemonsErrorMessage
     }
 }

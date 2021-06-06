@@ -21,6 +21,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 const val pageSize = 20
+const val loadingPokemonsErrorMessage = "Error occurred while loading pokemons"
 class PokemonViewModel : ViewModel() {
 
     val pokemon = MutableLiveData<PokemonResponse>()
@@ -273,6 +274,6 @@ class PokemonViewModel : ViewModel() {
     }
 
     private fun handleError(exception: Throwable) {
-        error.value = exception.toString()
+        error.value = loadingPokemonsErrorMessage
     }
 }
