@@ -20,7 +20,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
-const val pageSize = 20
+const val pageSize = 21
 const val loadingPokemonsErrorMessage = "Error occurred while loading pokemons"
 class PokemonViewModel : ViewModel() {
 
