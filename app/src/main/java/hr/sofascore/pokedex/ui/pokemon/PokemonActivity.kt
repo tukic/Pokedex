@@ -32,10 +32,10 @@ class PokemonActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityPokemonBinding
 
-    val pokemonViewModel: PokemonViewModel by viewModels<PokemonViewModel>()
-    val evolutionViewModel: EvolutionViewModel by viewModels<EvolutionViewModel>()
-    val typeViewModel: TypeViewModel by viewModels<TypeViewModel>()
-    val languageViewModel: LanguageViewModel by viewModels<LanguageViewModel>()
+    private val pokemonViewModel: PokemonViewModel by viewModels()
+    private val evolutionViewModel: EvolutionViewModel by viewModels()
+    private val typeViewModel: TypeViewModel by viewModels()
+    private val languageViewModel: LanguageViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_PokemonActivity)
@@ -58,30 +58,14 @@ class PokemonActivity : AppCompatActivity() {
         languageViewModel.error.observe(
             this as LifecycleOwner,
             {
-                val snackbar = Snackbar.make(
-                    binding.snackbarContainer,
-                    it,
-                    Snackbar.LENGTH_LONG
-                ).setAction(" ") {
-                    it.visibility = View.GONE
-                }
-                snackbar.configError(this)
-                snackbar.show()
+                showErrorSnackbar(it)
             }
         )
 
         pokemonViewModel.error.observe(
             this as LifecycleOwner,
             {
-                val snackbar = Snackbar.make(
-                    binding.snackbarContainer,
-                    it,
-                    Snackbar.LENGTH_LONG
-                ).setAction(" ") {
-                    it.visibility = View.GONE
-                }
-                snackbar.configError(this)
-                snackbar.show()
+                showErrorSnackbar(it)
             }
         )
 
@@ -92,42 +76,23 @@ class PokemonActivity : AppCompatActivity() {
         }
         pokemonViewModel.pokemon.observe(
             this as LifecycleOwner,
-            {
-                typeViewModel.getPokemonTypes(it)
-                evolutionViewModel.getEvolutions(it.id)
-                it.abilities?.find { !it.is_hidden }?.ability?.url?.let {
-                    languageViewModel.translateAbility(this, it)
-                }
-                it.abilities?.find { it.is_hidden }?.ability?.url?.let {
-                    languageViewModel.translateHiddenAbility(this, it)
-                }
-                setStats(it)
-                it.stats?.map { it.stat.url }?.let {
-                    languageViewModel.translateStats(it)
-                }
-                //setAbilites(it)
+            { pokemon ->
+                typeViewModel.getPokemonTypes(pokemon)
+                evolutionViewModel.getEvolutions(pokemon.id)
+                translate(
+                    pokemon.abilities?.find { !it.is_hidden }?.ability?.url,
+                    pokemon.abilities?.find { it.is_hidden }?.ability?.url,
+                    pokemon.stats?.map { it.stat.url }
+                )
+                setStats(pokemon)
             }
         )
 
-        binding.pokemonToolbar.title = pokemon.name.capitalize(Locale.getDefault())
-
-        binding.collapsingToolbarLayout.title = pokemon.name.capitalize(Locale.getDefault())
-        binding.collapsingToolbarLayout.setExpandedTitleTextColor(getColorStateList(R.color.black))
-        binding.collapsingToolbarLayout.setCollapsedTitleTextColor(getColorStateList(R.color.black))
-
-        binding.pokedexNumTextView.text = pokemon.getFormattedId()
-        binding.pokemonImageView.load(pokemon.getImageURL())
-
-        binding.weightTextView.text = pokemon.getFormattedWeight()
-        binding.heightTextView.text = pokemon.getFormattedHeight()
-
-        //setAbilites(pokemon)
-        if(pokemon.stats?.isNotEmpty() == true) setStats(pokemon)
-
+        /* handle favorites */
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,
-            {
-                if (it.any { it.id == pokemon.id }) {
+            { favoritePokemons ->
+                if (favoritePokemons.any { it.id == pokemon.id }) {
                     binding.favouritePokemonStarIcon.load(R.drawable.ic_star_1)
                 } else {
                     binding.favouritePokemonStarIcon.load(R.drawable.ic_star_0)
@@ -146,10 +111,22 @@ class PokemonActivity : AppCompatActivity() {
             }
         }
 
+        binding.pokemonToolbar.title = pokemon.name.capitalize(Locale.getDefault())
+
+        binding.collapsingToolbarLayout.title = pokemon.name.capitalize(Locale.getDefault())
+        binding.collapsingToolbarLayout.setExpandedTitleTextColor(getColorStateList(R.color.black))
+        binding.collapsingToolbarLayout.setCollapsedTitleTextColor(getColorStateList(R.color.black))
+
+        binding.pokedexNumTextView.text = pokemon.getFormattedId()
+        binding.pokemonImageView.load(pokemon.getImageURL())
+
+        binding.weightTextView.text = pokemon.getFormattedWeight()
+        binding.heightTextView.text = pokemon.getFormattedHeight()
+
+        if (pokemon.stats?.isNotEmpty() == true) setStats(pokemon)
+
         binding.pokemonTypeRecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        //StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        binding.pokemonTypeRecycler.itemAnimator = DefaultItemAnimator()
 
         typeViewModel.pokemonTypes.observe(
             this as LifecycleOwner,
@@ -158,23 +135,23 @@ class PokemonActivity : AppCompatActivity() {
                 binding.typeProgressBar.visibility = ProgressBar.GONE
             }
         )
-        if(pokemon.types?.isNotEmpty() == true) typeViewModel.getPokemonTypes(pokemon)
+        if (pokemon.types?.isNotEmpty() == true) typeViewModel.getPokemonTypes(pokemon)
 
         val evolutionChains: MutableList<EvolutionHelper> = arrayListOf()
         evolutionViewModel.evolution.observe(
             this as LifecycleOwner,
-            {
-                findEvolutions(evolutionChains, it.chain.evolves_to)
+            { evolutionChain ->
+                findEvolutions(evolutionChains, evolutionChain.chain.evolves_to)
 
                 /* add unevolved pokemon to chain */
-                it.chain.evolves_to.forEach { evolutions ->
+                evolutionChain.chain.evolves_to.forEach { _ ->
                     val next = evolutionChains.find { next ->
-                        it.chain.evolves_to!!.any {
+                        evolutionChain.chain.evolves_to.any {
                             next.name == it.species.name
                         }
                     }
                     evolutionChains.remove(next)
-                    val new = EvolutionHelper(it.chain.species.name, next)
+                    val new = EvolutionHelper(evolutionChain.chain.species.name, next)
                     evolutionChains.add(new)
                 }
 
@@ -190,8 +167,8 @@ class PokemonActivity : AppCompatActivity() {
         pokemonViewModel.evolutionPokemons.observe(
             this as LifecycleOwner,
             { pokemonResponses ->
-                evolutionChains.forEach {
-                    var current: EvolutionHelper? = it
+                evolutionChains.forEach { evolutionChain ->
+                    var current: EvolutionHelper? = evolutionChain
                     while (current != null) {
                         current.pokemonResponse =
                             pokemonResponses.find { it.name == current!!.name }
@@ -203,6 +180,7 @@ class PokemonActivity : AppCompatActivity() {
                     EvolutionAdapter(this, evolutionChains, pokemon.id)
             }
         )
+
         setPokeathlonStats()
 
         languageViewModel.abilityTranslation.observe(
@@ -222,21 +200,21 @@ class PokemonActivity : AppCompatActivity() {
 
         languageViewModel.statsTranslations.observe(
             this as LifecycleOwner,
-            {
-                it.forEach {
-                    when (it.name) {
+            { translations ->
+                translations.forEach { translation ->
+                    when (translation.name) {
                         "hp" -> binding.hpBaseStat.baseStatsLabelTextView.text =
-                            "${it.getName(this)}:"
+                            "${translation.getName(this)}:"
                         "attack" -> binding.attackBaseStat.baseStatsLabelTextView.text =
-                            "${it.getName(this)}:"
+                            "${translation.getName(this)}:"
                         "defense" -> binding.defenseBaseStat.baseStatsLabelTextView.text =
-                            "${it.getName(this)}:"
+                            "${translation.getName(this)}:"
                         "special-attack" -> binding.spAttackBaseStat.baseStatsLabelTextView.text =
-                            "${it.getName(this)}:"
+                            "${translation.getName(this)}:"
                         "special-defense" -> binding.spDefenseBaseStat.baseStatsLabelTextView.text =
-                            "${it.getName(this)}:"
+                            "${translation.getName(this)}:"
                         "speed" -> binding.speedBaseStat.baseStatsLabelTextView.text =
-                            "${it.getName(this)}:"
+                            "${translation.getName(this)}:"
                     }
                 }
             }
@@ -252,7 +230,6 @@ class PokemonActivity : AppCompatActivity() {
         pokemon.abilities?.find { it.is_hidden }?.ability?.url?.let {
             languageViewModel.translateHiddenAbility(this, it)
         }
-
     }
 
     private fun findEvolutions(
@@ -291,22 +268,7 @@ class PokemonActivity : AppCompatActivity() {
 
     }
 
-    private fun setAbilites(pokemon: PokemonResponse) {
-        pokemon.abilities?.filter { !it.is_hidden }?.let {
-            if (it.isNotEmpty()) {
-                binding.abilityTextView.text = it[0].ability.name.capitalize(Locale.getDefault())
-            }
-        }
-
-        pokemon.abilities?.filter { it.is_hidden }?.let {
-            if (it.isNotEmpty()) {
-                binding.hiddenAbilityTextView.text =
-                    it[0].ability.name.capitalize(Locale.getDefault())
-            }
-        }
-    }
-
-    fun setStats(pokemon: PokemonResponse) {
+    private fun setStats(pokemon: PokemonResponse) {
         pokemon.getStat(HP_STAT)?.let {
             binding.hpBaseStat.baseStatsValueTextView.text = it.base_stat.toString()
             binding.hpBaseStat.statsProgressBar.progress = it.base_stat
@@ -382,6 +344,30 @@ class PokemonActivity : AppCompatActivity() {
         binding.speedBaseStat.visibility = View.VISIBLE
         binding.totalStatsLabelTextView.visibility = View.VISIBLE
         binding.totalStatsValueTextView.visibility = View.VISIBLE
+    }
+
+    private fun translate(abilityUrl: String?, hiddenAbilityUrl: String?, statsUrl: List<String>?) {
+        abilityUrl?.let {
+            languageViewModel.translateAbility(this, it)
+        }
+        hiddenAbilityUrl?.let {
+            languageViewModel.translateHiddenAbility(this, it)
+        }
+        statsUrl?.let {
+            languageViewModel.translateStats(it)
+        }
+    }
+
+    private fun showErrorSnackbar(message: String) {
+        val snackbar = Snackbar.make(
+            binding.snackbarContainer,
+            message,
+            Snackbar.LENGTH_LONG
+        ).setAction(" ") {
+            it.visibility = View.GONE
+        }
+        snackbar.configError(this)
+        snackbar.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
