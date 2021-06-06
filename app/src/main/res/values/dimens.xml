@@ -13,5 +13,5 @@
     <dimen name="pokemon_search_top_margin">16dp</dimen>
     <dimen name="pokemon_search_bottom_margin">72dp</dimen>
     <dimen name="pokemon_search_bottom_margin_range_filter">176dp</dimen>
-    <dimen name="pokemon_search_bottom_margin_filter">156dp</dimen>
+    <dimen name="pokemon_search_bottom_margin_filter">128dp</dimen>
 </resources>

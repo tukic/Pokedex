@@ -18,9 +18,7 @@ import java.util.*
 
 class EvolutionAdapter(
     val context: Context,
-    //val pokemon: PokemonResponse,
     val evolutions: List<EvolutionHelper>,
-    val pokemonViewModel: PokemonViewModel,
     val currentId: Int
 ) : RecyclerView.Adapter<EvolutionAdapter.ViewHolder>() {
 
