@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.search.PokemonSearchFragment"
-    android:background="@color/surface_0">
+    android:background="@color/surface_0"
+    tools:context=".ui.search.PokemonSearchFragment">
 
     <View
         android:id="@+id/outer_pokemon_search_bar_background"
@@ -13,130 +13,138 @@
         android:layout_height="64dp"
         android:background="@color/tint_primary"
         app:layout_constraintTop_toTopOf="parent" />
-    
+
     <View
         android:id="@+id/inner_pokemon_search_bar_background"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:foregroundGravity="center_horizontal"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/search_bar_background"
-        app:layout_constraintTop_toTopOf="parent"/>
-    
+        android:foregroundGravity="center_horizontal"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/search_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:background="@drawable/ic_search"
-        android:backgroundTint="#798FA4"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:background="@drawable/ic_search"
+        android:backgroundTint="#798FA4"
+        app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"
         app:layout_constraintStart_toStartOf="@id/inner_pokemon_search_bar_background"
-        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background"
-        app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"/>
+        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background" />
 
     <View
         android:id="@+id/close_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:background="@drawable/ic_close"
         android:backgroundTint="#798FA4"
         android:visibility="gone"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"
         app:layout_constraintStart_toStartOf="@id/inner_pokemon_search_bar_background"
-        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background"
-        app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"/>
+        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background" />
 
     <View
         android:id="@+id/filter_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:background="@drawable/ic_baseline_filter_alt_24"
-        android:backgroundTint="#798FA4"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:background="@drawable/ic_baseline_filter_alt_24"
+        android:backgroundTint="#798FA4"
+        app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"
         app:layout_constraintEnd_toEndOf="@id/inner_pokemon_search_bar_background"
-        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background"
-        app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"/>
+        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background" />
 
 
     <EditText
         android:id="@+id/search_pokemon_text_view"
+        style="@style/InputTextColdGrayLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/InputTextColdGrayLeft"
-        android:hint="@string/search_pokemons"
-        android:inputType="text"
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
-        app:layout_constraintStart_toStartOf="@id/inner_pokemon_search_bar_background"
-        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background"
+        android:background="@android:color/transparent"
+        android:hint="@string/search_pokemons"
+        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="@id/inner_pokemon_search_bar_background"
-        android:background="@android:color/transparent"/>
+        app:layout_constraintStart_toStartOf="@id/inner_pokemon_search_bar_background"
+        app:layout_constraintTop_toTopOf="@id/inner_pokemon_search_bar_background" />
 
     <RadioGroup
         android:id="@+id/filter_radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/outer_pokemon_search_bar_background">
+
         <RadioButton
             android:id="@+id/filter_by_name_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name"
-            android:layout_marginHorizontal="4dp"/>
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/name" />
+
         <RadioButton
             android:id="@+id/filter_by_type_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cap_type"
-            android:layout_marginHorizontal="4dp"/>
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/cap_type" />
+
         <RadioButton
             android:id="@+id/filter_by_range"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/range"
-            android:layout_marginHorizontal="4dp"/>
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/range" />
     </RadioGroup>
 
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/select_range_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:stepSize="1"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/filter_radio_group" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="16dp"
         android:indeterminate="true"
         android:indeterminateTint="@color/cold_gray"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/select_range_bar" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_to_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
-        android:clipToPadding="false"
         android:paddingBottom="72dp"
-        app:layout_constraintTop_toBottomOf="@id/select_range_bar"/>
+        app:layout_constraintTop_toBottomOf="@id/select_range_bar">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/snackbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -63,7 +63,7 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
         )
 
         adapter.addLoadStateListener { loadType, loadState ->
-            if(adapter.itemCount > 1) {
+            if (adapter.itemCount > 1) {
                 binding.progressBar.visibility = View.GONE
             }
         }
@@ -199,6 +199,19 @@ class PokemonSearchFragment : Fragment(), FavouritePokemonListener, StartPokemon
             binding.searchIcon.visibility = View.GONE
             binding.closeIcon.visibility = View.VISIBLE
             binding.searchPokemonTextView.hint = ""
+        }
+
+        binding.swipeToRefresh.setOnRefreshListener {
+            when (binding.filterRadioGroup.checkedRadioButtonId) {
+                R.id.filter_by_name_radio_button -> pokemonViewModel.filterByPokemonName(binding.searchPokemonTextView.text.toString())
+                R.id.filter_by_type_radio_button -> pokemonViewModel.filterByPokemonType(binding.searchPokemonTextView.text.toString())
+                R.id.filter_by_range -> pokemonViewModel.filterByRange(
+                    binding.selectRangeBar.values[0].toInt(),
+                    binding.selectRangeBar.values[1].toInt()
+                )
+                else -> pokemonViewModel.noFilter()
+            }
+            binding.swipeToRefresh.isRefreshing = false
         }
 
         return view
