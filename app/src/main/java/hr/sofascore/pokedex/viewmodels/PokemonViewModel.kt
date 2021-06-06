@@ -20,6 +20,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
+const val pageSize = 20
 class PokemonViewModel : ViewModel() {
 
     val pokemon = MutableLiveData<PokemonResponse>()
@@ -30,26 +31,23 @@ class PokemonViewModel : ViewModel() {
 
     val favouritePokemon = MutableLiveData<List<PokemonResponse>>()
 
-    val allPokemons = MutableLiveData<PokemonList>()
-    val filteredPokemons = MutableLiveData<List<PokemonResponse>>()
-
     val pokemonCount = MutableLiveData<Int>()
 
     val evolutionPokemons = MutableLiveData<List<PokemonResponse>>()
 
-    val noFilter = MutableLiveData<Boolean>()
-    val pokemonNameFilter = MutableLiveData<String>()
-    val pokemonTypeFilter = MutableLiveData<String>()
-    val rangeFilter = MutableLiveData<List<Int>>()
+    private val noFilter = MutableLiveData<Boolean>()
+    private val pokemonNameFilter = MutableLiveData<String>()
+    private val pokemonTypeFilter = MutableLiveData<String>()
+    private val rangeFilter = MutableLiveData<List<Int>>()
 
     val error = MutableLiveData<String>()
 
     init {
         evolutionPokemons.value = arrayListOf<PokemonResponse>()
-        val config = PagedList.Config.Builder().setPageSize(10).setEnablePlaceholders(false).build()
+        val config = PagedList.Config.Builder().setPageSize(pageSize).setEnablePlaceholders(false).build()
 
         pokemonPagedList =
-            noFilter.switchMap { input ->
+            noFilter.switchMap {
                 initializePagedList(config).build()
             }
 
@@ -216,79 +214,6 @@ class PokemonViewModel : ViewModel() {
         }
     }
 
-    fun getAllPokemons() {
-        val handler = CoroutineExceptionHandler { context, exception ->
-            handleError(exception)
-        }
-        viewModelScope.launch(handler) {
-            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
-                allPokemons.value = it
-            }
-        }
-    }
-
-    fun getPokemonsFilteredByName(name: String) {
-        val handler = CoroutineExceptionHandler { context, exception ->
-            handleError(exception)
-        }
-        viewModelScope.launch(handler) {
-            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
-                val async = it.results.filter { it.name.contains(name) }.map {
-                    async {
-                        Network().getService().getPokemonByURL(it.url).body()
-                    }
-                }
-                filteredPokemons.value = async.awaitAll().filterNotNull()
-            }
-        }
-    }
-
-    fun getPokemonsFilteredByRange(start: Int, end: Int) {
-        val handler = CoroutineExceptionHandler { context, exception ->
-            handleError(exception)
-        }
-        viewModelScope.launch(handler) {
-            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
-                val async = it.results.filter {
-                    val parts = it.url.split("/")
-                    parts[parts.size - 2].toInt() in start..end
-                }.map {
-                    async {
-                        Network().getService().getPokemonByURL(it.url).body()
-                    }
-                }
-                filteredPokemons.value = async.awaitAll().filterNotNull()
-            }
-        }
-    }
-
-    fun getPokemonsFilteredByType(type: String) {
-        val handler = CoroutineExceptionHandler { context, exception ->
-            handleError(exception)
-        }
-        viewModelScope.launch(handler) {
-            Network().getService().getPagedTypes(Int.MAX_VALUE).body()?.let {
-                val asyncTypes = it.results.filter { it.name.contains(type) }.map {
-                    async {
-                        Network().getService().getTypesByURL(it.url).body()
-                    }
-                }
-                val types = asyncTypes.awaitAll().filterNotNull()
-
-                val pokemonResults = types.flatMap { it.pokemon }
-
-                val asyncPokemons = pokemonResults.map {
-                    async {
-                        Network().getService().getPokemonByURL(it.pokemon.url).body()
-                    }
-                }
-                filteredPokemons.value =
-                    asyncPokemons.awaitAll().filterNotNull().sortedBy { it.id }
-            }
-        }
-    }
-
-
     fun getPokemonCount() {
         val handler = CoroutineExceptionHandler { context, exception ->
             handleError(exception)
@@ -313,8 +238,8 @@ class PokemonViewModel : ViewModel() {
                 async {
                     Network().getService().getPokemonByName(it).body().apply {
                         val tmp = arrayListOf<PokemonType>()
-                        this?.types?.forEach {
-                            it.type.url?.let {
+                        this?.types?.forEach { type ->
+                            type.type.url?.let {
                                 Network().getService().getPokemonType(it).body()?.let {
                                     tmp.add(it)
                                 }

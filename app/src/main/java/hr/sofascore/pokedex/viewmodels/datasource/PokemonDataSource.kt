@@ -13,7 +13,7 @@ class PokemonDataSource(
 ) :
     PageKeyedDataSource<String, PokemonResponse>() {
 
-    val service = Network().getService()
+    private val service = Network().getService()
 
     override fun loadInitial(
         params: LoadInitialParams<String>,

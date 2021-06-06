@@ -4,13 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.PokemonResponse
+import hr.sofascore.pokedex.viewmodels.pageSize
 import kotlinx.coroutines.*
 
 class TypeFilteringPokemonDataSource(
     private val scope: CoroutineScope,
     private val filter: String,
     private val error: MutableLiveData<String>,
-    private val pageSize: Int = 10
 ) :
     PageKeyedDataSource<Int, PokemonResponse>() {
 
@@ -38,16 +38,16 @@ class TypeFilteringPokemonDataSource(
             val types = async?.awaitAll()
 
             val pokemonUrls = arrayListOf<String>()
-            types?.forEach {
-                it?.pokemon?.forEach {
+            types?.forEach { type ->
+                type?.pokemon?.forEach {
                     pokemonUrls.add(it.pokemon.url)
                 }
             }
 
-            lastIndex = if(pokemonUrls.size > pageSize) pageSize
-            else pokemonUrls.size-1
+            lastIndex = if (pokemonUrls.size > pageSize) pageSize
+            else pokemonUrls.size - 1
 
-            if(pokemonUrls.isEmpty()) {
+            if (pokemonUrls.isEmpty()) {
                 callback.onResult(
                     arrayListOf(),
                     null,
@@ -55,7 +55,10 @@ class TypeFilteringPokemonDataSource(
                 )
                 return@launch
             }
-            val pokemonOnePageFilteredUrls = pokemonUrls.subList(0, if(lastIndex > pokemonUrls.size - 1) pokemonUrls.size - 1 else lastIndex)
+            val pokemonOnePageFilteredUrls = pokemonUrls.subList(
+                0,
+                if (lastIndex > pokemonUrls.size - 1) pokemonUrls.size - 1 else lastIndex
+            )
 
             val pokemons = pokemonOnePageFilteredUrls.map {
                 async {
@@ -63,11 +66,11 @@ class TypeFilteringPokemonDataSource(
                 }
             }
 
-            pokemons?.awaitAll()?.let {
+            pokemons?.awaitAll()?.let { pokemons ->
                 callback.onResult(
-                    it.filterNotNull().sortedBy { it.id },
+                    pokemons.filterNotNull().sortedBy { it.id },
                     null,
-                    if(lastIndex >= pageSize) lastIndex else null
+                    if (lastIndex >= pageSize) lastIndex else null
                 )
             }
         }
@@ -96,23 +99,28 @@ class TypeFilteringPokemonDataSource(
             val types = async?.awaitAll()
 
             val pokemonUrls = arrayListOf<String>()
-            types?.forEach {
-                it?.pokemon?.forEach {
+            types?.forEach { type ->
+                type?.pokemon?.forEach {
                     pokemonUrls.add(it.pokemon.url)
                 }
             }
 
-            lastIndex = if(pokemonUrls.size - 1 - start > pageSize) pageSize
+            lastIndex = if (pokemonUrls.size - 1 - start > pageSize) pageSize
             else pokemonUrls.size - 1 - start
 
-            if(pokemonUrls.isEmpty()) {
+            if (pokemonUrls.isEmpty()) {
                 callback.onResult(
                     arrayListOf(),
                     null,
                 )
                 return@launch
             }
-            val pokemonOnePageFilteredUrls = pokemonUrls.subList(start, if(start + lastIndex > pokemonUrls.size - 1) pokemonUrls.size - 1 else start + lastIndex)
+            val pokemonOnePageFilteredUrls = pokemonUrls.subList(
+                start,
+                if (start + lastIndex > pokemonUrls.size - 1)
+                    pokemonUrls.size - 1
+                else start + lastIndex
+            )
 
             val pokemons = pokemonOnePageFilteredUrls.map {
                 async {
@@ -120,10 +128,12 @@ class TypeFilteringPokemonDataSource(
                 }
             }
 
-            pokemons?.awaitAll()?.let {
+            pokemons?.awaitAll()?.let { pokemons ->
                 callback.onResult(
-                    it.filterNotNull().sortedBy { it.id },
-                    if(lastIndex >= pageSize) start + lastIndex else null
+                    pokemons.filterNotNull().sortedBy { it.id },
+                    if (lastIndex >= pageSize)
+                        start + lastIndex
+                    else null
                 )
             }
         }
@@ -152,23 +162,28 @@ class TypeFilteringPokemonDataSource(
             val types = async?.awaitAll()
 
             val pokemonUrls = arrayListOf<String>()
-            types?.forEach {
-                it?.pokemon?.forEach {
+            types?.forEach { type ->
+                type?.pokemon?.forEach {
                     pokemonUrls.add(it.pokemon.url)
                 }
             }
 
-            lastIndex = if(pokemonUrls.size - 1 - start> pageSize) pageSize
+            lastIndex = if (pokemonUrls.size - 1 - start > pageSize) pageSize
             else pokemonUrls.size - 1 - start
 
-            if(pokemonUrls.isEmpty()) {
+            if (pokemonUrls.isEmpty()) {
                 callback.onResult(
                     arrayListOf(),
                     null,
                 )
                 return@launch
             }
-            val pokemonOnePageFilteredUrls = pokemonUrls.subList(start, if(start + lastIndex > pokemonUrls.size - 1) pokemonUrls.size - 1 else start + lastIndex)
+            val pokemonOnePageFilteredUrls = pokemonUrls.subList(
+                start,
+                if (start + lastIndex > pokemonUrls.size - 1)
+                    pokemonUrls.size - 1
+                else start + lastIndex
+            )
 
             val pokemons = pokemonOnePageFilteredUrls.map {
                 async {
@@ -176,10 +191,12 @@ class TypeFilteringPokemonDataSource(
                 }
             }
 
-            pokemons?.awaitAll()?.let {
+            pokemons?.awaitAll()?.let { pokemons ->
                 callback.onResult(
-                    it.filterNotNull().sortedBy { it.id },
-                    if(lastIndex >= pageSize) start + lastIndex else null
+                    pokemons.filterNotNull().sortedBy { it.id },
+                    if (lastIndex >= pageSize)
+                        start + lastIndex
+                    else null
                 )
             }
         }

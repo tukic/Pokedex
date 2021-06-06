@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.PokemonResponse
+import hr.sofascore.pokedex.viewmodels.pageSize
 import kotlinx.coroutines.*
 
 class RangeFilteringPokemonDataSource(
@@ -14,7 +15,7 @@ class RangeFilteringPokemonDataSource(
 ) :
     PageKeyedDataSource<Int, PokemonResponse>() {
 
-    val service = Network().getService()
+    private val service = Network().getService()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -24,7 +25,8 @@ class RangeFilteringPokemonDataSource(
             handleError(exception)
         }
         scope.launch(handler) {
-            val limit = if (end - start < 20) end - start else 20
+            val limit = if (end - start < pageSize) end - start
+            else pageSize
             val pokemonUrlResponse = service.getPagedPokemonByURL(start, limit)
             val async = pokemonUrlResponse.body()?.results?.map {
                 async {
@@ -35,7 +37,8 @@ class RangeFilteringPokemonDataSource(
                 callback.onResult(
                     it.filterNotNull(),
                     null,
-                    if (start + limit < end) start + limit else null
+                    if (start + limit < end) start + limit
+                    else null
                 )
             }
         }
@@ -50,7 +53,9 @@ class RangeFilteringPokemonDataSource(
         }
         scope.launch(handler) {
             val newStart = params.key
-            val limit = if (end - newStart < 20) end - newStart else 20
+            val limit =
+                if (end - newStart < pageSize) end - newStart
+                else pageSize
             val pokemonUrlResponse = service.getPagedPokemonByURL(newStart, limit)
             val async = pokemonUrlResponse.body()?.results?.map {
                 async {
@@ -60,7 +65,8 @@ class RangeFilteringPokemonDataSource(
             async?.awaitAll()?.let {
                 callback.onResult(
                     it.filterNotNull(),
-                    if (newStart + limit < end) newStart + limit else null
+                    if (newStart + limit < end) newStart + limit
+                    else null
                 )
             }
         }
@@ -75,7 +81,9 @@ class RangeFilteringPokemonDataSource(
         }
         scope.launch(handler) {
             val newStart = params.key
-            val limit = if (end - newStart < 20) end - newStart else 20
+            val limit = if (end - newStart < pageSize)
+                end - newStart
+            else pageSize
             val pokemonUrlResponse = service.getPagedPokemonByURL(newStart, limit)
             val async = pokemonUrlResponse.body()?.results?.map {
                 async {
@@ -85,7 +93,9 @@ class RangeFilteringPokemonDataSource(
             async?.awaitAll()?.let {
                 callback.onResult(
                     it.filterNotNull(),
-                    if (newStart + limit < end) newStart + limit else null
+                    if (newStart + limit < end)
+                        newStart + limit
+                    else null
                 )
             }
         }

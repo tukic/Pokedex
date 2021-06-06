@@ -24,8 +24,8 @@ class EvolutionViewModel : ViewModel() {
         }
         viewModelScope.launch(handler) {
             evolutions.value =
-                Network().getService().getSpecies(pokemonId).body()?.let {
-                    Network().getService().getEvolutionChain(it.evolution_chain.url)
+                Network().getService().getSpecies(pokemonId).body()?.let { species ->
+                    Network().getService().getEvolutionChain(species.evolution_chain.url)
                         .body()?.chain?.evolves_to
                 }
         }
@@ -38,13 +38,13 @@ class EvolutionViewModel : ViewModel() {
         viewModelScope.launch(handler) {
             val response = Network().getService().getSpecies(pokemonId)
             evolution.value = response
-                .body()?.let {
-                    Network().getService().getEvolutionChain(it.evolution_chain.url).body()
+                .body()?.let { species ->
+                    Network().getService().getEvolutionChain(species.evolution_chain.url).body()
                 }
         }
     }
 
-    fun handleError(exception: Throwable) {
+    private fun handleError(exception: Throwable) {
         error.value = exception.toString()
     }
 }

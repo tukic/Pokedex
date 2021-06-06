@@ -58,8 +58,7 @@ class TypeViewModel : ViewModel() {
         viewModelScope.launch(handler) {
             pokemonTypes.value =
                 pokemon.types?.map {
-                    val response = Network().getService().getPokemonType(it.type.url)
-                    response.body()
+                    Network().getService().getPokemonType(it.type.url).body()
                 }?.toList()?.filterNotNull()
         }
     }
@@ -137,7 +136,7 @@ class TypeViewModel : ViewModel() {
         }
     }
 
-    fun handleError(exception: Throwable) {
+    private fun handleError(exception: Throwable) {
         error.value = exception.toString()
     }
 }

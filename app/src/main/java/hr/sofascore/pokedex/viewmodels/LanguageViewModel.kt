@@ -26,7 +26,7 @@ class LanguageViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-                languages.value = Network().getService().getLanguages().body()
+            languages.value = Network().getService().getLanguages().body()
         }
     }
 
@@ -35,9 +35,8 @@ class LanguageViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-                abilityTranslation.value =
-                    Network().getService().getAbilityByURL(url).body()?.getName(context)
-
+            abilityTranslation.value =
+                Network().getService().getAbilityByURL(url).body()?.getName(context)
         }
     }
 
@@ -47,7 +46,7 @@ class LanguageViewModel : ViewModel() {
         }
         viewModelScope.launch(handler) {
             hiddenAbilityTranslation.value =
-                    Network().getService().getAbilityByURL(url).body()?.getName(context)
+                Network().getService().getAbilityByURL(url).body()?.getName(context)
         }
     }
 
@@ -75,11 +74,7 @@ class LanguageViewModel : ViewModel() {
                     Network().getService().getPokeathlonStatByURL(url).body()
                 }
             }
-            try {
-                pokeathlonStatsTranslations.value = async.awaitAll().filterNotNull()
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
-            }
+            pokeathlonStatsTranslations.value = async.awaitAll().filterNotNull()
         }
     }
 

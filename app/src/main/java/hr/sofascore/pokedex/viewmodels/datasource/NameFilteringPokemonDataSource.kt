@@ -4,17 +4,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.PokemonResponse
+import hr.sofascore.pokedex.viewmodels.pageSize
 import kotlinx.coroutines.*
 
 class NameFilteringPokemonDataSource(
     private val scope: CoroutineScope,
     private val filter: String,
     private val error: MutableLiveData<String>,
-    private val pageSize: Int = 10
 ) :
     PageKeyedDataSource<Int, PokemonResponse>() {
 
-    val service = Network().getService()
+    private val service = Network().getService()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -26,7 +26,6 @@ class NameFilteringPokemonDataSource(
         scope.launch(handler) {
             val pokemonUrlResponse =
                 service.getPagedPokemons(Int.MAX_VALUE).body()
-            val count = pokemonUrlResponse!!.count
             var counter = 0
             var lastIndex = 0
             val filteredResults = pokemonUrlResponse?.results?.filterIndexed { index, result ->
@@ -38,15 +37,15 @@ class NameFilteringPokemonDataSource(
                     false
                 }
             }
-            if(filteredResults.isEmpty()) {
+            if(filteredResults?.isEmpty() == true) {
                 callback.onResult(
                     arrayListOf(),
                     null,
-                    if(counter >= pageSize) lastIndex else null
+                    null
                 )
                 return@launch
             }
-            filteredResults.subList(0, if(pageSize < filteredResults.size) pageSize else filteredResults.size-1)
+            filteredResults?.subList(0, if(pageSize < filteredResults.size) pageSize else filteredResults.size-1)
             val async = filteredResults?.map {
                 async {
                     service.getPokemonByURL(it.url).body()
@@ -56,7 +55,7 @@ class NameFilteringPokemonDataSource(
                 callback.onResult(
                     it.filterNotNull(),
                     null,
-                    null
+                    if(counter >= pageSize) lastIndex else null
                 )
             }
         }
@@ -73,7 +72,6 @@ class NameFilteringPokemonDataSource(
             val offset = params.key
             val pokemonUrlResponse =
                 service.getPagedPokemonByURL(offset, Int.MAX_VALUE).body()
-            val count = pokemonUrlResponse!!.count
             var counter = 0
             var lastIndex = 0
             val filteredResults = pokemonUrlResponse?.results?.filterIndexed { index, result ->
@@ -85,14 +83,14 @@ class NameFilteringPokemonDataSource(
                     false
                 }
             }
-            if(filteredResults.isEmpty()) {
+            if(filteredResults?.isEmpty() == true) {
                 callback.onResult(
                     arrayListOf(),
                     null
                 )
                 return@launch
             }
-            filteredResults.subList(0, if(pageSize < filteredResults.size) pageSize else filteredResults.size-1)
+            filteredResults?.subList(0, if(pageSize < filteredResults.size) pageSize else filteredResults.size-1)
             lastIndex += offset
             val async = filteredResults?.map {
                 async {
@@ -119,7 +117,6 @@ class NameFilteringPokemonDataSource(
             val offset = params.key
             val pokemonUrlResponse =
                 service.getPagedPokemonByURL(offset, Int.MAX_VALUE).body()
-            val count = pokemonUrlResponse!!.count
             var lastIndex = 0
             var counter = 0
             val filteredResults = pokemonUrlResponse?.results?.filterIndexed { index, result ->
@@ -131,14 +128,14 @@ class NameFilteringPokemonDataSource(
                     false
                 }
             }
-            if(filteredResults.isEmpty()) {
+            if(filteredResults?.isEmpty() == true) {
                 callback.onResult(
                     arrayListOf(),
                     null,
                 )
                 return@launch
             }
-            filteredResults.subList(0, if(pageSize < filteredResults.size) pageSize else filteredResults.size-1)
+            filteredResults?.subList(0, if(pageSize < filteredResults.size) pageSize else filteredResults.size-1)
             lastIndex += offset
             val async = filteredResults?.map {
                 async {
@@ -148,7 +145,6 @@ class NameFilteringPokemonDataSource(
             async?.awaitAll()?.let {
                 callback.onResult(
                     it.filterNotNull(),
-                    //if (lastIndex - 1 < count) lastIndex else null
                     if(counter >= pageSize) lastIndex else null
                 )
             }

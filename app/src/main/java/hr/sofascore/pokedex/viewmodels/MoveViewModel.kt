@@ -14,14 +14,15 @@ class MoveViewModel : ViewModel() {
     val move = MutableLiveData<List<PokemonMove>>()
 
     val error = MutableLiveData<String>()
+
     fun getMoves(urls: List<String>) {
         val handler = CoroutineExceptionHandler { context, exception ->
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            val async = urls.map {
+            val async = urls.map { url ->
                 async {
-                    Network().getService().getPokemonMove(it).body().apply {
+                    Network().getService().getPokemonMove(url).body().apply {
                         this?.damage_class?.url?.let {
                             this.damage_class_detail =
                                 Network().getService().getPokemonMoveDamageClass(it).body()
@@ -33,7 +34,7 @@ class MoveViewModel : ViewModel() {
         }
     }
 
-    fun handleError(exception: Throwable) {
+    private fun handleError(exception: Throwable) {
         error.value = exception.toString()
     }
 }

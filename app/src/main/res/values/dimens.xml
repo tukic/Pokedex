@@ -12,6 +12,6 @@
     <dimen name="snack_bar_action_button_padding">8dp</dimen>
     <dimen name="pokemon_search_top_margin">16dp</dimen>
     <dimen name="pokemon_search_bottom_margin">72dp</dimen>
-    <dimen name="pokemon_search_bottom_margin_range_filter">176dp</dimen>
-    <dimen name="pokemon_search_bottom_margin_filter">128dp</dimen>
+    <dimen name="pokemon_search_bottom_margin_range_filter">92dp</dimen>
+    <dimen name="pokemon_search_bottom_margin_filter">48dp</dimen>
 </resources>
