@@ -23,6 +23,7 @@
         android:layout_height="@dimen/bottom_navigation_menu_height"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
+        android:theme="@style/Theme.BottomNavigationBar"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

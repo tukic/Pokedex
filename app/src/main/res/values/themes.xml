@@ -1,35 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Theme.Pokedex" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
         <item name="colorPrimary">@color/tint_primary</item>
         <item name="colorPrimaryVariant">@color/tint_primary</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/tint_primary</item>
         <item name="colorSecondaryVariant">@color/tint_secondary</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.BottomNavigationBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/tint_secondary</item>
     </style>
 
     <style name="Theme.PokemonActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/tint_primary</item>
+        <item name="colorPrimary">@color/surface_0</item>
         <item name="colorPrimaryVariant">#0c000000</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/tint_primary</item>
+        <item name="colorSecondary">@color/surface_0</item>
         <item name="colorSecondaryVariant">@color/tint_secondary</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
     </style>
 
     <style name="Theme.PokemonTypeParent" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/tint_primary</item>
+        <item name="colorPrimary">@color/surface_0</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/tint_primary</item>
         <item name="colorSecondaryVariant">@color/tint_secondary</item>
@@ -91,6 +86,7 @@
 
     <style name="Theme.PokemonPoisonType" parent="Theme.PokemonTypeParent">
         <item name="colorPrimaryVariant">@color/flat_pokemon_type_poison</item>
+        <item name="colorSecondary">@color/flat_pokemon_type_poison</item>
     </style>
 
     <style name="Theme.PokemonPsychicType" parent="Theme.PokemonTypeParent">

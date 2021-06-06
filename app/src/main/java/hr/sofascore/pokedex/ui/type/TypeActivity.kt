@@ -22,7 +22,7 @@ class TypeActivity : AppCompatActivity() {
         binding = ActivityTypeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.title.text = pokemonType.name.capitalize(Locale.getDefault())
+        binding.title.text = pokemonType.getName(this).capitalize(Locale.getDefault())
         binding.appBar.backgroundTintList = getColorStateList(pokemonType.getTypeColor())
         binding.tabs.backgroundTintList = getColorStateList(pokemonType.getTypeColor())
 
