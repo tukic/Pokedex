@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hr.sofascore.pokedex.model.networking.Network
 import hr.sofascore.pokedex.model.shared.Language
-import hr.sofascore.pokedex.model.shared.PokeathlonStat
-import hr.sofascore.pokedex.model.shared.Stat
+import hr.sofascore.pokedex.model.shared.Translation
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -17,8 +16,8 @@ class LanguageViewModel : ViewModel() {
     val languages = MutableLiveData<Language>()
     val abilityTranslation = MutableLiveData<String>()
     val hiddenAbilityTranslation = MutableLiveData<String>()
-    val statsTranslations = MutableLiveData<List<Stat>>()
-    val pokeathlonStatsTranslations = MutableLiveData<List<PokeathlonStat>>()
+    val statsTranslations = MutableLiveData<List<Translation>>()
+    val pokeathlonStatsTranslations = MutableLiveData<List<Translation>>()
 
     val error = MutableLiveData<String>()
 

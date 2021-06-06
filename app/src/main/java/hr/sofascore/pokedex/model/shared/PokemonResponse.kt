@@ -31,9 +31,9 @@ data class PokemonResponse @JvmOverloads constructor (
     @Ignore
     var typeDetail: List<PokemonType>? = arrayListOf(),
     @Ignore
-    var ability: MutableList<AbilityResponse>? = arrayListOf<AbilityResponse>(),
+    var ability: MutableList<Translation>? = arrayListOf<Translation>(),
     @Ignore
-    var stat: MutableList<Stat>? = arrayListOf<Stat>()
+    var stat: MutableList<Translation>? = arrayListOf<Translation>()
 
 ) : Serializable {
 

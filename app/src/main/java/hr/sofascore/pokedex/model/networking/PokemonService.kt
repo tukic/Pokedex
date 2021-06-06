@@ -43,13 +43,13 @@ interface PokemonService {
     suspend fun getTypesByURL(@Url url: String): Response<PokemonType>
 
     @GET
-    suspend fun getStatByURL(@Url url: String): Response<Stat>
+    suspend fun getStatByURL(@Url url: String): Response<Translation>
 
     @GET
-    suspend fun getPokeathlonStatByURL(@Url url: String): Response<PokeathlonStat>
+    suspend fun getPokeathlonStatByURL(@Url url: String): Response<Translation>
 
     @GET
-    suspend fun getAbilityByURL(@Url url: String): Response<AbilityResponse>
+    suspend fun getAbilityByURL(@Url url: String): Response<Translation>
 
     @GET
     suspend fun getPokemonMove(@Url url: String): Response<PokemonMove>
@@ -61,5 +61,5 @@ interface PokemonService {
     suspend fun getPagedTypes(@Query("limit") limit: Int): Response<TypeList>
 
     @GET
-    suspend fun getPokemonMoveDamageClass(@Url url: String): Response<PokemonDamageClass>
+    suspend fun getPokemonMoveDamageClass(@Url url: String): Response<Translation>
 }

@@ -1,16 +1,16 @@
 package hr.sofascore.pokedex.model.shared
 
 import android.content.Context
-import android.preference.PreferenceManager
 import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.util.LanguageHelper
 import java.io.Serializable
+import java.util.*
 
 data class PokemonMove (
     val generation: Generation,
     val name: String,
     val damage_class: Result,
-    var damage_class_detail: PokemonDamageClass?,
+    var damage_class_detail: Translation?,
     val power: Int,
     val pp: Int,
     val names: List<LanguageDescription>
@@ -28,7 +28,7 @@ data class Generation (
 
     fun getRomanNumberGen(): String {
         val parts = name.split("-")
-        return parts[parts.lastIndex].toUpperCase()
+        return parts[parts.lastIndex].toUpperCase(Locale.getDefault())
     }
 
     fun getColor(): Int {
