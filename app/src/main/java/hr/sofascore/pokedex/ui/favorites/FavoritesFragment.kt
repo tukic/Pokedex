@@ -34,9 +34,11 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
     private val itemTouchHelper by lazy {
         val simpleItemTouchCallback =
             object : ItemTouchHelper.SimpleCallback(UP or DOWN or START or END, 0) {
-                override fun onMove(recyclerView: RecyclerView,
-                                    viewHolder: RecyclerView.ViewHolder,
-                                    target: RecyclerView.ViewHolder): Boolean {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
                     val adapter = recyclerView.adapter as ReorderFavoritesAdapter
                     val from = viewHolder.adapterPosition
                     val to = target.adapterPosition
@@ -45,6 +47,7 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
 
                     return true
                 }
+
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 }
             }
@@ -62,7 +65,7 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
 
         binding.favoritesRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        binding.editFavoritesReorderingView.setOnClickListener{
+        binding.editFavoritesReorderingView.setOnClickListener {
             pokemonViewModel.favouritePokemon.value?.let {
                 binding.editFavoritesReorderingView.visibility = View.GONE
                 binding.favoritesRecyclerView.adapter =
@@ -78,7 +81,13 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
             pokemonViewModel.favouritePokemon.value?.let {
                 binding.doneFavoritesReorderingView.visibility = View.GONE
                 binding.favoritesRecyclerView.adapter =
-                    FavoritePokemonAdapter(requireContext(), it.sortedBy { it.favoriteIndex }, this, this, it)
+                    FavoritePokemonAdapter(
+                        requireContext(),
+                        it.sortedBy { it.favoriteIndex },
+                        this,
+                        this,
+                        it
+                    )
                 itemTouchHelper.attachToRecyclerView(null)
                 binding.editFavoritesReorderingView.visibility = View.VISIBLE
             }
@@ -86,13 +95,27 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
 
         pokemonViewModel.favouritePokemon.observe(
             this as LifecycleOwner,
-            {
-                binding.favoritesRecyclerView.adapter =
-                    FavoritePokemonAdapter(requireContext(), it, this, this, it)
+            { favoritePokemons ->
+                if (favoritePokemons.isEmpty()) {
+                    initEmptyState()
+                } else {
+                    binding.favoritesRecyclerView.adapter =
+                        FavoritePokemonAdapter(
+                            requireContext(),
+                            favoritePokemons,
+                            this,
+                            this,
+                            favoritePokemons
+                        )
+                }
             }
         )
-
         return view
+    }
+
+    private fun initEmptyState() {
+        binding.noFavoritesTitleTextView.visibility = View.VISIBLE
+        binding.noFavoritesTextView.visibility = View.VISIBLE
     }
 
     override fun startActivity(pokemon: PokemonResponse) {
@@ -126,4 +149,5 @@ class FavoritesFragment : Fragment(), StartPokemonActivityListener, FavouritePok
     override fun updateReorderedPokemons(pokemons: List<PokemonResponse>) {
         pokemonViewModel.updatePokemon(requireContext(), pokemons)
     }
+
 }

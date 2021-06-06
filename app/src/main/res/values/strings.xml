@@ -59,4 +59,6 @@
     <string name="snackbar_favorites_cleared_text">Favorites list is clear.</string>
     <string name="name">Name</string>
     <string name="range">Range</string>
+    <string name="no_favorites">No favorites</string>
+    <string name="there_are_no_pokemons_added_to_favorites">There are no pokemons added to favorites</string>
 </resources>

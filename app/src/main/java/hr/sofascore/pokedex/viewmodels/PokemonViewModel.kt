@@ -126,11 +126,7 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                pokemon.value = Network().getService().getPokemonByName(name).body()
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
-            }
+            pokemon.value = Network().getService().getPokemonByName(name).body()
         }
     }
 
@@ -139,27 +135,24 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                pokemon.value = Network().getService().getPokemonById(id).body().apply {
-                    this?.abilities?.forEach {
-                        Network().getService().getAbilityByURL(it.ability.url).body()
-                            ?.let { ability ->
-                                this.ability?.add(
-                                    ability
-                                )
-                            }
-                    }
-                    this?.stats?.forEach {
-                        Network().getService().getStatByURL(it.stat.url).body()?.let { stat ->
-                            this.stat?.add(
-                                stat
+            pokemon.value = Network().getService().getPokemonById(id).body().apply {
+                this?.abilities?.forEach {
+                    Network().getService().getAbilityByURL(it.ability.url).body()
+                        ?.let { ability ->
+                            this.ability?.add(
+                                ability
                             )
                         }
+                }
+                this?.stats?.forEach {
+                    Network().getService().getStatByURL(it.stat.url).body()?.let { stat ->
+                        this.stat?.add(
+                            stat
+                        )
                     }
                 }
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
             }
+
         }
     }
 
@@ -168,17 +161,13 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                val index =
-                    PokemonDatabase.getDatabase(context)?.pokemonDao()?.getMaxFavoriteIndex()
-                if (index != null) {
-                    pokemon.favoriteIndex = index + 1
-                }
-                PokemonDatabase.getDatabase(context)?.pokemonDao()?.insertPokemon(pokemon)
-                getFavouritePokemonSortedByByFavoriteIndex(context)
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
+            val index =
+                PokemonDatabase.getDatabase(context)?.pokemonDao()?.getMaxFavoriteIndex()
+            if (index != null) {
+                pokemon.favoriteIndex = index + 1
             }
+            PokemonDatabase.getDatabase(context)?.pokemonDao()?.insertPokemon(pokemon)
+            getFavouritePokemonSortedByByFavoriteIndex(context)
         }
     }
 
@@ -187,13 +176,10 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                favouritePokemon.value =
-                    PokemonDatabase.getDatabase(context)?.pokemonDao()
-                        ?.getAllPokemonSortedByFavoriteIndex()
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
-            }
+            favouritePokemon.value =
+                PokemonDatabase.getDatabase(context)?.pokemonDao()
+                    ?.getAllPokemonSortedByFavoriteIndex()
+
         }
     }
 
@@ -202,12 +188,8 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                PokemonDatabase.getDatabase(context)?.pokemonDao()?.deletePokemon(pokemon)
-                getFavouritePokemonSortedByByFavoriteIndex(context)
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
-            }
+            PokemonDatabase.getDatabase(context)?.pokemonDao()?.deletePokemon(pokemon)
+            getFavouritePokemonSortedByByFavoriteIndex(context)
         }
     }
 
@@ -216,14 +198,10 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                pokemons.forEach {
-                    async {
-                        PokemonDatabase.getDatabase(context)?.pokemonDao()?.updatePokemon(it)
-                    }
+            pokemons.forEach {
+                async {
+                    PokemonDatabase.getDatabase(context)?.pokemonDao()?.updatePokemon(it)
                 }
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
             }
         }
     }
@@ -233,11 +211,8 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                PokemonDatabase.getDatabase(context)?.pokemonDao()?.deleteAllPokemons()
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
-            }
+            PokemonDatabase.getDatabase(context)?.pokemonDao()?.deleteAllPokemons()
+            getFavouritePokemonSortedByByFavoriteIndex(context)
         }
     }
 
@@ -246,12 +221,8 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
-                    allPokemons.value = it
-                }
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
+            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
+                allPokemons.value = it
             }
         }
     }
@@ -261,17 +232,13 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
-                    val async = it.results.filter { it.name.contains(name) }.map {
-                        async {
-                            Network().getService().getPokemonByURL(it.url).body()
-                        }
+            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
+                val async = it.results.filter { it.name.contains(name) }.map {
+                    async {
+                        Network().getService().getPokemonByURL(it.url).body()
                     }
-                    filteredPokemons.value = async.awaitAll().filterNotNull()
                 }
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
+                filteredPokemons.value = async.awaitAll().filterNotNull()
             }
         }
     }
@@ -281,20 +248,16 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
-                    val async = it.results.filter {
-                        val parts = it.url.split("/")
-                        parts[parts.size - 2].toInt() in start..end
-                    }.map {
-                        async {
-                            Network().getService().getPokemonByURL(it.url).body()
-                        }
+            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
+                val async = it.results.filter {
+                    val parts = it.url.split("/")
+                    parts[parts.size - 2].toInt() in start..end
+                }.map {
+                    async {
+                        Network().getService().getPokemonByURL(it.url).body()
                     }
-                    filteredPokemons.value = async.awaitAll().filterNotNull()
                 }
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
+                filteredPokemons.value = async.awaitAll().filterNotNull()
             }
         }
     }
@@ -304,27 +267,23 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                Network().getService().getPagedTypes(Int.MAX_VALUE).body()?.let {
-                    val asyncTypes = it.results.filter { it.name.contains(type) }.map {
-                        async {
-                            Network().getService().getTypesByURL(it.url).body()
-                        }
+            Network().getService().getPagedTypes(Int.MAX_VALUE).body()?.let {
+                val asyncTypes = it.results.filter { it.name.contains(type) }.map {
+                    async {
+                        Network().getService().getTypesByURL(it.url).body()
                     }
-                    val types = asyncTypes.awaitAll().filterNotNull()
-
-                    val pokemonResults = types.flatMap { it.pokemon }
-
-                    val asyncPokemons = pokemonResults.map {
-                        async {
-                            Network().getService().getPokemonByURL(it.pokemon.url).body()
-                        }
-                    }
-                    filteredPokemons.value =
-                        asyncPokemons.awaitAll().filterNotNull().sortedBy { it.id }
                 }
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
+                val types = asyncTypes.awaitAll().filterNotNull()
+
+                val pokemonResults = types.flatMap { it.pokemon }
+
+                val asyncPokemons = pokemonResults.map {
+                    async {
+                        Network().getService().getPokemonByURL(it.pokemon.url).body()
+                    }
+                }
+                filteredPokemons.value =
+                    asyncPokemons.awaitAll().filterNotNull().sortedBy { it.id }
             }
         }
     }
@@ -335,53 +294,37 @@ class PokemonViewModel : ViewModel() {
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
-                    pokemonCount.value = it.count
-                }
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
+            Network().getService().getPagedPokemons(Int.MAX_VALUE).body()?.let {
+                pokemonCount.value = it.count
             }
         }
     }
-
-    /*
-    fun getPokemonRangeFilteredPagedList(start: Int, end: Int) {
-        val config = PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(false).build()
-        pokemonRangeFilteredPagedList = initializeRangeFilteredPagedList(config, start, end).build()
-    }
-
-     */
 
     fun getEvolutionPokemon(names: List<String>) {
         val handler = CoroutineExceptionHandler { context, exception ->
             handleError(exception)
         }
         viewModelScope.launch(handler) {
-            try {
-                val tmp = ArrayList<PokemonResponse>()
-                evolutionPokemons.value?.let {
-                    tmp.addAll(it)
-                }
-                val async = names.map {
-                    async {
-                        Network().getService().getPokemonByName(it).body().apply {
-                            val tmp = arrayListOf<PokemonType>()
-                            this?.types?.forEach {
-                                it.type.url?.let {
-                                    Network().getService().getPokemonType(it).body()?.let {
-                                        tmp.add(it)
-                                    }
+            val tmp = ArrayList<PokemonResponse>()
+            evolutionPokemons.value?.let {
+                tmp.addAll(it)
+            }
+            val async = names.map {
+                async {
+                    Network().getService().getPokemonByName(it).body().apply {
+                        val tmp = arrayListOf<PokemonType>()
+                        this?.types?.forEach {
+                            it.type.url?.let {
+                                Network().getService().getPokemonType(it).body()?.let {
+                                    tmp.add(it)
                                 }
-                                this.typeDetail = tmp
                             }
+                            this.typeDetail = tmp
                         }
                     }
                 }
-                evolutionPokemons.value = async.awaitAll().filterNotNull()
-            } catch (exception: Throwable) {
-                error.value = exception.toString()
             }
+            evolutionPokemons.value = async.awaitAll().filterNotNull()
         }
     }
 
@@ -404,7 +347,7 @@ class PokemonViewModel : ViewModel() {
         noFilter.value = true
     }
 
-    fun handleError(exception: Throwable) {
+    private fun handleError(exception: Throwable) {
         error.value = exception.toString()
     }
 }
