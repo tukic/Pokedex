@@ -28,7 +28,7 @@
 
     <Spinner
         android:id="@+id/language_spinner"
-        android:layout_width="328dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
@@ -73,9 +73,10 @@
 
     <View
         android:id="@+id/about_background_view"
-        android:layout_width="328dp"
+        android:layout_width="match_parent"
         android:layout_height="152dp"
         android:layout_marginTop="40dp"
+        android:layout_marginHorizontal="16dp"
         android:background="@drawable/about_rectangle_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,9 +96,10 @@
 
     <TextView
         android:id="@+id/about_content_text_view"
-        android:layout_width="296dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
         android:text="@string/about_content"
         app:layout_constraintEnd_toEndOf="@id/about_background_view"
         app:layout_constraintStart_toStartOf="@id/about_background_view"
@@ -119,10 +121,11 @@
 
     <TextView
         android:id="@+id/clear_favorites_text_view"
-        android:layout_width="328dp"
+        android:layout_width="match_parent"
         android:layout_height="36dp"
         android:text="@string/clear_my_favorites_list"
         android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="16dp"
         android:background="@drawable/clear_favorites_background"
         android:gravity="center"
         android:textAllCaps="true"

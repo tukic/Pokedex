@@ -43,7 +43,7 @@
     <string name="class_2021">Class 2021</string>
     <string name="app_name_label">App Name</string>
     <string name="api_credit_label">API Credit</string>
-    <string name="api_credit">pokemons</string>
+    <string name="api_credit">pokeapi</string>
     <string name="developer_label">Developer</string>
     <string name="developer">Tomislav Ukić</string>
     <string name="pokeathlon_stats">Pokéathlon stats</string>

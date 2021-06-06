@@ -12,6 +12,7 @@ import hr.sofascore.pokedex.R
 import hr.sofascore.pokedex.databinding.ReorderPokemonItemBinding
 import hr.sofascore.pokedex.model.shared.PokemonResponse
 import hr.sofascore.pokedex.ui.views.FavouritePokemonListener
+import java.util.*
 
 class ReorderFavoritesAdapter(
     val context: Context,
@@ -40,7 +41,7 @@ class ReorderFavoritesAdapter(
         val pokemon = pokemons[position]
 
         viewHolder.binding.pokemonImageView.load(pokemon.getImageURL())
-        viewHolder.binding.pokemonNameTextView.text = pokemon.name
+        viewHolder.binding.pokemonNameTextView.text = pokemon.name.capitalize(Locale.getDefault())
         viewHolder.binding.pokedexNumTextView.text = pokemon.getFormattedId()
         viewHolder.binding.starIconImageView.load(R.drawable.ic_star_1)
 

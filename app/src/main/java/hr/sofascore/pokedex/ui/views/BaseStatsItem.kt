@@ -37,7 +37,6 @@ class BaseStatsItem(context: Context, attrs: AttributeSet) : FrameLayout(context
             baseStatsValueTextView = binding.baseStatsValueTextView
             statsProgressBar = binding.baseStatsValueProgressBar
             baseStatsLabelTextView = binding.baseStatsLabelTextView
-            //binding.baseStatsLabelTextView.text = getString(R.styleable.BaseStatsItem_base_stats_label)
             binding.baseStatsValueProgressBar.progressTintList = ColorStateList.valueOf(
                 getColor(R.styleable.BaseStatsItem_stats_bar_color, Color.BLACK)
             )
